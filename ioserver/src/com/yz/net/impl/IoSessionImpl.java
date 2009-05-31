@@ -77,7 +77,7 @@ public class IoSessionImpl implements IoSession{
 	private IoReadWriteMachine ownerDispatcher;
 	
 	/**IoSession的归属接收器*/
-	private AbstractIoServer ownerAcceptor;
+	private AbstractIoService ownerAcceptor;
 	
 	/**输入buffer*/
 	private ByteBuffer inBuffer;
@@ -102,7 +102,7 @@ public class IoSessionImpl implements IoSession{
 	}
 	
 	
-	protected IoSessionImpl(long id, SocketChannel channel, AbstractIoServer acceptor) {
+	protected IoSessionImpl(long id, SocketChannel channel, AbstractIoService acceptor) {
 		this.id = id;
 		this.channel = channel;
 		this.ownerAcceptor = acceptor;
@@ -151,7 +151,7 @@ public class IoSessionImpl implements IoSession{
 	}
 	
 	
-	protected AbstractIoServer getOwnerAcceptor() {
+	protected AbstractIoService getOwnerAcceptor() {
 		return ownerAcceptor;
 	}
 	

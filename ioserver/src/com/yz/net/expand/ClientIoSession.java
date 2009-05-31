@@ -6,15 +6,19 @@ import java.nio.channels.SocketChannel;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import com.yz.net.IoFuture;
-import com.yz.net.impl.AbstractIoServer;
-import com.yz.net.impl.IoServerImpl;
+import com.yz.net.impl.AbstractIoService;
 import com.yz.net.impl.IoSessionImpl;
 
 /**
  * <p>
- * 代理IoSession，这是IOServer框架的一个扩展补充，在很多情况下，我们需要在不修改原服务器的情况下<br>
- * 而加入另外一种形式的通讯协议或方工，那么有一种策略是提供代理服务器来与原有的服务器进行通讯，客<br>
- * 户端就于代理服务器通讯，此扩充的每一个PoxyIoSession都代理一个上层服务器的IoSession
+ * 也表示一个IoSession，这是IoServer框架的一个扩展补充，支持客户端通讯会话，在一个客户端上利用<br>
+ * 此框架生成的IoSession，因为客户端的IoSession需要连接功能，此类扩展出一个异步的连接方法，此扩<br>
+ * 展很多情况下可用于构建高性能的代理服务器，在某些情况下，我们需要在不修改原服务器的情况下而加入<br>
+ * 另外一种形式的通讯协议或方式，那么有一种策略是提供代理服务器来与原有的服务器进行通讯，每个从真<br>
+ * 实客户端上来的连接，都可以生成一个IoSession并连接上层服务器，此连接尽管放心，决对不会产生任何<br>
+ * 额外线程开销，因为ClientIoSession是从IoConnector(详见IoConnector的说明)生成出来，生成的同时<br>
+ * 已注册到IoConnector中，并由IoConnector负责代理并管理IoSession，ClientIoSession的连接方法也<br>
+ * 只是发出连接请求到IoConnector，由IoConnector负责真实连接工作。
  * </p>
  * <br>
  * @author 胡玮@ritsky
@@ -30,7 +34,7 @@ public class ClientIoSession extends IoSessionImpl {
 	private AtomicBoolean isConnecting = new AtomicBoolean(false);        //是否正在连接
 	
 	
-	ClientIoSession(long id, SocketChannel channel, AbstractIoServer acceptor, SocketAddress address) {
+	ClientIoSession(long id, SocketChannel channel, AbstractIoService acceptor, SocketAddress address) {
 		super(id, channel, acceptor);
 		this.bindAddress = address;
 	}

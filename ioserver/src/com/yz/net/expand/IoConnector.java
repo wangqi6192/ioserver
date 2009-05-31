@@ -3,26 +3,23 @@
 import java.io.IOException;
 import java.net.SocketAddress;
 import java.nio.channels.SocketChannel;
-import com.yz.net.impl.AbstractIoServer;
+import com.yz.net.impl.AbstractIoService;
 
 
 
 /**
  * <p>
- * 代理接收器，很多时候，我们希望加入新的通讯方式，但又不希望更改原有服务器的代码来加入，这时可以利用<br>
- * 代理接收器来构建一个新的服务器，代理接收器可以绑定需要连接的上层服务器地址，并设定对原数据进行处理<br>
- * 的处理者对像，如下
- * 
- * IoAcceptor acceptor = new PoxyIoAcceptor(8899);
- * acceptor.setIoHandler(new DataHandler());
- * acceptor.start();
- * 
+ * 实现IoService的连接器，此类本是IoServer框架的一个扩展，用于管理客户端连接所产生的IoSession,<br>
+ * IoConnector本身是基于nio选择器的一个解决类，所有通过IoConnector所产生的IoSession都是会注<br>
+ * 册到Selector中，和IoServerImpl一样，我们为每个CPU建立一个Selector选择器，并为每个选择器<br>
+ * 提供一个可运行的处理线程，但这里由于IoConnector有时会用于客户端的创建，所以允需开发人员设<br>
+ * 置可运行的读写处理线程个数（也就是选择器的个数） 	
  * </p>
  * <br>
  * @author 胡玮@ritsky
  *
  */
-public class IoConnector extends AbstractIoServer {
+public class IoConnector extends AbstractIoService {
 
 	/**
 	 * <p>
@@ -58,16 +55,24 @@ public class IoConnector extends AbstractIoServer {
 	
 	public IoConnector() throws Exception {
 		super();
+		this.initIoReadWriteMachines(1);
 	}
 	
-	public IoConnector(int port) throws Exception {
-		super(port);
+	public IoConnector(int readwriteThreadNum) throws Exception {
+		super();
+		this.initIoReadWriteMachines(readwriteThreadNum);
 	}
-
+	
+	public IoConnector(int readwriteThreadNum, int port) throws Exception {
+		this(readwriteThreadNum);
+		this.bind(port);
+	}
+	
+	
 	@Override
 	public void start() throws Exception {
 		this.startTimer();                //启动定时器
-		this.startIoDispatchers();
+		this.startIoReadWriteMachines();
 		this.isStart = true;
 	}
 
@@ -80,7 +85,7 @@ public class IoConnector extends AbstractIoServer {
 			
 			this.closeAllSession();
 			
-			this.stopIoDispatchers();
+			this.stopIoReadWriteMachines();
 		}
 		
 	}

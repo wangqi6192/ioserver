@@ -13,7 +13,7 @@ import java.io.IOException;
  */
 class IoReadWriteMachineManager {
 
-	private AbstractIoServer ioAcceptor;
+	private AbstractIoService ioAcceptor;
 
 	/**发报机群，会根据CPU各数来决定*/
 	private IoReadWriteMachine[] ioDispatchers;
@@ -22,15 +22,14 @@ class IoReadWriteMachineManager {
 
 
 
-	public IoReadWriteMachineManager(AbstractIoServer ioAcceptor) {
+	public IoReadWriteMachineManager(AbstractIoService ioAcceptor) {
 
 		this.ioAcceptor = ioAcceptor;
 	}
 
 
-	public void init() throws Exception {
-		int cupNum = Runtime.getRuntime().availableProcessors(); //获得CPU个数
-
+	public void init(int readwriteThreadNum) throws Exception {
+		
 		//如果先前存在，则先停止
 		if(ioDispatchers != null) {
 			for(int i=0; i<ioDispatchers.length; i++) {
@@ -38,8 +37,8 @@ class IoReadWriteMachineManager {
 			}
 		}
 
-		ioDispatchers = new IoReadWriteMachine[cupNum];
-		for(int i=0; i<cupNum; i++) {
+		ioDispatchers = new IoReadWriteMachine[readwriteThreadNum];
+		for(int i=0; i<readwriteThreadNum; i++) {
 			ioDispatchers[i] = new IoReadWriteMachine();
 			ioDispatchers[i].init(2000);
 			ioDispatchers[i].addListener(ioAcceptor);
