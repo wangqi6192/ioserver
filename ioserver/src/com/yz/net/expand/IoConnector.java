@@ -22,7 +22,7 @@ import com.yz.net.impl.AbstractIoServer;
  * @author 胡玮@ritsky
  *
  */
-public class PoxyIoServer extends AbstractIoServer {
+public class IoConnector extends AbstractIoServer {
 
 	/**
 	 * <p>
@@ -33,7 +33,7 @@ public class PoxyIoServer extends AbstractIoServer {
 	 * @return PoxyIoSession 代理会话<br>
 	 * @throws IOException
 	 */
-	public static PoxyIoSession newSession(PoxyIoServer acceptor) throws IOException{
+	public static ClientIoSession newSession(IoConnector acceptor) throws IOException{
 		
 		if(acceptor == null) {
 			return null;
@@ -50,17 +50,17 @@ public class PoxyIoServer extends AbstractIoServer {
 
 		SocketAddress bindAddress = acceptor.getBindAddress();
 
-		PoxyIoSession session = new PoxyIoSession(sessionId, sc, acceptor, bindAddress);
+		ClientIoSession session = new ClientIoSession(sessionId, sc, acceptor, bindAddress);
 
 		return session;
 	}
 
 	
-	public PoxyIoServer() throws Exception {
+	public IoConnector() throws Exception {
 		super();
 	}
 	
-	public PoxyIoServer(int port) throws Exception {
+	public IoConnector(int port) throws Exception {
 		super(port);
 	}
 
