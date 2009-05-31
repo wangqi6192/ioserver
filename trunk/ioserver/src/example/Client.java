@@ -1,4 +1,4 @@
-package example;
+ï»¿package example;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
@@ -60,7 +60,7 @@ public class Client extends Thread {
 				int checkInt = dis.readInt();
 				
 				if(checkInt != (temp + 1)) {
-					System.out.println("´æÔÚÎÊÌâ£¬´æÔÚÎÊÌâ");
+					System.out.println("å­˜åœ¨é—®é¢˜ï¼Œå­˜åœ¨é—®é¢˜");
 				}
 				else {
 					System.out.println(checkInt);

@@ -1,35 +1,35 @@
-package com.yz.net.impl;
+ï»¿package com.yz.net.impl;
 
 
 import java.nio.ByteBuffer;
 
 /**
- * ÄÚ´æ¹ÜÀí½Ó¿Ú
+ * å†…å­˜ç®¡ç†æ¥å£
  * @author Administrator
  *
  */
 interface MemoryManagerInface {
 
 	/**
-	 * »ñÈ¡Ö¸¶¨×Ö½Ú´óĞ¡µÄÒ»¿éÄÚ´æÇøÓò
+	 * è·å–æŒ‡å®šå­—èŠ‚å¤§å°çš„ä¸€å—å†…å­˜åŒºåŸŸ
 	 * @return
 	 */
 	public ByteBuffer allocat(int size);
 	
 	/**
-	 * »ñµÃÒ»¿éÄÚ´æ
+	 * è·å¾—ä¸€å—å†…å­˜
 	 * @return
 	 */
 	public ByteBuffer allocat();
 	
 	/**
-	 * ÊÍ·ÅÒ»¸öÖ¸¶¨¶ÔÏóµÄÄÚ´æ
+	 * é‡Šæ”¾ä¸€ä¸ªæŒ‡å®šå¯¹è±¡çš„å†…å­˜
 	 * @param buf
 	 */
 	public void free(ByteBuffer buf) throws Exception ;
 	
 	/**
-	 * ÕûÀíÄÚ´æËéÆ¬
+	 * æ•´ç†å†…å­˜ç¢ç‰‡
 	 * @return
 	 */
 	public boolean neaten();

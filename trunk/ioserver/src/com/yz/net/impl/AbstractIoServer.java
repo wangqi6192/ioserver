@@ -1,4 +1,4 @@
-package com.yz.net.impl;
+ï»¿package com.yz.net.impl;
 
 import java.io.IOException;
 import java.net.InetSocketAddress;
@@ -18,48 +18,48 @@ import com.yz.net.ProtocolHandler;
 
 /**
  * <p>
- * ·şÎñÆ÷³éÏó£¬Ìá¹©»ù±¾µÄµÄ·şÎñ¹¦ÄÜ
+ * æœåŠ¡å™¨æŠ½è±¡ï¼Œæä¾›åŸºæœ¬çš„çš„æœåŠ¡åŠŸèƒ½
  * </p>
  * <br>
- * @author ºúçâ@ritsky
+ * @author èƒ¡ç®@ritsky
  *
  */
 public abstract class AbstractIoServer implements IoService, DispatcherEventlListener{
-	/**ÊÇ·ñÆô¶¯*/
+	/**æ˜¯å¦å¯åŠ¨*/
 	protected volatile boolean isStart;
 
-	/**¼àÌıµØÖ·*/
+	/**ç›‘å¬åœ°å€*/
 	private SocketAddress address;
 	
-	/**IO´¦ÀíÏß³Ì¹ÜÀíÆ÷*/
+	/**IOå¤„ç†çº¿ç¨‹ç®¡ç†å™¨*/
 	private IoReadWriteMachineManager dispatcherManager;
 	
-	/**io´¦ÀíÕß*/
+	/**ioå¤„ç†è€…*/
 	private IoHandler iohandler;
 	
-	/**³¬Ê±´¦ÀíÕß£¬Ìá¹©Ä¬ÈÏµÄ³¬Ê±´¦ÀíÕß*/
+	/**è¶…æ—¶å¤„ç†è€…ï¼Œæä¾›é»˜è®¤çš„è¶…æ—¶å¤„ç†è€…*/
 	private OverTimeHandler overtimeHandler = new DefaultOverTimeHandler();
 	
-	/**Ğ­Òé´¦ÀíÕß*/
+	/**åè®®å¤„ç†è€…*/
 	private ProtocolHandler protocolHandler;
 	
-	/**¶¨Ê±Æ÷*/
+	/**å®šæ—¶å™¨*/
 	private Timer timer;
 	
-	//TODO:³õÊ¼»¯Ê±¸øÒ»¸öÄÜÔ¤²âµ½µÄ²ÎÊıÖµ£¬ÒÔ±ãÌá¸ßmapµÄ·ÃÎÊĞÔÄÜ
+	//TODO:åˆå§‹åŒ–æ—¶ç»™ä¸€ä¸ªèƒ½é¢„æµ‹åˆ°çš„å‚æ•°å€¼ï¼Œä»¥ä¾¿æé«˜mapçš„è®¿é—®æ€§èƒ½
 	private ConcurrentHashMap<Long, IoSession> ioSessionMap = new ConcurrentHashMap<Long, IoSession>();
 	
-	/**Ìá¹©Ö»¶ÁMap*/
+	/**æä¾›åªè¯»Map*/
 	private Map<Long, IoSession> readOnlyIoSessionMap = java.util.Collections.unmodifiableMap(ioSessionMap);
 	
-	/**IDÌá¹©Æ÷*/
+	/**IDæä¾›å™¨*/
 	private AtomicLong nextId = new AtomicLong(0);
 	
 	protected Object stopLock = new Object();
 	
 	
 	/**
-	 * Æô¶¯¶¨Ê±Æ÷
+	 * å¯åŠ¨å®šæ—¶å™¨
 	 */
 	protected void startTimer() {
 		if(timer == null) {
@@ -74,14 +74,14 @@ public abstract class AbstractIoServer implements IoService, DispatcherEventlLis
 	}
 	
 	/**
-	 * Æô¶¯IO´¦ÀíÏß³Ì
+	 * å¯åŠ¨IOå¤„ç†çº¿ç¨‹
 	 */
 	protected void startIoDispatchers() {
 		dispatcherManager.start();
 	}
 	
 	/**
-	 * Í£Ö¹IO´¦ÀíÏß³Ì
+	 * åœæ­¢IOå¤„ç†çº¿ç¨‹
 	 * @throws IOException
 	 */
 	protected void stopIoDispatchers(){
@@ -90,7 +90,7 @@ public abstract class AbstractIoServer implements IoService, DispatcherEventlLis
 	
 	
 	/**
-	 * ¹Ø±ÕËùÓĞ»á»°£¬·½·¨Îª×èÈû
+	 * å…³é—­æ‰€æœ‰ä¼šè¯ï¼Œæ–¹æ³•ä¸ºé˜»å¡
 	 */
 	protected void closeAllSession()  {
 		Iterator<Long> iter = ioSessionMap.keySet().iterator();
@@ -105,13 +105,13 @@ public abstract class AbstractIoServer implements IoService, DispatcherEventlLis
 	}
 	
 	
-	/**ÊÇ·ñÆô¶¯*/
+	/**æ˜¯å¦å¯åŠ¨*/
 	public boolean isStart() {
 		return isStart;
 	}
 	
 	/**
-	 * »ñµÃ¶¨Ê±Æ÷£¬Èç¹û¶ÔÏñÃ»ÓĞÆô¶¯£¬·µ»ØµÄÔòÊÇnull
+	 * è·å¾—å®šæ—¶å™¨ï¼Œå¦‚æœå¯¹åƒæ²¡æœ‰å¯åŠ¨ï¼Œè¿”å›çš„åˆ™æ˜¯null
 	 * @return
 	 */
 	Timer getTimer() {
@@ -143,7 +143,7 @@ public abstract class AbstractIoServer implements IoService, DispatcherEventlLis
 	@Override
 	public void bind(SocketAddress address) throws IOException {
 		if(address == null) {
-			throw new IllegalArgumentException("µØÖ·²»ÄÜÎª¿Õ");
+			throw new IllegalArgumentException("åœ°å€ä¸èƒ½ä¸ºç©º");
 		}
 		this.address = address;
 	}
@@ -201,11 +201,11 @@ public abstract class AbstractIoServer implements IoService, DispatcherEventlLis
 		
 		IoReadWriteMachine dispatcher = getIoDispatcherManager().getNextDispatcher();
 		
-		session.setOwnerDispatcher(dispatcher);   //ÉèÖÃ»á»°µÄ¹éÊô·¢±¨»ú
+		session.setOwnerDispatcher(dispatcher);   //è®¾ç½®ä¼šè¯çš„å½’å±å‘æŠ¥æœº
 		
-		session.allocatInBuffer();                //·ÖÅäÊäÈëBuffer
+		session.allocatInBuffer();                //åˆ†é…è¾“å…¥Buffer
 		
-		dispatcher.scheduleRegister(session);     //ÅÅ³Ì×¢²á
+		dispatcher.scheduleRegister(session);     //æ’ç¨‹æ³¨å†Œ
 	}
 
 	
@@ -217,7 +217,7 @@ public abstract class AbstractIoServer implements IoService, DispatcherEventlLis
 
 
 
-	@Override  //IoSessionÔÚ·¢±¨»úÖĞ×¢²áºó´¥·¢
+	@Override  //IoSessionåœ¨å‘æŠ¥æœºä¸­æ³¨å†Œåè§¦å‘
 	public void onRegisterSession(IoSessionImpl session) {
 		if(session == null) {
 			return;
@@ -225,14 +225,14 @@ public abstract class AbstractIoServer implements IoService, DispatcherEventlLis
 		
 		this.ioSessionMap.putIfAbsent(session.getId(), session);
 		
-		//TODO:´¥·¢IoHandlerÊÂ¼ş
+		//TODO:è§¦å‘IoHandleräº‹ä»¶
 	}
 
 
 
 
 
-	@Override  //IoSessionÕæÕıÔÚ·¢±¨»úÖĞ¹Ø±Õ²¢ÒÆ³ıÊ±´¥·¢
+	@Override  //IoSessionçœŸæ­£åœ¨å‘æŠ¥æœºä¸­å…³é—­å¹¶ç§»é™¤æ—¶è§¦å‘
 	public void onRemoveSession(IoSessionImpl session) {
 		if(session == null) {
 			return;
@@ -240,13 +240,13 @@ public abstract class AbstractIoServer implements IoService, DispatcherEventlLis
 		
 		this.ioSessionMap.remove(session.getId());
 		
-		//TODO:´¥·¢ÏàÓ¦ÊÂ¼ş
+		//TODO:è§¦å‘ç›¸åº”äº‹ä»¶
 	}
 
 
 	/**
-	 * Ìá¹©ÈÏµÄ³¬Ê±´¦ÀíÕß
-	 * @author ºúçâ@ritsky
+	 * æä¾›è®¤çš„è¶…æ—¶å¤„ç†è€…
+	 * @author èƒ¡ç®@ritsky
 	 *
 	 */
 	class DefaultOverTimeHandler implements OverTimeHandler {
@@ -263,7 +263,7 @@ public abstract class AbstractIoServer implements IoService, DispatcherEventlLis
 
 		@Override
 		public void onBothOverTime(IoSession session) {
-			session.close();     //³¬Ê±ºó¹Ø±Õ»á»°
+			session.close();     //è¶…æ—¶åå…³é—­ä¼šè¯
 		}
 
 		@Override

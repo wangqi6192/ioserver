@@ -1,29 +1,29 @@
-package com.yz.net;
+ï»¿package com.yz.net;
 
 import java.io.IOException;
 import java.net.SocketAddress;
 
 /**
  * <p>
- * IO½ÓÊÕÆ÷£¬Í¨¹ı½ÓÊÕÆ÷£¬¿ÉÒÔ°ó¶¨±¾µØIPµØÖ·ºÍ¶Ë¿Ú£¬À´¶ÔÍøÂç½øĞĞ¼àÌı£¬Í¬Ê±»¹¿ÉÒÔÉèÖÃÒ»Ğ©ÍøÂç´¦ÀíÏà¹ØµÄ<br>
- * ´¦ÀíÕß£¬±ÈÈçProtocolHandler(Ğ­Òé´¦ÀíÕß)£¬±ÈÈçOverTimeHandler(³¬Ê±´¦ÀíÕß)£¬IoHandler(ÏûÏ¢´¦ÀíÕß)<br>
- * ´ËÀàÒ²ÊÇÕû¸ö¿ò¼ÜµÄÆô¶¯Õß
+ * IOæ¥æ”¶å™¨ï¼Œé€šè¿‡æ¥æ”¶å™¨ï¼Œå¯ä»¥ç»‘å®šæœ¬åœ°IPåœ°å€å’Œç«¯å£ï¼Œæ¥å¯¹ç½‘ç»œè¿›è¡Œç›‘å¬ï¼ŒåŒæ—¶è¿˜å¯ä»¥è®¾ç½®ä¸€äº›ç½‘ç»œå¤„ç†ç›¸å…³çš„<br>
+ * å¤„ç†è€…ï¼Œæ¯”å¦‚ProtocolHandler(åè®®å¤„ç†è€…)ï¼Œæ¯”å¦‚OverTimeHandler(è¶…æ—¶å¤„ç†è€…)ï¼ŒIoHandler(æ¶ˆæ¯å¤„ç†è€…)<br>
+ * æ­¤ç±»ä¹Ÿæ˜¯æ•´ä¸ªæ¡†æ¶çš„å¯åŠ¨è€…
  * 
- * ×¢Òâ£º<br>
- * 1.IoAcceptorÄ¿Ç°°æ±¾Ö»ÄÜ¼àÌıÒ»¸ö¶Ë¿Ú£¬Ö®ºóµÄ°æ±¾¿¼ÂÇ¼ÓÈë¿ÉÒÔÍ¬Ê±¼àÌı²»Í¬µÄµØÖ·<br>
- * 2.ProtocolHandlerÓëIoHandlerÒ»¶¨Òª½øĞĞÉèÖÃ£¬·ñÔò²»ÆğÆô¶¯¿ò¼Ü <br>
- * 3.Èç¹ûOverTimeHandlerÎ´±»ÉèÖÃ£¬¿ò¼Ü»áÄ¬ÈÏÌá¹©Ò»¸ö£¬Ä¬ÈÏµÄ´¦ÀíÕßÒÔ5·ÖÖÓ×÷Îª³¬Ê±µÄÅĞ¶ÏÌõ¼ş£¬Ä¬ÈÏ´¦Àí<br>
- *   ÕßÖ»¶Ô¶ÁĞ´¾ùÎŞ²Ù×÷·¢ÉúµÄ³¬Ê±×÷³öÁË´¦Àí<br>
- * 4.Ä¬ÈÏµÄOverTimeHandlerÖ»ÊÇµ±·¢Éú³¬Ê±Ê±¹Ø±ÕIoSession<br>
+ * æ³¨æ„ï¼š<br>
+ * 1.IoAcceptorç›®å‰ç‰ˆæœ¬åªèƒ½ç›‘å¬ä¸€ä¸ªç«¯å£ï¼Œä¹‹åçš„ç‰ˆæœ¬è€ƒè™‘åŠ å…¥å¯ä»¥åŒæ—¶ç›‘å¬ä¸åŒçš„åœ°å€<br>
+ * 2.ProtocolHandlerä¸IoHandlerä¸€å®šè¦è¿›è¡Œè®¾ç½®ï¼Œå¦åˆ™ä¸èµ·å¯åŠ¨æ¡†æ¶ <br>
+ * 3.å¦‚æœOverTimeHandleræœªè¢«è®¾ç½®ï¼Œæ¡†æ¶ä¼šé»˜è®¤æä¾›ä¸€ä¸ªï¼Œé»˜è®¤çš„å¤„ç†è€…ä»¥5åˆ†é’Ÿä½œä¸ºè¶…æ—¶çš„åˆ¤æ–­æ¡ä»¶ï¼Œé»˜è®¤å¤„ç†<br>
+ *   è€…åªå¯¹è¯»å†™å‡æ— æ“ä½œå‘ç”Ÿçš„è¶…æ—¶ä½œå‡ºäº†å¤„ç†<br>
+ * 4.é»˜è®¤çš„OverTimeHandleråªæ˜¯å½“å‘ç”Ÿè¶…æ—¶æ—¶å…³é—­IoSession<br>
  * </p>
  * <br>
- * @author ºúçâ@ritsky
+ * @author èƒ¡ç®@ritsky
  *
  */
 public interface IoService {
 	/**
 	 * <p>
-	 * °ó¶¨IPµØÖ·
+	 * ç»‘å®šIPåœ°å€
 	 * </p>
 	 * <br>
 	 * @param address
@@ -34,7 +34,7 @@ public interface IoService {
 	
 	/**
 	 * <p>
-	 * °ó¶¨ÔÚ¸ø¶¨¶Ë¿ÚÉÏ°ó¶¨±¾»úµØÖ·
+	 * ç»‘å®šåœ¨ç»™å®šç«¯å£ä¸Šç»‘å®šæœ¬æœºåœ°å€
 	 * </p>
 	 * <br>
 	 * @param port
@@ -45,7 +45,7 @@ public interface IoService {
 	
 	/**
 	 * <p>
-	 * »ñÈ¡°óµØÖ·
+	 * è·å–ç»‘åœ°å€
 	 * </p>
 	 * <br>
 	 * @return
@@ -55,7 +55,7 @@ public interface IoService {
 	
 	/**
 	 * <p>
-	 * »ñÈ¡Ò»¸öĞ­Òé´¦ÀíÕß
+	 * è·å–ä¸€ä¸ªåè®®å¤„ç†è€…
 	 * </p>
 	 * <br>
 	 * @return
@@ -65,7 +65,7 @@ public interface IoService {
 	
 	/**
 	 * <p>
-	 * ÉèÖÃÒ»¸öĞ­Òå´¦ÀíÕß
+	 * è®¾ç½®ä¸€ä¸ªåä¹‰å¤„ç†è€…
 	 * </p>
 	 * <br>
 	 * @param handler
@@ -76,7 +76,7 @@ public interface IoService {
 	
 	/**
 	 * <p>
-	 * »ñÈ¡Ò»¸öio´¦ÀíÕß
+	 * è·å–ä¸€ä¸ªioå¤„ç†è€…
 	 * </p>
 	 * <br>
 	 * @return
@@ -86,7 +86,7 @@ public interface IoService {
 	
 	/**
 	 * <p>
-	 * ÉèÖÃÒ»¸öio´¦ÀíÕß
+	 * è®¾ç½®ä¸€ä¸ªioå¤„ç†è€…
 	 * </p>
 	 * <br>
 	 * @param handler
@@ -98,7 +98,7 @@ public interface IoService {
 	
 	/**
 	 * <p>
-	 * »ñµÃ³¬Ê±´¦ÀíÕß
+	 * è·å¾—è¶…æ—¶å¤„ç†è€…
 	 * </p>
 	 * <br>
 	 * @return
@@ -107,7 +107,7 @@ public interface IoService {
 	
 	/**
 	 * <p>
-	 * ÉèÖÃ³¬Ê±´¦ÀíÕß
+	 * è®¾ç½®è¶…æ—¶å¤„ç†è€…
 	 * </p>
 	 * <br>
 	 * @param handler
@@ -119,7 +119,7 @@ public interface IoService {
 	
 	/**
 	 * <p>
-	 * Æô¶¯¿ò¼Ü
+	 * å¯åŠ¨æ¡†æ¶
 	 * </p>
 	 * <br>
 	 * @throws Exception
@@ -129,7 +129,7 @@ public interface IoService {
 	
 	/**
 	 * <p>
-	 * Í£Ö¹¿ò¼Ü
+	 * åœæ­¢æ¡†æ¶
 	 * </p>
 	 * <br>
 	 * @throws Exception
@@ -139,7 +139,7 @@ public interface IoService {
 	
 	/**
 	 * <p>
-	 * »ñÈ¡Ò»¸öIO»á»°
+	 * è·å–ä¸€ä¸ªIOä¼šè¯
 	 * </p>
 	 * <br>
 	 * @param ioSessionId

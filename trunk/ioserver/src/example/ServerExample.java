@@ -1,4 +1,4 @@
-package example;
+ï»¿package example;
 
 import java.nio.ByteBuffer;
 import java.util.ArrayList;
@@ -19,16 +19,16 @@ public class ServerExample {
 	 */
 	public static void main(String[] args) {
 		try {
-			//°ó¶¨Ò»¸ö±¾»ú¶Ë¿Ú
+			//ç»‘å®šä¸€ä¸ªæœ¬æœºç«¯å£
 			IoService acceptor = new IoServerImpl(8899);
 			
-			//ÉèÖÃĞ­Òé´¦ÀíÕß£¬¿ÉÒÔ²»ÉèÖÃ
+			//è®¾ç½®åè®®å¤„ç†è€…ï¼Œå¯ä»¥ä¸è®¾ç½®
 			acceptor.setProtocolHandler(new Protocol());
 			
-			//ÉèÖÃÏûÏ¢´¦ÀíÕß£¬Ò»¶¨ÒªÉèÖÃ
+			//è®¾ç½®æ¶ˆæ¯å¤„ç†è€…ï¼Œä¸€å®šè¦è®¾ç½®
 			acceptor.setIoHandler(new DataHandler());
 			
-			//Æô¶¯
+			//å¯åŠ¨
 			acceptor.start();
 			
 			
@@ -48,13 +48,13 @@ public class ServerExample {
 
 		@Override
 		public void ioSessionClosed(IoFuture future) {
-			//TODO:µ±Ò»¸ö»á»°¹Ø±Õºó±»´¥·¢µÄ·½·¨
+			//TODO:å½“ä¸€ä¸ªä¼šè¯å…³é—­åè¢«è§¦å‘çš„æ–¹æ³•
 			
 		}
 
 		@Override
 		public void messageReceived(IoSession session, NetMessage msg) {
-			//TODO:µ±´æÔÚĞ­Òé½âÎöÀàÊ±£¬Çë°´¾ßÌåÏîÄ¿ÒªÇóÍê³É´Ë·½·¨
+			//TODO:å½“å­˜åœ¨åè®®è§£æç±»æ—¶ï¼Œè¯·æŒ‰å…·ä½“é¡¹ç›®è¦æ±‚å®Œæˆæ­¤æ–¹æ³•
 			ExampleMessage message = (ExampleMessage) msg;
 			
 			int returnvalue = message.getNumber() + 1;
@@ -68,7 +68,7 @@ public class ServerExample {
 		
 		@Override
 		public void messageReceived(IoSession session, byte[] msgdata) {
-			//TODO:µ±Ã»ÓĞĞ­Òé½âÎöÀàÊ±£¬Çë°´¾ßÌåÏîÄ¿ÒªÇóÍê³É´Ë·½·¨
+			//TODO:å½“æ²¡æœ‰åè®®è§£æç±»æ—¶ï¼Œè¯·æŒ‰å…·ä½“é¡¹ç›®è¦æ±‚å®Œæˆæ­¤æ–¹æ³•
 			
 		}	
 	}
@@ -77,13 +77,13 @@ public class ServerExample {
 
 		@Override
 		public boolean isClose() {
-			//TODO:Èç¹ûĞèÒª³¤Á¬½Ó£¬Çë·´»Øfalse£¬Èç¹ûĞèÒª¶ÌÁ¬½ÓÇë·µ»Øtrue
+			//TODO:å¦‚æœéœ€è¦é•¿è¿æ¥ï¼Œè¯·åå›falseï¼Œå¦‚æœéœ€è¦çŸ­è¿æ¥è¯·è¿”å›true
 			return false;
 		}
 
 		@Override
 		public List<NetMessage> onData(ByteBuffer data, IoSession session) {
-			//TODO:ÕâÀï¸ºÔğ²è·¿µØÊı¾İ½øĞĞ½âÎö£¬²¢ĞÎ³ÉÒ»¸ö¾ßÌåµÄÏûÏ¢Àà
+			//TODO:è¿™é‡Œè´Ÿè´£èŒ¶æˆ¿åœ°æ•°æ®è¿›è¡Œè§£æï¼Œå¹¶å½¢æˆä¸€ä¸ªå…·ä½“çš„æ¶ˆæ¯ç±»
 			
 			ArrayList<NetMessage> list = new ArrayList<NetMessage>();
 			while(data.remaining() >= 4) {

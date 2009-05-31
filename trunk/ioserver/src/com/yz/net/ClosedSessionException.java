@@ -1,13 +1,13 @@
-package com.yz.net;
+锘縫ackage com.yz.net;
 
 import java.io.IOException;
 
 /**
  * <p>
- * 会话已经被关闭了，再在会话上进行IO操作异常
+ * 浼氳瘽宸茬粡琚叧闂簡锛屽啀鍦ㄤ細璇濅笂杩涜IO鎿嶄綔寮傚父
  * </p>
  * <br>
- * @author 胡玮@ritsky
+ * @author 鑳＄幃@ritsky
  *
  */
 public class ClosedSessionException extends IOException {

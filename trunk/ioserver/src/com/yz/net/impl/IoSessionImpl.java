@@ -1,4 +1,4 @@
-package com.yz.net.impl;
+ï»¿package com.yz.net.impl;
 
 import java.io.IOException;
 import java.nio.ByteBuffer;
@@ -19,10 +19,10 @@ import com.yz.net.NetMessage;
 
 /**
  * <p>
- * IO»á»°ÊµÏÖÀà
+ * IOä¼šè¯å®ç°ç±»
  * </p>
  * <br>
- * @author ºúçâ@ritsky
+ * @author èƒ¡ç®@ritsky
  *
  */
 public class IoSessionImpl implements IoSession{
@@ -30,65 +30,65 @@ public class IoSessionImpl implements IoSession{
 	/**sessionId*/
 	private long id;
 	
-	/**ÊôĞÔÓ³Éä±í*/
+	/**å±æ€§æ˜ å°„è¡¨*/
 	private HashMap<String, Object> attributeMap;
 	
-	/**ÊÇ·ñÕıÊ½±»¹Ø±Õ*/
+	/**æ˜¯å¦æ­£å¼è¢«å…³é—­*/
 	private volatile boolean isClose;
 	
-	/**ÊÇ·ñÕıÔÚ¹Ø±ÕÖĞ*/
+	/**æ˜¯å¦æ­£åœ¨å…³é—­ä¸­*/
 	AtomicBoolean isCloseing = new AtomicBoolean(false);
 	
-	/**ÊÇ·ñÕıÔÚ¸Ä±ä¿ØÖÆ*/
+	/**æ˜¯å¦æ­£åœ¨æ”¹å˜æ§åˆ¶*/
 	AtomicBoolean isChangeingControl = new AtomicBoolean(false);
 	
 	
-	/**ÊÇ·ñÕıÔÚ³¬Ê±´¦ÀíÖĞ³¬Ê±´¦ÀíÖĞ,false:»¹Î´¿ªÊ¼³¬Ê±´¦Àí,true:³¬Ê±´¦Àí¿ªÊ¼ÁË*/
+	/**æ˜¯å¦æ­£åœ¨è¶…æ—¶å¤„ç†ä¸­è¶…æ—¶å¤„ç†ä¸­,false:è¿˜æœªå¼€å§‹è¶…æ—¶å¤„ç†,true:è¶…æ—¶å¤„ç†å¼€å§‹äº†*/
 	AtomicBoolean isOverTimeHandleing = new AtomicBoolean(false);
 	
-	/**Í¨µÀ*/
+	/**é€šé“*/
 	private SocketChannel channel;
 	
-	/**Ñ¡Ôñ¼ü*/
+	/**é€‰æ‹©é”®*/
 	private SelectionKey selectionKey;
 	
-	/**Ğ´ÏûÏ¢Ê±£¬ÊÇ·ñÎª×èÈûĞ´*//*
+	/**å†™æ¶ˆæ¯æ—¶ï¼Œæ˜¯å¦ä¸ºé˜»å¡å†™*//*
 	private boolean isblockWrite;
 	
-	*//**¶ÁÏûÏ¢Ê±£¬ÊÇ·ñ×èÈû¶Á*//*
+	*//**è¯»æ¶ˆæ¯æ—¶ï¼Œæ˜¯å¦é˜»å¡è¯»*//*
 	private boolean isblockRead;
 	
-	*//**¹Ø±Õ»á»°Ê±£¬ÊÇ·ñ×èÈû¹Ø±Õ*//*
+	*//**å…³é—­ä¼šè¯æ—¶ï¼Œæ˜¯å¦é˜»å¡å…³é—­*//*
 	private boolean isblockClose;*/
 	
-	/**×î½ü¶ÁÊ±¼ä*/
+	/**æœ€è¿‘è¯»æ—¶é—´*/
 	long lastReadTime = System.currentTimeMillis();
 	
-	/**×î½üĞ´Ê±¼ä*/
+	/**æœ€è¿‘å†™æ—¶é—´*/
 	long lastWriteTime = System.currentTimeMillis();
 	
-	/**×î½ü·ÃÎÊÊ±¼ä*/
+	/**æœ€è¿‘è®¿é—®æ—¶é—´*/
 	long lastAccessTime = System.currentTimeMillis();
 	
-	/**Ğ´¶ÓÁĞ*/
+	/**å†™é˜Ÿåˆ—*/
 	private ConcurrentLinkedQueue<IoFuture> writeQueue = new ConcurrentLinkedQueue();
 	
-	/**IoSessionÔÚÄÄ¸öµØ·½×¢²áµÄ*/
+	/**IoSessionåœ¨å“ªä¸ªåœ°æ–¹æ³¨å†Œçš„*/
 	private IoReadWriteMachine ownerDispatcher;
 	
-	/**IoSessionµÄ¹éÊô½ÓÊÕÆ÷*/
+	/**IoSessionçš„å½’å±æ¥æ”¶å™¨*/
 	private AbstractIoServer ownerAcceptor;
 	
-	/**ÊäÈëbuffer*/
+	/**è¾“å…¥buffer*/
 	private ByteBuffer inBuffer;
 	
-	/**¼ì²é³¬Ê±*/
+	/**æ£€æŸ¥è¶…æ—¶*/
 	private OverTimeCheckTask checkOverTime;
 	
-	/**¹Ø±Õ»á»°Ê±µÄFuture*/
+	/**å…³é—­ä¼šè¯æ—¶çš„Future*/
 	private CloseFuture closeFuture = new CloseFuture(this);
 	
-	//TODO:¿¼ÂÇ¼ÓÈëµ½Ä¿Ç°ÎªÖ¹£¬×Ü¹²½ÓÊÕÁË¶àÉÙÊı¾İ£¬°´×Ö½Ú¼ÆËã
+	//TODO:è€ƒè™‘åŠ å…¥åˆ°ç›®å‰ä¸ºæ­¢ï¼Œæ€»å…±æ¥æ”¶äº†å¤šå°‘æ•°æ®ï¼ŒæŒ‰å­—èŠ‚è®¡ç®—
 	
 	IoSessionImpl() {
 		checkOverTime = new OverTimeCheckTask();
@@ -98,7 +98,7 @@ public class IoSessionImpl implements IoSession{
 		this.channel = channel;
 		this.ownerDispatcher = dispatcher;
 		checkOverTime = new OverTimeCheckTask();
-		//this.inBuffer = this.ownerDispatcher.getMemoryManager().allocat(10240);        //·ÖÅä10µÄÊäÈëcache 
+		//this.inBuffer = this.ownerDispatcher.getMemoryManager().allocat(10240);        //åˆ†é…10çš„è¾“å…¥cache 
 	}
 	
 	
@@ -114,12 +114,12 @@ public class IoSessionImpl implements IoSession{
 	}
 	
 	
-	/**»ñµÃ³¬Ê±¼ì²éÈÎÎñ*/
+	/**è·å¾—è¶…æ—¶æ£€æŸ¥ä»»åŠ¡*/
 	OverTimeCheckTask getCheckOverTime() {
 		return checkOverTime;
 	}
 	
-	/**»ñÊÇÍ¨µÀ*/
+	/**è·æ˜¯é€šé“*/
 	protected SocketChannel getChannel() {
 		return channel;
 	}
@@ -133,7 +133,7 @@ public class IoSessionImpl implements IoSession{
 	}
 	
 	/**
-	 * ÉèÖÃ¹éÊô·¢±¨»ú
+	 * è®¾ç½®å½’å±å‘æŠ¥æœº
 	 * @param dispatcher
 	 */
 	void setOwnerDispatcher(IoReadWriteMachine dispatcher) {
@@ -141,10 +141,10 @@ public class IoSessionImpl implements IoSession{
 	}
 	
 	/**
-	 * ·ÖÅäÊäÈëbuffer
+	 * åˆ†é…è¾“å…¥buffer
 	 */
 	void allocatInBuffer() {
-		//TODO:ÍêÉÆÄÚ´æ¹ÜÀíºó£¬ÊäÈëbuffer´ÓÄÚ´æ¹ÜÀíÖĞ»ñµÃ
+		//TODO:å®Œå–„å†…å­˜ç®¡ç†åï¼Œè¾“å…¥bufferä»å†…å­˜ç®¡ç†ä¸­è·å¾—
 		//ByteBuffer buffer = this.ownerDispatcher.getMemoryManager().allocat(10240);
 		//this.inBuffer = this.ownerDispatcher.getMemoryManager().allocat(10240);
 		this.inBuffer = ByteBuffer.allocateDirect(1024 * 5);
@@ -165,11 +165,11 @@ public class IoSessionImpl implements IoSession{
 
 	@Override
 	public int available() {
-		throw new java.lang.UnsupportedOperationException("»¹Ã»ÓĞÊµÏÖ");
+		throw new java.lang.UnsupportedOperationException("è¿˜æ²¡æœ‰å®ç°");
 	}
 
 	
-	@Override //¹Ø±Õ»á»°£¬¹Ø±Õ»á»°ÊÇÒì²½¹Ø±Õ£¬Èç¹ûĞèÒªÍ¬²½£¬µ÷ÓÃIoFutureÉÏµÄwait
+	@Override //å…³é—­ä¼šè¯ï¼Œå…³é—­ä¼šè¯æ˜¯å¼‚æ­¥å…³é—­ï¼Œå¦‚æœéœ€è¦åŒæ­¥ï¼Œè°ƒç”¨IoFutureä¸Šçš„wait
 	public IoFuture close() {
 		if(this.isCloseing.compareAndSet(false, true)) {
 			if(this.closeFuture == null) {
@@ -178,10 +178,10 @@ public class IoSessionImpl implements IoSession{
 			
 			this.writeQueue.offer(closeFuture);
 			
-			//ÒÑ¾­½øÈë¹Ø±Õ»á»°µÄÁ÷³Ì£¬´ËÊ±ÊÇ²»ÔÊĞí½ÓÊÕÈÎºÎÀ´×ÔÍøÂçµÄÊı¾İÁË£¬ËùÒÔÒª¹Ø±Õ¶ÁµÄ¼àÌı
+			//å·²ç»è¿›å…¥å…³é—­ä¼šè¯çš„æµç¨‹ï¼Œæ­¤æ—¶æ˜¯ä¸å…è®¸æ¥æ”¶ä»»ä½•æ¥è‡ªç½‘ç»œçš„æ•°æ®äº†ï¼Œæ‰€ä»¥è¦å…³é—­è¯»çš„ç›‘å¬
 			this.setReadControl(false);
 			
-			//IO»á»°¼ÓÈëÅÅ³Ì¿ØÖÆ
+			//IOä¼šè¯åŠ å…¥æ’ç¨‹æ§åˆ¶
 			ownerDispatcher.scheduleControl(this);
 		
 		}
@@ -189,7 +189,7 @@ public class IoSessionImpl implements IoSession{
 	}
 
 	
-	/**ÔÚ·¢±¨»úÖĞµ÷ÓÃµÄÁ¢¼´¹Ø±Õ£¬µ÷ÓÃ»á¼ì²é¹Ø±ÕÊÇ·ñÔÚ½øĞĞÖĞ*/
+	/**åœ¨å‘æŠ¥æœºä¸­è°ƒç”¨çš„ç«‹å³å…³é—­ï¼Œè°ƒç”¨ä¼šæ£€æŸ¥å…³é—­æ˜¯å¦åœ¨è¿›è¡Œä¸­*/
 	void closeNow() throws IOException {
 		if(this.isCloseing.get()) {
 			closeNow0();
@@ -210,29 +210,29 @@ public class IoSessionImpl implements IoSession{
 		return id;
 	}
 
-	@Override /**ÊÇ·ñÕıÊ½¹Ø±Õ*/
+	@Override /**æ˜¯å¦æ­£å¼å…³é—­*/
 	public boolean isClose() {
 		return isClose;
 	}
 	
 	
-	/**ÊÇ·ñÕıÔÚ°ë±ÕÖĞ*/
+	/**æ˜¯å¦æ­£åœ¨åŠé—­ä¸­*/
 	public boolean isCloseing() {
 		return isCloseing.get();
 	}
 	
 
-	/**ÂíÉÏ´ÓÍøÂç¶ÁÈ¡ÏûÏ¢*/
+	/**é©¬ä¸Šä»ç½‘ç»œè¯»å–æ¶ˆæ¯*/
 	void readNow() throws IOException {
 		int readlen = this.channel.read(this.inBuffer);
 		
-		if(readlen == -1) {  //µ½´ïÁ÷Ä©
+		if(readlen == -1) {  //åˆ°è¾¾æµæœ«
 			throw new IOException("End_Stream");
 		}
 		
 		if(readlen > 0) {
 			
-			//µ±Ã»ÓĞÉèÖÃĞ­Òé´¦ÕßÊ±
+			//å½“æ²¡æœ‰è®¾ç½®åè®®å¤„è€…æ—¶
 			if(ownerAcceptor.getProtocolHandler() == null) {   
 				inBuffer.flip();
 				byte[] msgdata = new byte[inBuffer.remaining()];
@@ -240,7 +240,7 @@ public class IoSessionImpl implements IoSession{
 				inBuffer.clear();
 				ownerAcceptor.getIoHandler().messageReceived(this, msgdata);
 			}
-			else {  //µ±ÉèÖÃÁËĞ­Òé´¦ÀíÕßÊ±
+			else {  //å½“è®¾ç½®äº†åè®®å¤„ç†è€…æ—¶
 				ByteBuffer readBuf = inBuffer.asReadOnlyBuffer();
 				readBuf.flip();
 
@@ -251,10 +251,10 @@ public class IoSessionImpl implements IoSession{
 					inBuffer.position(readBuf.position());
 					inBuffer.limit(readBuf.limit());
 
-					inBuffer.compact();                  //Ñ¹Ëõ£¬°ÑÊ£ÓàµÄ×Ö½Ú·Åµ½inBufferµÄ×îÇ°Ãæ
+					inBuffer.compact();                  //å‹ç¼©ï¼ŒæŠŠå‰©ä½™çš„å­—èŠ‚æ”¾åˆ°inBufferçš„æœ€å‰é¢
 					inBuffer.limit(inBuffer.capacity());
 
-					//´¦ÀíÏûÏ¢
+					//å¤„ç†æ¶ˆæ¯
 					for(int i=0; i<size; i++) {
 						this.ownerAcceptor.getIoHandler().messageReceived(this, list.get(i));
 					}
@@ -288,12 +288,12 @@ public class IoSessionImpl implements IoSession{
 	
 	@Override
 	public NetMessage read() {
-		throw new java.lang.UnsupportedOperationException("»¹Ã»ÓĞÊµÏÖ");
+		throw new java.lang.UnsupportedOperationException("è¿˜æ²¡æœ‰å®ç°");
 	}
 
 	@Override
 	public void read(NetMessage[] msgs) {
-		throw new java.lang.UnsupportedOperationException("»¹Ã»ÓĞÊµÏÖ");
+		throw new java.lang.UnsupportedOperationException("è¿˜æ²¡æœ‰å®ç°");
 		
 	}
 
@@ -304,7 +304,7 @@ public class IoSessionImpl implements IoSession{
 		}
 	}
 
-	@Override/**Ğ´ÏûÏ¢*/
+	@Override/**å†™æ¶ˆæ¯*/
 	public IoFuture write(NetMessage msg) {
 		if(msg == null) {
 			throw new IllegalArgumentException("msg is null");
@@ -312,27 +312,27 @@ public class IoSessionImpl implements IoSession{
 		
 		WriteFuture future = new WriteFuture(this, ByteBuffer.wrap(msg.getContent()));
 		
-		//»á»°ÒÑ¾­±»¹Ø±ÕÁË
+		//ä¼šè¯å·²ç»è¢«å…³é—­äº†
 		if(isClose) {
-			future.setComplete(new ClosedSessionException("»á»°ÒÑ¾­±»¹Ø±ÕÁË...."));
+			future.setComplete(new ClosedSessionException("ä¼šè¯å·²ç»è¢«å…³é—­äº†...."));
 			return future;
 		}
 		
 		if(!this.isCloseing.get()) {
 			this.writeQueue.offer(future);
 			
-			//ÅĞ¶ÏĞ­Òé´¦ÀíÕßµÄÒªÇóÊÇ·ñÎªĞ´Íêºó¹Ø±Õ
+			//åˆ¤æ–­åè®®å¤„ç†è€…çš„è¦æ±‚æ˜¯å¦ä¸ºå†™å®Œåå…³é—­
 			if(this.ownerAcceptor.getProtocolHandler().isClose()) {
 				this.close();
 			}
 		
-			//IO»á»°¼ÓÈëÅÅ³Ì¿ØÖÆ
+			//IOä¼šè¯åŠ å…¥æ’ç¨‹æ§åˆ¶
 			ownerDispatcher.scheduleControl(this);
 		
 			//ownerDispatcher.wakeup();
 		}
 		else {
-			future.setComplete(new CloseingSessionException("»á»°Õı´¦ÓÚÕıÔÚ¹Ø±Õ×´Ì¬ÖĞ...."));
+			future.setComplete(new CloseingSessionException("ä¼šè¯æ­£å¤„äºæ­£åœ¨å…³é—­çŠ¶æ€ä¸­...."));
 		}
 		
 		return future;
@@ -341,17 +341,17 @@ public class IoSessionImpl implements IoSession{
 	
 	
 	
-	/**»ñµÃĞ´¶ÓÁĞ*/
+	/**è·å¾—å†™é˜Ÿåˆ—*/
 	protected Queue<IoFuture> getWriteQueue() {
 		return this.writeQueue;
 	}
 	
 	/**
 	 * <p>
-	 * ÉèÖÃĞ´¿ØÖÆ
+	 * è®¾ç½®å†™æ§åˆ¶
 	 * </p>
 	 * <br>
-	 * @param isopen ÊÇ·ñ´ò¿ªĞ´
+	 * @param isopen æ˜¯å¦æ‰“å¼€å†™
 	 */
 	void setWriteControl(boolean isopen) {
 		if(!selectionKey.isValid()) {
@@ -371,10 +371,10 @@ public class IoSessionImpl implements IoSession{
 	
 	/**
 	 * <p>
-	 * ÉèÖÃ¶Á¿ØÖÆ
+	 * è®¾ç½®è¯»æ§åˆ¶
 	 * </p>
 	 * <br>
-	 * @param isopen ÊÇ·ñ´ò¿ª¶Á
+	 * @param isopen æ˜¯å¦æ‰“å¼€è¯»
 	 */
 	void setReadControl(boolean isopen) {
 		if(!selectionKey.isValid()) {
@@ -408,7 +408,7 @@ public class IoSessionImpl implements IoSession{
 	}
 	
 	
-	/**Í¨Öª³¬Ê±ÁË*/
+	/**é€šçŸ¥è¶…æ—¶äº†*/
 	void notifyOverTime() {
 		long currTime = System.currentTimeMillis();
 		
@@ -417,7 +417,7 @@ public class IoSessionImpl implements IoSession{
 		if(bathOverTime > 0) {
 			if((currTime - lastAccessTime) > bathOverTime) {
 				if(isOverTimeHandleing.get()) {
-					//¶¼³¬Ê±ÁË
+					//éƒ½è¶…æ—¶äº†
 					this.ownerAcceptor.getOverTimeHandler().onBothOverTime(this);
 				}
 				isOverTimeHandleing.set(false);
@@ -430,7 +430,7 @@ public class IoSessionImpl implements IoSession{
 		if(readOverTime > 0) {
 			if((currTime - lastAccessTime) > readOverTime) {
 				if(isOverTimeHandleing.get()) {
-				//¶¼³¬Ê±ÁË
+				//éƒ½è¶…æ—¶äº†
 					this.ownerAcceptor.getOverTimeHandler().onReadOverTime(this);
 				}
 			}
@@ -441,7 +441,7 @@ public class IoSessionImpl implements IoSession{
 		if(writeOverTime > 0) {
 			if((currTime - lastAccessTime) > writeOverTime) {
 				if(isOverTimeHandleing.get()) {
-					//¶¼³¬Ê±ÁË
+					//éƒ½è¶…æ—¶äº†
 					this.ownerAcceptor.getOverTimeHandler().onWriterOverTime(this);
 
 				}
@@ -452,7 +452,7 @@ public class IoSessionImpl implements IoSession{
 	
 	
 	
-	/**¶¨Ê±¼ì²éÊÇ·ñ³¬Ê±*/
+	/**å®šæ—¶æ£€æŸ¥æ˜¯å¦è¶…æ—¶*/
 	private class OverTimeCheckTask extends TimerTask {
 
 		@Override
@@ -464,18 +464,18 @@ public class IoSessionImpl implements IoSession{
 			long writeOverTime = ownerAcceptor.getOverTimeHandler().writerOverTime();
 			
 			if(bothOverTime <=0 || readOverTime <= 0 || writeOverTime <=0 ) {
-				//TODO:²»´æÔÚ³¬Ê±´¦Àí
+				//TODO:ä¸å­˜åœ¨è¶…æ—¶å¤„ç†
 				return;
 			}
 			
 			
-			//¼ì²éÊÇ·ñÓĞ³¬Ê±²úÉú£¬ÓĞµÄ»°¾ÍÅÅĞòµ½IO´¦ÀíÏß³ÌÖĞÈ¥
+			//æ£€æŸ¥æ˜¯å¦æœ‰è¶…æ—¶äº§ç”Ÿï¼Œæœ‰çš„è¯å°±æ’åºåˆ°IOå¤„ç†çº¿ç¨‹ä¸­å»
 			if((currTime - lastAccessTime) > ownerAcceptor.getOverTimeHandler().bothOverTime() ||
 					(currTime - lastReadTime) > ownerAcceptor.getOverTimeHandler().readOverTime() ||
 					(currTime - lastWriteTime) > ownerAcceptor.getOverTimeHandler().writerOverTime()) {
 				if(!IoSessionImpl.this.isCloseing() || !IoSessionImpl.this.isClose()) {
 					if(isOverTimeHandleing.compareAndSet(false, true)) {
-						ownerDispatcher.scheduleOverTime(IoSessionImpl.this); //ÅÅ³Ì	
+						ownerDispatcher.scheduleOverTime(IoSessionImpl.this); //æ’ç¨‹	
 					}
 				}
 			}

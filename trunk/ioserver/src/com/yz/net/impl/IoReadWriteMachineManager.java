@@ -1,21 +1,21 @@
-package com.yz.net.impl;
+ï»¿package com.yz.net.impl;
 
 import java.io.IOException;
 
 
 /**
  * <p>
- * IoReadWriteMachineµÄ¹ÜÀíÆ÷£¬Ìá¹©Ëã·¨ÓÃÓÚÑ¡ÔñºÏÊÊµÄIoReadWriteMachine
+ * IoReadWriteMachineçš„ç®¡ç†å™¨ï¼Œæä¾›ç®—æ³•ç”¨äºé€‰æ‹©åˆé€‚çš„IoReadWriteMachine
  * </p>
  * <br>
- * @author ºúçâ@ritsky
+ * @author èƒ¡ç®@ritsky
  *
  */
 class IoReadWriteMachineManager {
 
 	private AbstractIoServer ioAcceptor;
 
-	/**·¢±¨»úÈº£¬»á¸ù¾İCPU¸÷ÊıÀ´¾ö¶¨*/
+	/**å‘æŠ¥æœºç¾¤ï¼Œä¼šæ ¹æ®CPUå„æ•°æ¥å†³å®š*/
 	private IoReadWriteMachine[] ioDispatchers;
 
 	private int nextIndex = 0;
@@ -29,9 +29,9 @@ class IoReadWriteMachineManager {
 
 
 	public void init() throws Exception {
-		int cupNum = Runtime.getRuntime().availableProcessors(); //»ñµÃCPU¸öÊı
+		int cupNum = Runtime.getRuntime().availableProcessors(); //è·å¾—CPUä¸ªæ•°
 
-		//Èç¹ûÏÈÇ°´æÔÚ£¬ÔòÏÈÍ£Ö¹
+		//å¦‚æœå…ˆå‰å­˜åœ¨ï¼Œåˆ™å…ˆåœæ­¢
 		if(ioDispatchers != null) {
 			for(int i=0; i<ioDispatchers.length; i++) {
 				ioDispatchers[i].close();
@@ -49,7 +49,7 @@ class IoReadWriteMachineManager {
 
 	/**
 	 * <p>
-	 * Æô¶¯ËùÓĞµÄIO´¦ÀíÆ÷
+	 * å¯åŠ¨æ‰€æœ‰çš„IOå¤„ç†å™¨
 	 * </p>
 	 * <br>
 	 */
@@ -64,7 +64,7 @@ class IoReadWriteMachineManager {
 
 	/**
 	 * <p>
-	 * ¹Ø±ÕËùÓĞµÄIO´¦ÀíÆ÷
+	 * å…³é—­æ‰€æœ‰çš„IOå¤„ç†å™¨
 	 * </p>
 	 * <br>
 	 * @throws IOException

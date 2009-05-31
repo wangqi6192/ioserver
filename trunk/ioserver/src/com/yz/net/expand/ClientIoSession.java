@@ -1,4 +1,4 @@
-package com.yz.net.expand;
+ï»¿package com.yz.net.expand;
 
 import java.io.IOException;
 import java.net.SocketAddress;
@@ -12,22 +12,22 @@ import com.yz.net.impl.IoSessionImpl;
 
 /**
  * <p>
- * ´úÀíIoSession£¬ÕâÊÇIOServer¿ò¼ÜµÄÒ»¸öÀ©Õ¹²¹³ä£¬ÔÚºÜ¶àÇé¿öÏÂ£¬ÎÒÃÇĞèÒªÔÚ²»ĞŞ¸ÄÔ­·şÎñÆ÷µÄÇé¿öÏÂ<br>
- * ¶ø¼ÓÈëÁíÍâÒ»ÖÖĞÎÊ½µÄÍ¨Ñ¶Ğ­Òé»ò·½¹¤£¬ÄÇÃ´ÓĞÒ»ÖÖ²ßÂÔÊÇÌá¹©´úÀí·şÎñÆ÷À´ÓëÔ­ÓĞµÄ·şÎñÆ÷½øĞĞÍ¨Ñ¶£¬¿Í<br>
- * »§¶Ë¾ÍÓÚ´úÀí·şÎñÆ÷Í¨Ñ¶£¬´ËÀ©³äµÄÃ¿Ò»¸öPoxyIoSession¶¼´úÀíÒ»¸öÉÏ²ã·şÎñÆ÷µÄIoSession
+ * ä»£ç†IoSessionï¼Œè¿™æ˜¯IOServeræ¡†æ¶çš„ä¸€ä¸ªæ‰©å±•è¡¥å……ï¼Œåœ¨å¾ˆå¤šæƒ…å†µä¸‹ï¼Œæˆ‘ä»¬éœ€è¦åœ¨ä¸ä¿®æ”¹åŸæœåŠ¡å™¨çš„æƒ…å†µä¸‹<br>
+ * è€ŒåŠ å…¥å¦å¤–ä¸€ç§å½¢å¼çš„é€šè®¯åè®®æˆ–æ–¹å·¥ï¼Œé‚£ä¹ˆæœ‰ä¸€ç§ç­–ç•¥æ˜¯æä¾›ä»£ç†æœåŠ¡å™¨æ¥ä¸åŸæœ‰çš„æœåŠ¡å™¨è¿›è¡Œé€šè®¯ï¼Œå®¢<br>
+ * æˆ·ç«¯å°±äºä»£ç†æœåŠ¡å™¨é€šè®¯ï¼Œæ­¤æ‰©å……çš„æ¯ä¸€ä¸ªPoxyIoSessionéƒ½ä»£ç†ä¸€ä¸ªä¸Šå±‚æœåŠ¡å™¨çš„IoSession
  * </p>
  * <br>
- * @author ºúçâ@ritsky
+ * @author èƒ¡ç®@ritsky
  *
  */
 public class ClientIoSession extends IoSessionImpl {
 	
-	/**±»½ÓÊÜÆ÷°ó¶¨µÄµØÖ·*/
+	/**è¢«æ¥å—å™¨ç»‘å®šçš„åœ°å€*/
 	private SocketAddress bindAddress;
 	
 	private ConnectFuture connectFuture = new ConnectFuture(this);
 	
-	private AtomicBoolean isConnecting = new AtomicBoolean(false);        //ÊÇ·ñÕıÔÚÁ¬½Ó
+	private AtomicBoolean isConnecting = new AtomicBoolean(false);        //æ˜¯å¦æ­£åœ¨è¿æ¥
 	
 	
 	ClientIoSession(long id, SocketChannel channel, AbstractIoServer acceptor, SocketAddress address) {
@@ -37,7 +37,7 @@ public class ClientIoSession extends IoSessionImpl {
 	
 	/**
 	 * <p>
-	 * Á¬½ÓÉÏ²ã·şÎñÆ÷£¬·µ»ØÒì²½ÔËËã½á¹û¡£Èç¹ûÔÚÁ¬½ÓÖĞ³ö´í£¬IoFuture.isError()¿É¼ì²é³öÀ´
+	 * è¿æ¥ä¸Šå±‚æœåŠ¡å™¨ï¼Œè¿”å›å¼‚æ­¥è¿ç®—ç»“æœã€‚å¦‚æœåœ¨è¿æ¥ä¸­å‡ºé”™ï¼ŒIoFuture.isError()å¯æ£€æŸ¥å‡ºæ¥
 	 * </p>
 	 * <br>
 	 * @return IoFuture
@@ -50,7 +50,7 @@ public class ClientIoSession extends IoSessionImpl {
 			}
 		}
 		catch(IOException e) {
-			connectFuture.setComplete(e);     //ÉèÖÃÍê³É
+			connectFuture.setComplete(e);     //è®¾ç½®å®Œæˆ
 		}
 		return connectFuture;
 	}
@@ -58,13 +58,13 @@ public class ClientIoSession extends IoSessionImpl {
 	
 	/**
 	 * <p>
-	 * »ñµÃÁ¬½ÓµÄÒì²½ÔËËã½á¹û£¬Ö»ÓĞ´¦ÓÚÁ¬½ÓÖĞÊ±²ÅÄÜÄÃµ½£¬ÆäËüÇé¿ö·µ»Ønull
+	 * è·å¾—è¿æ¥çš„å¼‚æ­¥è¿ç®—ç»“æœï¼Œåªæœ‰å¤„äºè¿æ¥ä¸­æ—¶æ‰èƒ½æ‹¿åˆ°ï¼Œå…¶å®ƒæƒ…å†µè¿”å›null
 	 * </p>
 	 * <br>
 	 * @return
 	 */
 	public IoFuture getConnectFuture() {
-		if(isConnecting.get()) {   //Ö»ÓĞ´¦ÔÚÕıÔÚÁ¬½ÓÖĞ²ÅÄÜÄÃµ½Òì²½ÔËËã½á¹û
+		if(isConnecting.get()) {   //åªæœ‰å¤„åœ¨æ­£åœ¨è¿æ¥ä¸­æ‰èƒ½æ‹¿åˆ°å¼‚æ­¥è¿ç®—ç»“æœ
 			return connectFuture;
 		}
 		return null;

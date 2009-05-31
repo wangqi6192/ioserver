@@ -1,4 +1,4 @@
-package example;
+ï»¿package example;
 
 import java.net.InetSocketAddress;
 import java.net.SocketAddress;
@@ -21,29 +21,29 @@ public class PoxyServerExample {
 	 */
 	public static void main(String[] args) {
 		try {
-			//×¼±¸´úÀíµÄ·şÎñÆ÷µØÖ·
+			//å‡†å¤‡ä»£ç†çš„æœåŠ¡å™¨åœ°å€
 			SocketAddress address = new InetSocketAddress("127.0.0.1", 80);
 			
 			IoService acceptor = new IoConnector();
 			acceptor.bind(address);
 			
-			//ÉèÖÃĞ­Òé´¦ÀíÕß£¬¿ÉÒÔ²»ÉèÖÃ
+			//è®¾ç½®åè®®å¤„ç†è€…ï¼Œå¯ä»¥ä¸è®¾ç½®
 			acceptor.setProtocolHandler(new Protocol());
 			
-			//ÉèÖÃÊı¾İ´¦ÀíÕß,Ò»¶¨ÒªÉèÖÃ
+			//è®¾ç½®æ•°æ®å¤„ç†è€…,ä¸€å®šè¦è®¾ç½®
 			acceptor.setIoHandler(new DataHandler());
 			
-			//Æô¶¯·şÎñ
+			//å¯åŠ¨æœåŠ¡
 			acceptor.start();
 			
 			
-			//µ±ÓĞĞÂµÄÁ¬½Óµ½´úÀí·şÎñÆ÷Ê±£¬ĞèÒª½¨Á¢Ò»¸öÓëÉÏ²ã·şÎñÆ÷µÄ»á»°
+			//å½“æœ‰æ–°çš„è¿æ¥åˆ°ä»£ç†æœåŠ¡å™¨æ—¶ï¼Œéœ€è¦å»ºç«‹ä¸€ä¸ªä¸ä¸Šå±‚æœåŠ¡å™¨çš„ä¼šè¯
 			ClientIoSession session = IoConnector.newSession((IoConnector) acceptor);
 			
-			//Á¬½ÓÉÏ²ã·şÎñÆ÷£¬²Ù×÷ÎªÒì²½²Ù×÷
+			//è¿æ¥ä¸Šå±‚æœåŠ¡å™¨ï¼Œæ“ä½œä¸ºå¼‚æ­¥æ“ä½œ
 			IoFuture future = session.connect();
 						
-			//Èç¹ûĞèÒªÍ¬²½µÈ´ıÁ¬½ÓÍê³É¿ÉÒÔµ÷ÓÃÒÔÏÂ·½·¨
+			//å¦‚æœéœ€è¦åŒæ­¥ç­‰å¾…è¿æ¥å®Œæˆå¯ä»¥è°ƒç”¨ä»¥ä¸‹æ–¹æ³•
 			future.await();
 			
 			System.out.println(future.isError());
@@ -62,19 +62,19 @@ public class PoxyServerExample {
 
 		@Override
 		public void ioSessionClosed(IoFuture future) {
-			//TODO:µ±Ò»¸ö»á»°¹Ø±Õºó±»´¥·¢µÄ·½·¨
+			//TODO:å½“ä¸€ä¸ªä¼šè¯å…³é—­åè¢«è§¦å‘çš„æ–¹æ³•
 			
 		}
 
 		@Override
 		public void messageReceived(IoSession session, NetMessage msg) {
-			//TODO:µ±´æÔÚĞ­Òé½âÎöÀàÊ±£¬Çë°´¾ßÌåÏîÄ¿ÒªÇóÍê³É´Ë·½·¨
+			//TODO:å½“å­˜åœ¨åè®®è§£æç±»æ—¶ï¼Œè¯·æŒ‰å…·ä½“é¡¹ç›®è¦æ±‚å®Œæˆæ­¤æ–¹æ³•
 			
 		}
 
 		@Override
 		public void messageReceived(IoSession session, byte[] msgdata) {
-			//TODO:µ±Ã»ÓĞĞ­Òé½âÎöÀàÊ±£¬Çë°´¾ßÌåÏîÄ¿ÒªÇóÍê³É´Ë·½·¨
+			//TODO:å½“æ²¡æœ‰åè®®è§£æç±»æ—¶ï¼Œè¯·æŒ‰å…·ä½“é¡¹ç›®è¦æ±‚å®Œæˆæ­¤æ–¹æ³•
 			
 		}	
 	}
@@ -83,13 +83,13 @@ public class PoxyServerExample {
 
 		@Override
 		public boolean isClose() {
-			//TODO:Èç¹ûĞèÒª³¤Á¬½Ó£¬Çë·´»Øfalse£¬Èç¹ûĞèÒª¶ÌÁ¬½ÓÇë·µ»Øtrue
+			//TODO:å¦‚æœéœ€è¦é•¿è¿æ¥ï¼Œè¯·åå›falseï¼Œå¦‚æœéœ€è¦çŸ­è¿æ¥è¯·è¿”å›true
 			return false;
 		}
 
 		@Override
 		public List<NetMessage> onData(ByteBuffer data, IoSession session) {
-			//TODO:ÕâÀï¸ºÔğ²è·¿µØÊı¾İ½øĞĞ½âÎö£¬²¢ĞÎ³ÉÒ»¸ö¾ßÌåµÄÏûÏ¢Àà
+			//TODO:è¿™é‡Œè´Ÿè´£èŒ¶æˆ¿åœ°æ•°æ®è¿›è¡Œè§£æï¼Œå¹¶å½¢æˆä¸€ä¸ªå…·ä½“çš„æ¶ˆæ¯ç±»
 			return null;
 		}
 		

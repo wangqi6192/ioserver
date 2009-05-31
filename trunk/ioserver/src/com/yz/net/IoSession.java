@@ -1,4 +1,4 @@
-package com.yz.net;
+ï»¿package com.yz.net;
 
 import java.io.IOException;
 
@@ -6,17 +6,17 @@ import java.io.IOException;
 
 /**
  * <p>
- * ÍøÂç»á»°£¬±íÊ¾Ò»¸öÍ¨Ñ¶Á¬½Ó
+ * ç½‘ç»œä¼šè¯ï¼Œè¡¨ç¤ºä¸€ä¸ªé€šè®¯è¿æ¥
  * </p>
  * <br>
- * @author ºúçâ@ritsky 
+ * @author èƒ¡ç®@ritsky 
  *
  */
 public interface IoSession {
 	
 	/**
 	 * <p>
-	 * »ñÈ¡SessionId
+	 * è·å–SessionId
 	 * </p>
 	 * <br>
 	 * @return
@@ -26,7 +26,7 @@ public interface IoSession {
 	
 	/**
 	 * <p>
-	 * Ìí¼ÓÊôĞÔ
+	 * æ·»åŠ å±æ€§
 	 * </p>
 	 * <br>
 	 * @param key
@@ -36,7 +36,7 @@ public interface IoSession {
 	
 	/**
 	 * <p>
-	 * »ñÈ¡ÊôĞÔ
+	 * è·å–å±æ€§
 	 * </p>
 	 * <br>
 	 * @param key
@@ -46,7 +46,7 @@ public interface IoSession {
 	
 	/**
 	 * <p>
-	 * ÒÆ³ıÊôĞÔ
+	 * ç§»é™¤å±æ€§
 	 * </p>
 	 * <br>
 	 * @param key
@@ -57,7 +57,7 @@ public interface IoSession {
 	
 	/**
 	 * <p>
-	 * Ğ´ÏûÏ¢
+	 * å†™æ¶ˆæ¯
 	 * </p>
 	 * <br>
 	 * @param msg
@@ -69,7 +69,7 @@ public interface IoSession {
 	
 	/**
 	 * <p>
-	 * »ñÈ¡ÏÖÔÚÄÜÈ¡µ½µÄÏûÏ¢ÊıÁ¿
+	 * è·å–ç°åœ¨èƒ½å–åˆ°çš„æ¶ˆæ¯æ•°é‡
 	 * </p>
 	 * <br>
 	 * @return
@@ -79,7 +79,7 @@ public interface IoSession {
 	
 	/**
 	 * <p>
-	 * ¶ÁÈ¡ÏûÏ¢£¬´Ë·½·¨²»»á²úÉú×èÈû£¬µ±Ã»ÓĞÏûÏ¢¿É¶ÁÊ±Á¢¼´·µ»Ønull
+	 * è¯»å–æ¶ˆæ¯ï¼Œæ­¤æ–¹æ³•ä¸ä¼šäº§ç”Ÿé˜»å¡ï¼Œå½“æ²¡æœ‰æ¶ˆæ¯å¯è¯»æ—¶ç«‹å³è¿”å›null
 	 * </p>
 	 * <br>
 	 * @return
@@ -89,7 +89,7 @@ public interface IoSession {
 	
 	/**
 	 * <p>
-	 * ¶ÁÈ¡ÏûÏ¢£¬´Ë·½·¨²»»á²úÉúÒõÈû
+	 * è¯»å–æ¶ˆæ¯ï¼Œæ­¤æ–¹æ³•ä¸ä¼šäº§ç”Ÿé˜´å¡
 	 * </p>
 	 * <br>
 	 * @param msgs
@@ -99,7 +99,7 @@ public interface IoSession {
 	
 	/**
 	 * <p>
-	 * ÊÇ·ñ¹Ø±Õ
+	 * æ˜¯å¦å…³é—­
 	 * </p>
 	 * <br>
 	 * @return
@@ -109,7 +109,7 @@ public interface IoSession {
 	
 	/**
 	 * <p>
-	 * ¹Ø±ÕIO»á»°£¬·½·¨ÎªÒì²½µÄ£¬Èç¹ûÒªÏëÍ¬²½£¬¿ÉÒÔµ÷ÓÃ·µ»Ø½á¹ûµÄIoFuture.await()
+	 * å…³é—­IOä¼šè¯ï¼Œæ–¹æ³•ä¸ºå¼‚æ­¥çš„ï¼Œå¦‚æœè¦æƒ³åŒæ­¥ï¼Œå¯ä»¥è°ƒç”¨è¿”å›ç»“æœçš„IoFuture.await()
 	 * </p>
 	 * <br>
 	 * @return

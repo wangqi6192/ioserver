@@ -1,14 +1,14 @@
-package com.yz.net.expand;
+ï»¿package com.yz.net.expand;
 
 import com.yz.net.IoSession;
 import com.yz.net.impl.AbstractIoFuture;
 
 /**
  * <p>
- * Á¬½ÓµÄÒì²½¼ÆËã½á¹û
+ * è¿žæŽ¥çš„å¼‚æ­¥è®¡ç®—ç»“æžœ
  * </p>
  * <br>
- * @author ºúçâ@ritsky
+ * @author èƒ¡çŽ®@ritsky
  *
  */
 public class ConnectFuture extends AbstractIoFuture {

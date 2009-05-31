@@ -1,4 +1,4 @@
-import java.net.InetSocketAddress;
+锘縤mport java.net.InetSocketAddress;
 import java.net.Socket;
 import java.nio.ByteBuffer;
 import java.nio.channels.SocketChannel;
@@ -11,7 +11,7 @@ import com.yz.net.expand.IoConnector;
 import com.yz.net.impl.IoServerImpl;
 
 /**
- * 无任何意义，完成用于测试
+ * 鏃犱换浣曟剰涔夛紝瀹屾垚鐢ㄤ簬娴嬭瘯
  * @author huwei
  *
  */
