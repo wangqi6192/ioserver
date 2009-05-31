@@ -12,7 +12,7 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 
 import com.yz.net.IoFuture;
 import com.yz.net.expand.ConnectFuture;
-import com.yz.net.expand.PoxyIoSession;
+import com.yz.net.expand.ClientIoSession;
 
 /**
  * <p>
@@ -192,8 +192,8 @@ class IoReadWriteMachine implements Runnable {
 
 			this.onRegisterSession(session);
 		}
-		else if(session.getClass() == PoxyIoSession.class) {  //注册连接操作
-			PoxyIoSession poxyIoSession = (PoxyIoSession) session;
+		else if(session.getClass() == ClientIoSession.class) {  //注册连接操作
+			ClientIoSession poxyIoSession = (ClientIoSession) session;
 			SelectionKey selectKey = channel.register(selector, SelectionKey.OP_CONNECT, session);
 			channel.connect(poxyIoSession.getOwnerAcceptor().getBindAddress());
 			session.setSelectionKey(selectKey);
@@ -345,7 +345,7 @@ class IoReadWriteMachine implements Runnable {
 					} catch (IOException e) {
 						//TODO:记录下异常
 						e.printStackTrace();
-						ConnectFuture future =  (ConnectFuture) ((PoxyIoSession) session).getConnectFuture();
+						ConnectFuture future =  (ConnectFuture) ((ClientIoSession) session).getConnectFuture();
 						future.setComplete(e);          //设置完成
 						session.close();
 					}
@@ -395,7 +395,7 @@ class IoReadWriteMachine implements Runnable {
 			session.setConnectControl(false);     //关闭
 			this.onRegisterSession(session);      //session添加到管理器中
 
-			ConnectFuture future =  (ConnectFuture) ((PoxyIoSession) session).getConnectFuture();
+			ConnectFuture future =  (ConnectFuture) ((ClientIoSession) session).getConnectFuture();
 			future.setComplete(null);                 //设置完成
 		}
 	}

@@ -11,8 +11,8 @@ import com.yz.net.IoHandler;
 import com.yz.net.IoSession;
 import com.yz.net.NetMessage;
 import com.yz.net.ProtocolHandler;
-import com.yz.net.expand.PoxyIoServer;
-import com.yz.net.expand.PoxyIoSession;
+import com.yz.net.expand.IoConnector;
+import com.yz.net.expand.ClientIoSession;
 
 public class PoxyServerExample {
 
@@ -24,7 +24,7 @@ public class PoxyServerExample {
 			//准备代理的服务器地址
 			SocketAddress address = new InetSocketAddress("127.0.0.1", 80);
 			
-			IoService acceptor = new PoxyIoServer();
+			IoService acceptor = new IoConnector();
 			acceptor.bind(address);
 			
 			//设置协议处理者，可以不设置
@@ -38,7 +38,7 @@ public class PoxyServerExample {
 			
 			
 			//当有新的连接到代理服务器时，需要建立一个与上层服务器的会话
-			PoxyIoSession session = PoxyIoServer.newSession((PoxyIoServer) acceptor);
+			ClientIoSession session = IoConnector.newSession((IoConnector) acceptor);
 			
 			//连接上层服务器，操作为异步操作
 			IoFuture future = session.connect();

@@ -20,7 +20,7 @@ import com.yz.net.impl.IoSessionImpl;
  * @author 胡玮@ritsky
  *
  */
-public class PoxyIoSession extends IoSessionImpl {
+public class ClientIoSession extends IoSessionImpl {
 	
 	/**被接受器绑定的地址*/
 	private SocketAddress bindAddress;
@@ -30,7 +30,7 @@ public class PoxyIoSession extends IoSessionImpl {
 	private AtomicBoolean isConnecting = new AtomicBoolean(false);        //是否正在连接
 	
 	
-	PoxyIoSession(long id, SocketChannel channel, AbstractIoServer acceptor, SocketAddress address) {
+	ClientIoSession(long id, SocketChannel channel, AbstractIoServer acceptor, SocketAddress address) {
 		super(id, channel, acceptor);
 		this.bindAddress = address;
 	}

@@ -7,7 +7,7 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 import com.yz.net.IoService;
-import com.yz.net.expand.PoxyIoServer;
+import com.yz.net.expand.IoConnector;
 import com.yz.net.impl.IoServerImpl;
 
 /**
@@ -59,7 +59,7 @@ public class MTest {
 			
 			acceptor.start();*/
 			
-			IoService acceptor = new PoxyIoServer(8899);
+			IoService acceptor = new IoConnector(8899);
 			acceptor.setIoHandler(new LogicHandler());
 			acceptor.start();
 			
