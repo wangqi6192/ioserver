@@ -1,43 +1,43 @@
-package com.yz.net;
+ï»¿package com.yz.net;
 
 
 /**
  * <p>
- * ±íÊ¾IOµÄÒì²½¼ÆËã½á¹û£¬Ìá¹©¼ì²é¼ÆËãÊÇ·ñÍê³ÉµÄ·½·¨£¬ºÍµÈ´ý¼ÆËãÍê³ÉµÄ·½·¨¡£
- * ×¢Òâ£º
- * Ò»¸öIO²Ù×÷µÄÍê³É£¬Ö»ÊÇËµÃ÷²Ù×÷²»ÔÚÓÐ¿ÉÄÜ¼ÌÐø½øÐÐ£¬²Ù×÷ÊÇ·ñ³É¹¦²¢²»ÓÉÊÇ·ñÍê³ÉÖ¤Ã÷
- * ÀàÌá¹©ÁË£¬¼ì²éÒì³£µÄ·½·¨£¬Èç¹û²Ù×÷ÔÚÕýÈ·Íê³ÉÇ°·¢ÉúÒì³££¬ÔòÍ¨¹ý¼ì²éÒì³£¿ÉÒÔ»ñµÃ²Ù
- * ×÷·¢ÉúµÄÒì³£
+ * è¡¨ç¤ºIOçš„å¼‚æ­¥è®¡ç®—ç»“æžœï¼Œæä¾›æ£€æŸ¥è®¡ç®—æ˜¯å¦å®Œæˆçš„æ–¹æ³•ï¼Œå’Œç­‰å¾…è®¡ç®—å®Œæˆçš„æ–¹æ³•ã€‚
+ * æ³¨æ„ï¼š
+ * ä¸€ä¸ªIOæ“ä½œçš„å®Œæˆï¼Œåªæ˜¯è¯´æ˜Žæ“ä½œä¸åœ¨æœ‰å¯èƒ½ç»§ç»­è¿›è¡Œï¼Œæ“ä½œæ˜¯å¦æˆåŠŸå¹¶ä¸ç”±æ˜¯å¦å®Œæˆè¯æ˜Ž
+ * ç±»æä¾›äº†ï¼Œæ£€æŸ¥å¼‚å¸¸çš„æ–¹æ³•ï¼Œå¦‚æžœæ“ä½œåœ¨æ­£ç¡®å®Œæˆå‰å‘ç”Ÿå¼‚å¸¸ï¼Œåˆ™é€šè¿‡æ£€æŸ¥å¼‚å¸¸å¯ä»¥èŽ·å¾—æ“
+ * ä½œå‘ç”Ÿçš„å¼‚å¸¸
  * </p>
  * <br>
- * @author ºúçâ@ritsky
+ * @author èƒ¡çŽ®@ritsky
  *
  */
 public interface IoFuture {
 	
 	/**
 	 * <p>
-	 * »ñÈ¡IO»á»°
+	 * èŽ·å–IOä¼šè¯
 	 * </p>
 	 * <br>
-	 * @return IoSession ±íÊ¾Ò»¸öIO»á»°<br>
+	 * @return IoSession è¡¨ç¤ºä¸€ä¸ªIOä¼šè¯<br>
 	 */
 	public IoSession getSession();
 	
 	
 	/**
 	 * <p>
-	 * ¼ì²é·¢³öµÄIO²Ù×÷ÊÇ·ñÍê³É£¬·µ¼Ótrue:Íê³É  ·µ»Øfalse:Î´Íê³É
+	 * æ£€æŸ¥å‘å‡ºçš„IOæ“ä½œæ˜¯å¦å®Œæˆï¼Œè¿”åŠ true:å®Œæˆ  è¿”å›žfalse:æœªå®Œæˆ
 	 * </p>
 	 * <br>
-	 * @return boolean ÊÇ·ñÍê³É<br>
+	 * @return boolean æ˜¯å¦å®Œæˆ<br>
 	 */
 	public boolean isComplete();
 	
 	
 	/**
 	 * <p>
-	 * ¼ì²éIO²Ù×÷ÊÇ·ñ·¢Éú´íÎóÁË£¬·µ»Øtrue:·¢Éú´íÎóÁË  ·µ»Øfalse:Î´·¢Éú´íÎó
+	 * æ£€æŸ¥IOæ“ä½œæ˜¯å¦å‘ç”Ÿé”™è¯¯äº†ï¼Œè¿”å›žtrue:å‘ç”Ÿé”™è¯¯äº†  è¿”å›žfalse:æœªå‘ç”Ÿé”™è¯¯
 	 * </p>
 	 * <br>
 	 * @return
@@ -47,10 +47,10 @@ public interface IoFuture {
 	
 	/**
 	 * <p>
-	 * ¼ì²éIO²Ù×÷ÊÇ·ñ±»È¡ÏûÁË£¬·µ»Øtrue:²Ù×÷ÏûÏ¢  ·µ»Øfalse:²Ù×÷Î´±»È¡Ïû
+	 * æ£€æŸ¥IOæ“ä½œæ˜¯å¦è¢«å–æ¶ˆäº†ï¼Œè¿”å›žtrue:æ“ä½œæ¶ˆæ¯  è¿”å›žfalse:æ“ä½œæœªè¢«å–æ¶ˆ
 	 * </p>
 	 * <br>
-	 * @return boolean ÊÇ·ñÈ¡Ïû<br>
+	 * @return boolean æ˜¯å¦å–æ¶ˆ<br>
 	 */
 	public boolean isCannel();
 	
@@ -58,19 +58,19 @@ public interface IoFuture {
 	
 	/**
 	 * <p>
-	 * »ñÈ¡IO²Ù×÷·¢ÉúÒì³£ºóµÄÒì³£¶ÔÏñ£¬Èç¹ûIO²Ù×÷ÎÞ´íÎó·¢Éú£¬½«·µ»Ønull
+	 * èŽ·å–IOæ“ä½œå‘ç”Ÿå¼‚å¸¸åŽçš„å¼‚å¸¸å¯¹åƒï¼Œå¦‚æžœIOæ“ä½œæ— é”™è¯¯å‘ç”Ÿï¼Œå°†è¿”å›žnull
 	 * </p>
 	 * <br>
-	 * @return Throwable Òì³£<br>
+	 * @return Throwable å¼‚å¸¸<br>
 	 */
 	public Throwable getThrowable();
 
 	
 	/**
 	 * <p>
-	 * µÈ´ýÍê³É£¬Ò»Ö±µÈ´ý£¬Ö±µ½IO²Ù×÷Íê³ÉÎªÖ¹£¬³¤Ê±¼äµÈ´ýÊÇÒ»¸öÏà¶ÔµÄËµÃ÷£¬³ÌÐòÎªÔÚÒ»Ð©²»¿ÉÔ¤<br>
-	 * ²âµÄÇé¿öÏÂÉè¶¨ÁËÒ»¸ö×î³¤µÈ´ý£¬Èç¹ûÔÚ³¬¹ý×î³¤µÈ´ý»¹Î´µÃµ½IO²Ù×÷Íê³ÉµÄÐÅºÅ£¬ÔòÁ¢¼´·µ»Ø³ö<br>
-	 * À´£¬ÒÔ±ÜÃâ³ÌÐò²úÉúËÀÑ­»·¡£
+	 * ç­‰å¾…å®Œæˆï¼Œä¸€ç›´ç­‰å¾…ï¼Œç›´åˆ°IOæ“ä½œå®Œæˆä¸ºæ­¢ï¼Œé•¿æ—¶é—´ç­‰å¾…æ˜¯ä¸€ä¸ªç›¸å¯¹çš„è¯´æ˜Žï¼Œç¨‹åºä¸ºåœ¨ä¸€äº›ä¸å¯é¢„<br>
+	 * æµ‹çš„æƒ…å†µä¸‹è®¾å®šäº†ä¸€ä¸ªæœ€é•¿ç­‰å¾…ï¼Œå¦‚æžœåœ¨è¶…è¿‡æœ€é•¿ç­‰å¾…è¿˜æœªå¾—åˆ°IOæ“ä½œå®Œæˆçš„ä¿¡å·ï¼Œåˆ™ç«‹å³è¿”å›žå‡º<br>
+	 * æ¥ï¼Œä»¥é¿å…ç¨‹åºäº§ç”Ÿæ­»å¾ªçŽ¯ã€‚
 	 * </p>
 	 * <br>
 	 */
@@ -79,16 +79,16 @@ public interface IoFuture {
 	
 	/**
 	 * <p>
-	 * µÈ´ýÍê³É£¬µÈ´ýÖ¸¶¨µÄÊ±¼ä(ºÀÃë)£¬Ö±µ½IO²Ù×÷Íê³ÉÎªÖ¹£¬Èç¹ûÖ¸¶¨Ê±¼äÄÚIO²Ù×÷Î´Íê³É£¬ÔòÁ¢¼´·µ»Ø<br>
+	 * ç­‰å¾…å®Œæˆï¼Œç­‰å¾…æŒ‡å®šçš„æ—¶é—´(è±ªç§’)ï¼Œç›´åˆ°IOæ“ä½œå®Œæˆä¸ºæ­¢ï¼Œå¦‚æžœæŒ‡å®šæ—¶é—´å†…IOæ“ä½œæœªå®Œæˆï¼Œåˆ™ç«‹å³è¿”å›ž<br>
 	 * </p>
 	 * <br>
-	 * @param timeout µÈ´ýÊ±¼ä<br>
+	 * @param timeout ç­‰å¾…æ—¶é—´<br>
 	 */
 	public void await(long timeout);
 
 	/**
 	 * <p>
-	 * È¡Ïûµ±Ç°IO²Ù×÷
+	 * å–æ¶ˆå½“å‰IOæ“ä½œ
 	 * </p>
 	 * <br>
 	 */

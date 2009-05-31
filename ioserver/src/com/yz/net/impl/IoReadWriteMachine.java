@@ -1,4 +1,4 @@
-package com.yz.net.impl;
+ï»¿package com.yz.net.impl;
 
 import java.io.IOException;
 import java.nio.ByteBuffer;
@@ -16,46 +16,46 @@ import com.yz.net.expand.ClientIoSession;
 
 /**
  * <p>
- * Ò»¸öIOµÄ¶ÁĞ´£¬Á¬½ÓµÄ´¦Àí»ú
+ * ä¸€ä¸ªIOçš„è¯»å†™ï¼Œè¿æ¥çš„å¤„ç†æœº
  * </p>
  * <br>
- * @author ºúçâ@ritsky
+ * @author èƒ¡ç®@ritsky
  *
  */
 class IoReadWriteMachine implements Runnable {
 	
-	/**×î´óµÄÊä³ö¿é*/
+	/**æœ€å¤§çš„è¾“å‡ºå—*/
 	private static final int MAX_OUT_SIZE = 1024;
 	
 	private boolean isRunning;
 	
-	/**¼àÌıÕßÁĞ±í*/
+	/**ç›‘å¬è€…åˆ—è¡¨*/
 	private HashSet<DispatcherEventlListener> listenerSet;
 	
-	/**ÄÚ´æ¹ÜÀíÆ÷*/
+	/**å†…å­˜ç®¡ç†å™¨*/
 	private MemoryManagerInface memManager;
 	
-	/**µÈ´ı×¢²á¶ÓÁĞ*/
+	/**ç­‰å¾…æ³¨å†Œé˜Ÿåˆ—*/
 	private ConcurrentLinkedQueue<IoSessionImpl> waitRegQueue;
 	
-	/**µÈ´ıÉ¾³ı¶ÓÁĞ*/
+	/**ç­‰å¾…åˆ é™¤é˜Ÿåˆ—*/
 	//private ConcurrentLinkedQueue<CloseFuture> waitRemoveQueue;
 	
-	/**µÈ´ı¿ØÖÆ¶ÓÁĞ*/
+	/**ç­‰å¾…æ§åˆ¶é˜Ÿåˆ—*/
 	private ConcurrentLinkedQueue<IoSessionImpl> waitControlQueue;
 	
-	/**µÈ´ı³¬Ê±¶ÓÁĞ*/
+	/**ç­‰å¾…è¶…æ—¶é˜Ÿåˆ—*/
 	private ConcurrentLinkedQueue<IoSessionImpl> waitOverTimeQueue;
 	
-	/**µÈ´ıÁ¬½Ó¶ÓÁĞ*/
+	/**ç­‰å¾…è¿æ¥é˜Ÿåˆ—*/
 	private ConcurrentLinkedQueue<IoFuture> waitConnectQueue;
 	
 	private Selector selector;
 	
-	/**×î´óÄÜ³Ğ°®µÄIoSessionÊıÁ¿*/
+	/**æœ€å¤§èƒ½æ‰¿çˆ±çš„IoSessionæ•°é‡*/
 	private int maxIoSessionNum;
 	
-	/**²¢·¢IoSessionµÄ¼ÆÊıÆ÷*/
+	/**å¹¶å‘IoSessionçš„è®¡æ•°å™¨*/
 	private int concurrentIoSessionCount;
 	
 	
@@ -66,7 +66,7 @@ class IoReadWriteMachine implements Runnable {
 	
 	/**
 	 * <p>
-	 * ³õÊ¼»¯IO´¦ÀíÆ÷
+	 * åˆå§‹åŒ–IOå¤„ç†å™¨
 	 * </p>
 	 * <br>
 	 * @param maxIoSessionNum
@@ -96,7 +96,7 @@ class IoReadWriteMachine implements Runnable {
 	
 	/**
 	 * <p>
-	 * ÅÅ³Ì¹Ø±Õ²¢ÒÆ³ıIO»á»°
+	 * æ’ç¨‹å…³é—­å¹¶ç§»é™¤IOä¼šè¯
 	 * </p>
 	 * <br>
 	 * @param closeFuture
@@ -128,7 +128,7 @@ class IoReadWriteMachine implements Runnable {
 	
 	/**
 	 * <p>
-	 * ¹Ø±ÕIO´¦ÀíÆ÷
+	 * å…³é—­IOå¤„ç†å™¨
 	 * </p>
 	 * <br>
 	 * @throws IOException
@@ -145,7 +145,7 @@ class IoReadWriteMachine implements Runnable {
 	
 	/**
 	 * <p>
-	 * »ñÈ¡ÄÚ´æ¹ÜÀíÆ÷
+	 * è·å–å†…å­˜ç®¡ç†å™¨
 	 * </p>
 	 * <br>
 	 * @return
@@ -157,7 +157,7 @@ class IoReadWriteMachine implements Runnable {
 	
 	/**
 	 * <p>
-	 * ÅĞ¶ÏÊÇ·ñ´ò¿ª
+	 * åˆ¤æ–­æ˜¯å¦æ‰“å¼€
 	 * </p>
 	 * <br>
 	 * @return
@@ -168,38 +168,38 @@ class IoReadWriteMachine implements Runnable {
 	}
 
 	
-	//TODO:¿¼ÂÇÊÇ·ñ¼ÓÈëÒì³£Å×³ö
+	//TODO:è€ƒè™‘æ˜¯å¦åŠ å…¥å¼‚å¸¸æŠ›å‡º
 	private void registerIoSessionNow(IoSessionImpl session) throws IOException {
 		SocketChannel channel = session.getChannel();
 		if(channel == null) {
-			throw new Error("Í¨µÀ²»ÄÜÎª¿Õ");
+			throw new Error("é€šé“ä¸èƒ½ä¸ºç©º");
 		}
 
 		/*if(channel.isRegistered()) {
-			throw new RuntimeException("´ËÍ¨µÀÒÑ¾­Ö÷²á¹ı");
+			throw new RuntimeException("æ­¤é€šé“å·²ç»ä¸»å†Œè¿‡");
 		}*/
 
 		
-		channel.configureBlocking(false);                //ÉèÖÃÎª·Ç×èÈû
+		channel.configureBlocking(false);                //è®¾ç½®ä¸ºéé˜»å¡
 		
 		if(session.getClass() == IoSessionImpl.class) {
-			//×¢²á
-			SelectionKey selectKey = channel.register(selector, SelectionKey.OP_READ, session);  //ÏòÑ¡ÔñÆ÷×¢²áÍ¨µÀ
+			//æ³¨å†Œ
+			SelectionKey selectKey = channel.register(selector, SelectionKey.OP_READ, session);  //å‘é€‰æ‹©å™¨æ³¨å†Œé€šé“
 
-			session.setSelectionKey(selectKey);   //ÉèÖÃ»á»°µÄÑ¡Ôñ¼ü
+			session.setSelectionKey(selectKey);   //è®¾ç½®ä¼šè¯çš„é€‰æ‹©é”®
 
-			//session.setOwnerDispatcher(this);    //ÉèÖÃ¹éÊôIO´¦ÀíÆ÷
+			//session.setOwnerDispatcher(this);    //è®¾ç½®å½’å±IOå¤„ç†å™¨
 
 			this.onRegisterSession(session);
 		}
-		else if(session.getClass() == ClientIoSession.class) {  //×¢²áÁ¬½Ó²Ù×÷
+		else if(session.getClass() == ClientIoSession.class) {  //æ³¨å†Œè¿æ¥æ“ä½œ
 			ClientIoSession poxyIoSession = (ClientIoSession) session;
 			SelectionKey selectKey = channel.register(selector, SelectionKey.OP_CONNECT, session);
 			channel.connect(poxyIoSession.getOwnerAcceptor().getBindAddress());
 			session.setSelectionKey(selectKey);
 		}
 		
-		//¿ªÆô¶¨Ê±¼ì²é
+		//å¼€å¯å®šæ—¶æ£€æŸ¥
 		session.lastAccessTime = System.currentTimeMillis();
 		session.lastReadTime = System.currentTimeMillis();
 		session.lastWriteTime = System.currentTimeMillis();
@@ -211,7 +211,7 @@ class IoReadWriteMachine implements Runnable {
 	}
 	
 	
-	/**×¢²á¶ÓÁĞÖĞµÄËùÓĞ»á»°µ½Ñ¡ÔñÆ÷*/
+	/**æ³¨å†Œé˜Ÿåˆ—ä¸­çš„æ‰€æœ‰ä¼šè¯åˆ°é€‰æ‹©å™¨*/
 	private void registerIoSessionsNow() {
 		for(;;) {
 			IoSessionImpl session = this.waitRegQueue.poll();
@@ -222,10 +222,10 @@ class IoReadWriteMachine implements Runnable {
 			try {
 				registerIoSessionNow(session);
 			} catch (IOException e) {
-				//TODO:¼ÇÂ¼ÏÂÒì³£
+				//TODO:è®°å½•ä¸‹å¼‚å¸¸
 				e.printStackTrace();
 				try {
-					//×¢²áÊ§°ÜÊ±Ö±½Óµ÷ÓÃ¹Ø±Õ£¬²»ÓÃÅÅ³Ì¹Ø±Õ£¬ÒòÎªÕâÊ±»á»°¸ù±¾¾ÍÃ»ÓĞÔÚÑ¡ÔñÆ÷ÖĞ
+					//æ³¨å†Œå¤±è´¥æ—¶ç›´æ¥è°ƒç”¨å…³é—­ï¼Œä¸ç”¨æ’ç¨‹å…³é—­ï¼Œå› ä¸ºè¿™æ—¶ä¼šè¯æ ¹æœ¬å°±æ²¡æœ‰åœ¨é€‰æ‹©å™¨ä¸­
 					session.closeNow0();    
 				} catch (IOException e1) {}
 			}
@@ -233,9 +233,9 @@ class IoReadWriteMachine implements Runnable {
 	}
 	
 	
-//////////////////////////////////////Íê³ÉËùÓĞĞèÒªÒÆ³ıµÄ»á»°µÄÕıÊ½¹Ø±Õ²Ù×÷/////////////////////
+//////////////////////////////////////å®Œæˆæ‰€æœ‰éœ€è¦ç§»é™¤çš„ä¼šè¯çš„æ­£å¼å…³é—­æ“ä½œ/////////////////////
 	
-	/**ÒÆ³ı²¢¹Ø±ÕËùÓĞÔÚÒÆ³ı¶ÓÁĞÖĞµÄ»á»°*//*
+	/**ç§»é™¤å¹¶å…³é—­æ‰€æœ‰åœ¨ç§»é™¤é˜Ÿåˆ—ä¸­çš„ä¼šè¯*//*
 	private void removeIoSessionsNow() {
 		for(;;) {
 			CloseFuture future = this.waitRemoveQueue.poll();
@@ -248,12 +248,12 @@ class IoReadWriteMachine implements Runnable {
 	}*/
 	
 	
-	/**Á¢¼´¹Ø±Õ²¢´ÓÑ¡ÔñÆ÷ÖĞÒÆ³ı»á»°*/
+	/**ç«‹å³å…³é—­å¹¶ä»é€‰æ‹©å™¨ä¸­ç§»é™¤ä¼šè¯*/
 	private void removeIoSessionNow(CloseFuture future) {
 		IoSessionImpl session = (IoSessionImpl) future.getSession();
 		
 		
-		//Èç¹ûÖĞÍ¾È¡ÏûÁËÉ¾³ı£¬¾ÍÖØĞÂ°²ÅÅ¿ØÖÆ
+		//å¦‚æœä¸­é€”å–æ¶ˆäº†åˆ é™¤ï¼Œå°±é‡æ–°å®‰æ’æ§åˆ¶
 		if(future.isCannel()) {
 			if(session.isClose()) {
 				try {
@@ -261,12 +261,12 @@ class IoReadWriteMachine implements Runnable {
 				} catch (IOException e) {}
 			}
 			else {
-			//ÖĞÍ¾È¡Ïû¹Ø±Õ»á»°Ê±£¬Ó¦¸Ã°Ñ»á»°¸´Î»
+			//ä¸­é€”å–æ¶ˆå…³é—­ä¼šè¯æ—¶ï¼Œåº”è¯¥æŠŠä¼šè¯å¤ä½
 				if(session.isCloseing.compareAndSet(true, false)) {
-					//ÓÉÓÚÊÇÈ¡ÏûÁË¹Ø±Õ£¬»á»°ÒªÔÙ´ÎÖØĞÂ´ò¿ª¶ÁµÄ¼àÌı
+					//ç”±äºæ˜¯å–æ¶ˆäº†å…³é—­ï¼Œä¼šè¯è¦å†æ¬¡é‡æ–°æ‰“å¼€è¯»çš„ç›‘å¬
 					session.setReadControl(true);
 					
-					//ÖØĞÂ¼ÓÈëÒ»¸ö¿ØÖÆ
+					//é‡æ–°åŠ å…¥ä¸€ä¸ªæ§åˆ¶
 					this.scheduleControl(session);
 				}
 			}
@@ -290,7 +290,7 @@ class IoReadWriteMachine implements Runnable {
 	
 	
 	
-	/**¸Ä±äÅÅ³ÌÖĞµÄ»á»°¿ØÖÆ£¬ÈÃÅÅ³ÌµÄ»á»°µÃµ½Ğ´µÄÊÂ¼ş*/
+	/**æ”¹å˜æ’ç¨‹ä¸­çš„ä¼šè¯æ§åˆ¶ï¼Œè®©æ’ç¨‹çš„ä¼šè¯å¾—åˆ°å†™çš„äº‹ä»¶*/
 	private void changeControls() {
 		while(true) {
 			IoSessionImpl session = this.waitControlQueue.poll();
@@ -298,7 +298,7 @@ class IoReadWriteMachine implements Runnable {
 				break;
 			}
 			
-			if(!session.isClose()) {  //Èç¹û»¹Ã»ÓĞÕıÊ½¹Ø±Õ¾ÍÖ´ĞĞ
+			if(!session.isClose()) {  //å¦‚æœè¿˜æ²¡æœ‰æ­£å¼å…³é—­å°±æ‰§è¡Œ
 				session.isChangeingControl.set(true);
 			
 			
@@ -319,7 +319,7 @@ class IoReadWriteMachine implements Runnable {
 			try {
 				selector.select(1000);
 			} catch (IOException e) {
-				//TODO:¼ÇÂ¼Òì³£
+				//TODO:è®°å½•å¼‚å¸¸
 				e.printStackTrace();
 			}
 
@@ -343,10 +343,10 @@ class IoReadWriteMachine implements Runnable {
 					try {
 						handleConnect(session);
 					} catch (IOException e) {
-						//TODO:¼ÇÂ¼ÏÂÒì³£
+						//TODO:è®°å½•ä¸‹å¼‚å¸¸
 						e.printStackTrace();
 						ConnectFuture future =  (ConnectFuture) ((ClientIoSession) session).getConnectFuture();
-						future.setComplete(e);          //ÉèÖÃÍê³É
+						future.setComplete(e);          //è®¾ç½®å®Œæˆ
 						session.close();
 					}
 				}
@@ -363,17 +363,17 @@ class IoReadWriteMachine implements Runnable {
 			}
 			
 			
-			this.handleOverTimeSessions();   //´¦Àí³¬Ê±IoSession
+			this.handleOverTimeSessions();   //å¤„ç†è¶…æ—¶IoSession
 			
-			//this.removeIoSessionsNow();     //´ÓÒÆ³ı¶ÓÁĞÖĞÒÆ³ı²¢¹Ø±Õ»á»°
-			this.registerIoSessionsNow();   //´ÓµÈ´ı×¢²áµÄ¶ÓÁĞÖĞ×¢²á»á»°µ½Ñ¡ÔñÆ÷
+			//this.removeIoSessionsNow();     //ä»ç§»é™¤é˜Ÿåˆ—ä¸­ç§»é™¤å¹¶å…³é—­ä¼šè¯
+			this.registerIoSessionsNow();   //ä»ç­‰å¾…æ³¨å†Œçš„é˜Ÿåˆ—ä¸­æ³¨å†Œä¼šè¯åˆ°é€‰æ‹©å™¨
 			
-			this.changeControls();          //¸Ä±ä»á»°¿ØÖÆ£¬ÎªĞèÒªĞ´Êı¾İµÄ»á»°¼ÓÈëOP_WRITEÊÂ¼ş
+			this.changeControls();          //æ”¹å˜ä¼šè¯æ§åˆ¶ï¼Œä¸ºéœ€è¦å†™æ•°æ®çš„ä¼šè¯åŠ å…¥OP_WRITEäº‹ä»¶
 		}
 	}
 	
 	/**
-	 * ´¦Àí³¬Ê±IoSession
+	 * å¤„ç†è¶…æ—¶IoSession
 	 */
 	public void handleOverTimeSessions() {
 		for(;;) {
@@ -387,22 +387,22 @@ class IoReadWriteMachine implements Runnable {
 	}
 	
 	
-	/**´¦Àí»á»°Á¬½Ó*/
+	/**å¤„ç†ä¼šè¯è¿æ¥*/
 	public void handleConnect(IoSessionImpl session) throws IOException{
 		if(session.getChannel().finishConnect()) {
-			session.setReadControl(true);         //´ò¿ª¶Á
-			session.setWriteControl(true);        //´ò¿ªÓë
-			session.setConnectControl(false);     //¹Ø±Õ
-			this.onRegisterSession(session);      //sessionÌí¼Óµ½¹ÜÀíÆ÷ÖĞ
+			session.setReadControl(true);         //æ‰“å¼€è¯»
+			session.setWriteControl(true);        //æ‰“å¼€ä¸
+			session.setConnectControl(false);     //å…³é—­
+			this.onRegisterSession(session);      //sessionæ·»åŠ åˆ°ç®¡ç†å™¨ä¸­
 
 			ConnectFuture future =  (ConnectFuture) ((ClientIoSession) session).getConnectFuture();
-			future.setComplete(null);                 //ÉèÖÃÍê³É
+			future.setComplete(null);                 //è®¾ç½®å®Œæˆ
 		}
 	}
 	
 	
 	/**
-	 * ´¦Àí»á»°¶Á
+	 * å¤„ç†ä¼šè¯è¯»
 	 * @param session
 	 */
 	public void handleRead(IoSessionImpl session) {
@@ -423,9 +423,9 @@ class IoReadWriteMachine implements Runnable {
 	
 	/**
 	 * <p>
-	 * Ğ´´¦Àí²Ù×÷£¬//TODO:ÕâÀïÔİÊ±¿¼ÂÇÃ¿´Î½øĞĞÒ»ÌõÏûÏ¢µÄĞ´²Ù×÷£¬Èç¹ûÏûÏ¢µÄÊı¾İ´óÓÚ1k¾Í·Åµ½ÏÂ´Î
-	 * Ñ­»·´¦Àí£¬//TODO:ÕıÔÚ¿¼ÂÇÊÇ·ñ°´Ğ´µÄ×Ö½ÚÊıÀ´×öÎªÅĞ¶ÏÊÇÔÚÒ»´ÎÑ­»·ÖĞĞ´ÈëĞ¡ÓÚ¶àÉÙµÄÊı¾İ½øÈë
-	 * ÏÂ´ÎÑ­»·£¬»¹ÊÇ°´ÏûÏ¢ÌõÊıÀ´×öÅĞ¶Ï
+	 * å†™å¤„ç†æ“ä½œï¼Œ//TODO:è¿™é‡Œæš‚æ—¶è€ƒè™‘æ¯æ¬¡è¿›è¡Œä¸€æ¡æ¶ˆæ¯çš„å†™æ“ä½œï¼Œå¦‚æœæ¶ˆæ¯çš„æ•°æ®å¤§äº1kå°±æ”¾åˆ°ä¸‹æ¬¡
+	 * å¾ªç¯å¤„ç†ï¼Œ//TODO:æ­£åœ¨è€ƒè™‘æ˜¯å¦æŒ‰å†™çš„å­—èŠ‚æ•°æ¥åšä¸ºåˆ¤æ–­æ˜¯åœ¨ä¸€æ¬¡å¾ªç¯ä¸­å†™å…¥å°äºå¤šå°‘çš„æ•°æ®è¿›å…¥
+	 * ä¸‹æ¬¡å¾ªç¯ï¼Œè¿˜æ˜¯æŒ‰æ¶ˆæ¯æ¡æ•°æ¥åšåˆ¤æ–­
 	 * </p>
 	 * <br>
 	 * @param session
@@ -443,7 +443,7 @@ class IoReadWriteMachine implements Runnable {
 		
 		if(ioFuture.getClass() == CloseFuture.class) {
 			if(ioFuture.equals(session.getCloseFuture())) {
-				//TODO:·¢Éú¹Ø±ÕÊÂ¼ş
+				//TODO:å‘ç”Ÿå…³é—­äº‹ä»¶
 				this.removeIoSessionNow(session.getCloseFuture());
 				writeQueue.poll();
 				return;
@@ -455,8 +455,8 @@ class IoReadWriteMachine implements Runnable {
 		
 		ByteBuffer outBuffer = future.getBuffer();
 		
-		int writelen = 0;            //Ğ´Èë×Ö½ÚµÄ³¤¶È
-		int count = 0;               //ÎªÁË·ÀÖ¹½øÈëËÀÑ­»·µÄ²ÎÊı
+		int writelen = 0;            //å†™å…¥å­—èŠ‚çš„é•¿åº¦
+		int count = 0;               //ä¸ºäº†é˜²æ­¢è¿›å…¥æ­»å¾ªç¯çš„å‚æ•°
 		
 		while(true) {
 			count ++;
@@ -464,7 +464,7 @@ class IoReadWriteMachine implements Runnable {
 				writelen += session.getChannel().write(outBuffer);
 			}
 			catch(IOException e) {
-				//TODO:¼ÇÂ¼Òì³£
+				//TODO:è®°å½•å¼‚å¸¸
 				e.printStackTrace();
 				if(future.equals(writeQueue.peek())) {
 					writeQueue.poll();
@@ -473,25 +473,25 @@ class IoReadWriteMachine implements Runnable {
 				break;
 			}
 			
-			//¼ì²éÊÇ·ñ»¹ÓĞ²ĞÁôµÄÊı¾İ
+			//æ£€æŸ¥æ˜¯å¦è¿˜æœ‰æ®‹ç•™çš„æ•°æ®
 			if(outBuffer.hasRemaining()) {
 				if(writelen > MAX_OUT_SIZE) {
-					//¾¡¹Ü»¹ÓĞ²ĞÁôÊı¾İ£¬µ«ÊÇÒÑ¾­Ğ´Èë³¬¹ıMAX_OUT_SIZEµÄÊı¾İ£¬ËùÎª°Ñ²ĞÁôµÄÁôµ½ÏÂ´ÎÑ­»·
+					//å°½ç®¡è¿˜æœ‰æ®‹ç•™æ•°æ®ï¼Œä½†æ˜¯å·²ç»å†™å…¥è¶…è¿‡MAX_OUT_SIZEçš„æ•°æ®ï¼Œæ‰€ä¸ºæŠŠæ®‹ç•™çš„ç•™åˆ°ä¸‹æ¬¡å¾ªç¯
 					break;
 				}
 			}
 			else {
-				//ÒÑ¾­Ã»ÓĞ²ĞÁôµÄÊı¾İÁË
+				//å·²ç»æ²¡æœ‰æ®‹ç•™çš„æ•°æ®äº†
 				if(future.equals(writeQueue.poll())) {
 					future.setComplete(null);
 					break;
 				}
 				else {
-					//Èç¹û¼ì²éµ½±»ÇåÀíµÄ¶ÓÁĞÍ·£¬ÓëÎÒÃÇ´¦ÀíµÄ¶ÓÁĞÍ·²»·ûºó£¬ËµÃ÷ÎÒÃÇµÄ³ÌĞòÔÚÄ³Ğ©µØ·½ÊÇ²»ºÏÀíµÄ
-					//ÕâÊ±Ó¦¸ÃÅ×³ö´íÎó£¬²»ÔÚÈÃ³ÌĞò¼ÌĞøÖ´ĞĞÏÂÈ¥ÁË.
-					throw new Error("·¢ÉúÑÏÖØ´íÎó");
+					//å¦‚æœæ£€æŸ¥åˆ°è¢«æ¸…ç†çš„é˜Ÿåˆ—å¤´ï¼Œä¸æˆ‘ä»¬å¤„ç†çš„é˜Ÿåˆ—å¤´ä¸ç¬¦åï¼Œè¯´æ˜æˆ‘ä»¬çš„ç¨‹åºåœ¨æŸäº›åœ°æ–¹æ˜¯ä¸åˆç†çš„
+					//è¿™æ—¶åº”è¯¥æŠ›å‡ºé”™è¯¯ï¼Œä¸åœ¨è®©ç¨‹åºç»§ç»­æ‰§è¡Œä¸‹å»äº†.
+					throw new Error("å‘ç”Ÿä¸¥é‡é”™è¯¯");
 					
-					//TODO:¿¼ÂÇÁíÍâÒ»ÖÖ´¦Àí·½·¨£¬¶ø²»ÊÇÅ×³ö´íÎó
+					//TODO:è€ƒè™‘å¦å¤–ä¸€ç§å¤„ç†æ–¹æ³•ï¼Œè€Œä¸æ˜¯æŠ›å‡ºé”™è¯¯
 				}
 			}
 			
@@ -500,9 +500,9 @@ class IoReadWriteMachine implements Runnable {
 			}
 		}
 		
-		//session.setWriteControl(false);          //¹Ø±ÕĞ´
+		//session.setWriteControl(false);          //å…³é—­å†™
 		
-		//Èç¹û»á»°ÖĞÒÑ¾­Ã»ÓĞÒªĞ´µÄÊı¾İÁË£¬¾Í¹Ø±Õ»á»°ÖĞµÄĞ´
+		//å¦‚æœä¼šè¯ä¸­å·²ç»æ²¡æœ‰è¦å†™çš„æ•°æ®äº†ï¼Œå°±å…³é—­ä¼šè¯ä¸­çš„å†™
 		if(session.getWriteQueue().peek() == null) {
 			session.setWriteControl(false);
 			//this.scheduleControl(session);
@@ -513,7 +513,7 @@ class IoReadWriteMachine implements Runnable {
 	}
 	
 	
-	/**ÅÅ³Ì¿ØÖÆ,·½±ã»á»°ÖĞ¼ÓÈëĞ´µÄÊÂ¼ş*/
+	/**æ’ç¨‹æ§åˆ¶,æ–¹ä¾¿ä¼šè¯ä¸­åŠ å…¥å†™çš„äº‹ä»¶*/
 	public void scheduleControl(IoSessionImpl session) {
 		if(!session.isChangeingControl.get()) {
 			this.waitControlQueue.offer(session);
@@ -522,7 +522,7 @@ class IoReadWriteMachine implements Runnable {
 	}
 	
 	
-	/**ÅÅ³Ì×¢²á£¬·½±ã»á»°×¢²á*/
+	/**æ’ç¨‹æ³¨å†Œï¼Œæ–¹ä¾¿ä¼šè¯æ³¨å†Œ*/
 	public void scheduleRegister(IoSessionImpl session) {
 		if(session == null) {
 			return;

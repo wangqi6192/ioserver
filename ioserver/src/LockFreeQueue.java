@@ -1,4 +1,4 @@
-/**
+ï»¿/**
  * Copyright (c) 2008 IBM Corporation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -26,10 +26,10 @@ import java.util.concurrent.atomic.AtomicReferenceFieldUpdater;
 
 /**
  * <p>
- * ¸ßĞ§²¢·¢¶ÓÁĞ
+ * é«˜æ•ˆå¹¶å‘é˜Ÿåˆ—
  * </p>
  * <br>
- * @author ºúçâ@ritsky
+ * @author èƒ¡ç®@ritsky
  *
  * @param <E>
  */
@@ -38,13 +38,13 @@ public class LockFreeQueue<E> extends AbstractQueue<E> implements Queue<E> {
     private static final int WAIT_FOR_BACKOFF = 10;
 
     
-    private volatile Node<E> head;             //Í·½Úµã
-    private volatile Node<E> tail;             //Î´½Úµã
+    private volatile Node<E> head;             //å¤´èŠ‚ç‚¹
+    private volatile Node<E> tail;             //æœªèŠ‚ç‚¹
 
     private Node<E> dummy;
 
 
- ///////////////ÒÔÏÂÊÇÓÃÓÚÔ­×Ó¸üĞÂµÄ×Ö¶Î/////////////////////////////////
+ ///////////////ä»¥ä¸‹æ˜¯ç”¨äºåŸå­æ›´æ–°çš„å­—æ®µ/////////////////////////////////
     @SuppressWarnings("unchecked")
     private static final AtomicReferenceFieldUpdater<LockFreeQueue, Node> TAIL_UPDATER = AtomicReferenceFieldUpdater
             .newUpdater(LockFreeQueue.class, Node.class, "tail");
@@ -55,11 +55,11 @@ public class LockFreeQueue<E> extends AbstractQueue<E> implements Queue<E> {
     
     /**
      * <p>
-     * Ô­×Ó¸üĞÂÎ²½Úµã
+     * åŸå­æ›´æ–°å°¾èŠ‚ç‚¹
      * </p>
      * <br>
-     * @param cmp   Ô¤ÆÚÖµ
-     * @param val   ¸üĞÂÖµ
+     * @param cmp   é¢„æœŸå€¼
+     * @param val   æ›´æ–°å€¼
      * @return
      */
     private boolean casTail(Node<E> cmp, Node<E> val) {
@@ -68,7 +68,7 @@ public class LockFreeQueue<E> extends AbstractQueue<E> implements Queue<E> {
 
 
     /**
-     * Ô­×Ó¸üĞÂÍ·½Úµã
+     * åŸå­æ›´æ–°å¤´èŠ‚ç‚¹
      * @param cmp
      * @param val
      * @return
@@ -78,7 +78,7 @@ public class LockFreeQueue<E> extends AbstractQueue<E> implements Queue<E> {
     }
 
     
-    /**½Úµã*/
+    /**èŠ‚ç‚¹*/
     private static class Node<E> {
         
         E value;

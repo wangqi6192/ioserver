@@ -1,4 +1,4 @@
-package com.yz.net.impl;
+ï»¿package com.yz.net.impl;
 
 
 import java.io.IOException;
@@ -13,18 +13,18 @@ import java.util.Iterator;
 
 /**
  * <p>
- * ÓÃÓÚ¹¹½¨·şÎñÆ÷µÄ¾ßÌåÊµÏÖÀà
+ * ç”¨äºæ„å»ºæœåŠ¡å™¨çš„å…·ä½“å®ç°ç±»
  * </p>
  * <br>
- * @author ºúçâ@ritsky
+ * @author èƒ¡ç®@ritsky
  *
  */
 public class IoServerImpl extends AbstractIoServer implements Runnable{
 	
-	/**·şÎñÆ÷¼àÌıSocket*/
+	/**æœåŠ¡å™¨ç›‘å¬Socket*/
 	private ServerSocketChannel ssChannel;
 	
-	/**Ñ¡ÔñÆ÷*/
+	/**é€‰æ‹©å™¨*/
 	private Selector selector;
 	
 	private boolean isRunning;
@@ -44,17 +44,17 @@ public class IoServerImpl extends AbstractIoServer implements Runnable{
 	
 	@Override
 	public void start() throws IOException {
-		startTimer();              //Æô¶¯¶¨Ê±Æ÷
+		startTimer();              //å¯åŠ¨å®šæ—¶å™¨
 		
 		if(getBindAddress() == null) {
-			throw new IOException("Ã»ÓĞ°ó¶¨µØÖ·");
+			throw new IOException("æ²¡æœ‰ç»‘å®šåœ°å€");
 		}
 		
 	
-		selector = Selector.open();         //´ò¿ªÑ¡ÔñÆ÷
+		selector = Selector.open();         //æ‰“å¼€é€‰æ‹©å™¨
 		
 		ssChannel = ServerSocketChannel.open();
-		ssChannel.configureBlocking(false);       //Éè¶¨Îª·Ç×èÈû
+		ssChannel.configureBlocking(false);       //è®¾å®šä¸ºéé˜»å¡
 		ServerSocket ss = ssChannel.socket();
 		ss.bind(getBindAddress());
 		
@@ -80,7 +80,7 @@ public class IoServerImpl extends AbstractIoServer implements Runnable{
 				this.selector.wakeup();
 				getTimer().cancel();
 				
-				this.closeAllSession(); //Ò»µ«µ÷ºÍ¾Í²úÉú×èÈû£¬Ö»µ½ËùÓĞ»á»°¹Ø±ÕÎªÖ¹
+				this.closeAllSession(); //ä¸€ä½†è°ƒå’Œå°±äº§ç”Ÿé˜»å¡ï¼Œåªåˆ°æ‰€æœ‰ä¼šè¯å…³é—­ä¸ºæ­¢
 				stopIoDispatchers();
 				
 				try {
@@ -104,7 +104,7 @@ public class IoServerImpl extends AbstractIoServer implements Runnable{
     		try {
 				selector.select();
 			} catch (IOException e) {
-				//TODO:¼ÇÂ¼ÏÂÒì³£
+				//TODO:è®°å½•ä¸‹å¼‚å¸¸
 				e.printStackTrace();
 			}
     		
@@ -113,7 +113,7 @@ public class IoServerImpl extends AbstractIoServer implements Runnable{
     			i.remove();
     			
     			if(sk.isValid() == false) {
-    				//TODO:¿¼ÂÇÊÇ·ñÅ×³öÒì³£
+    				//TODO:è€ƒè™‘æ˜¯å¦æŠ›å‡ºå¼‚å¸¸
     			}
     			
     			if(sk.isAcceptable()) {
@@ -123,7 +123,7 @@ public class IoServerImpl extends AbstractIoServer implements Runnable{
 						sc = this.ssChannel.accept();
 						sc.configureBlocking(false);
 					} catch (IOException e) {
-						//TODO:¼ÇÂ¼ÏÂ´ËÒì³£
+						//TODO:è®°å½•ä¸‹æ­¤å¼‚å¸¸
 						e.printStackTrace();
 					}
 					
@@ -133,7 +133,7 @@ public class IoServerImpl extends AbstractIoServer implements Runnable{
 					
 					
 					IoSessionImpl session = newIoSession(sc);
-					scheduleToDispatcher(session);   //ÔÚÒ»¸ö·¢±¨»úÖĞÅÅ³Ì×¢²á
+					scheduleToDispatcher(session);   //åœ¨ä¸€ä¸ªå‘æŠ¥æœºä¸­æ’ç¨‹æ³¨å†Œ
     			}
     		}
     	}	
@@ -141,7 +141,7 @@ public class IoServerImpl extends AbstractIoServer implements Runnable{
 
 	
 	/**
-	 * ²úÉúÒ»¸öĞÂµÄIoSession
+	 * äº§ç”Ÿä¸€ä¸ªæ–°çš„IoSession
 	 * @param sc
 	 * @return
 	 */

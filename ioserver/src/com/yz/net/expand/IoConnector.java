@@ -1,4 +1,4 @@
-package com.yz.net.expand;
+ï»¿package com.yz.net.expand;
 
 import java.io.IOException;
 import java.net.SocketAddress;
@@ -9,9 +9,9 @@ import com.yz.net.impl.AbstractIoServer;
 
 /**
  * <p>
- * ´úÀí½ÓÊÕÆ÷£¬ºÜ¶àÊ±ºò£¬ÎÒÃÇÏ£Íû¼ÓÈëĞÂµÄÍ¨Ñ¶·½Ê½£¬µ«ÓÖ²»Ï£Íû¸ü¸ÄÔ­ÓĞ·şÎñÆ÷µÄ´úÂëÀ´¼ÓÈë£¬ÕâÊ±¿ÉÒÔÀûÓÃ<br>
- * ´úÀí½ÓÊÕÆ÷À´¹¹½¨Ò»¸öĞÂµÄ·şÎñÆ÷£¬´úÀí½ÓÊÕÆ÷¿ÉÒÔ°ó¶¨ĞèÒªÁ¬½ÓµÄÉÏ²ã·şÎñÆ÷µØÖ·£¬²¢Éè¶¨¶ÔÔ­Êı¾İ½øĞĞ´¦Àí<br>
- * µÄ´¦ÀíÕß¶ÔÏñ£¬ÈçÏÂ
+ * ä»£ç†æ¥æ”¶å™¨ï¼Œå¾ˆå¤šæ—¶å€™ï¼Œæˆ‘ä»¬å¸Œæœ›åŠ å…¥æ–°çš„é€šè®¯æ–¹å¼ï¼Œä½†åˆä¸å¸Œæœ›æ›´æ”¹åŸæœ‰æœåŠ¡å™¨çš„ä»£ç æ¥åŠ å…¥ï¼Œè¿™æ—¶å¯ä»¥åˆ©ç”¨<br>
+ * ä»£ç†æ¥æ”¶å™¨æ¥æ„å»ºä¸€ä¸ªæ–°çš„æœåŠ¡å™¨ï¼Œä»£ç†æ¥æ”¶å™¨å¯ä»¥ç»‘å®šéœ€è¦è¿æ¥çš„ä¸Šå±‚æœåŠ¡å™¨åœ°å€ï¼Œå¹¶è®¾å®šå¯¹åŸæ•°æ®è¿›è¡Œå¤„ç†<br>
+ * çš„å¤„ç†è€…å¯¹åƒï¼Œå¦‚ä¸‹
  * 
  * IoAcceptor acceptor = new PoxyIoAcceptor(8899);
  * acceptor.setIoHandler(new DataHandler());
@@ -19,18 +19,18 @@ import com.yz.net.impl.AbstractIoServer;
  * 
  * </p>
  * <br>
- * @author ºúçâ@ritsky
+ * @author èƒ¡ç®@ritsky
  *
  */
 public class IoConnector extends AbstractIoServer {
 
 	/**
 	 * <p>
-	 * ÔÚÖ¸¶¨µÄ´úÀí½ÓÊÕÆ÷ÖĞÉú³ÉĞÂµÄ´úÀí»á»°£¬Èç¹û²ÎÊıÎª¿Õ£¬·µ»Ønull£¬Èç¹ûÁ¬½ÓÆ÷Ã»ÓĞÆô¶¯Ò²·µ»Ønull
+	 * åœ¨æŒ‡å®šçš„ä»£ç†æ¥æ”¶å™¨ä¸­ç”Ÿæˆæ–°çš„ä»£ç†ä¼šè¯ï¼Œå¦‚æœå‚æ•°ä¸ºç©ºï¼Œè¿”å›nullï¼Œå¦‚æœè¿æ¥å™¨æ²¡æœ‰å¯åŠ¨ä¹Ÿè¿”å›null
 	 * </p>
 	 * <br>
-	 * @param acceptor ´úÀí½ÓÊÕÆ÷<br>
-	 * @return PoxyIoSession ´úÀí»á»°<br>
+	 * @param acceptor ä»£ç†æ¥æ”¶å™¨<br>
+	 * @return PoxyIoSession ä»£ç†ä¼šè¯<br>
 	 * @throws IOException
 	 */
 	public static ClientIoSession newSession(IoConnector acceptor) throws IOException{
@@ -66,7 +66,7 @@ public class IoConnector extends AbstractIoServer {
 
 	@Override
 	public void start() throws Exception {
-		this.startTimer();                //Æô¶¯¶¨Ê±Æ÷
+		this.startTimer();                //å¯åŠ¨å®šæ—¶å™¨
 		this.startIoDispatchers();
 		this.isStart = true;
 	}

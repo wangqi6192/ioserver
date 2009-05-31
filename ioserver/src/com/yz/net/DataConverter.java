@@ -1,4 +1,4 @@
-/*
+﻿/*
  *  Copyright (c) xsocket.org, 2006 - 2009. All rights reserved.
  *
  *  This library is free software; you can redistribute it and/or

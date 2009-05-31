@@ -1,4 +1,4 @@
-import java.io.DataInputStream;
+锘縤mport java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.ServerSocket;
@@ -6,10 +6,10 @@ import java.net.Socket;
 
 /**
  * <p>
- * 无任何意义，完全验证用的 
+ * 鏃犱换浣曟剰涔夛紝瀹屽叏楠岃瘉鐢ㄧ殑 
  * </p>
  * <br>
- * @author 胡玮@ritsky
+ * @author 鑳＄幃@ritsky
  *
  */
 public class ExampleServerSocket {
@@ -25,7 +25,7 @@ public class ExampleServerSocket {
 			while(true) {
 				Socket socket = sSocket.accept();
 				
-				System.out.println("连接成功.....");
+				System.out.println("杩炴帴鎴愬姛.....");
 				
 				Work work = new Work(socket);
 				

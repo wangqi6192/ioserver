@@ -1,27 +1,27 @@
-package com.yz.net.impl;
+ï»¿package com.yz.net.impl;
 
 import com.yz.net.IoFuture;
 import com.yz.net.IoSession;
 
 /**
  * <p>
- * Ìá¹©³éÏóµÄIoFuture·şÎñ
+ * æä¾›æŠ½è±¡çš„IoFutureæœåŠ¡
  * </p>
  * <br>
- * @author ºúçâ@ritsky
+ * @author èƒ¡ç®@ritsky
  *
  */
 public abstract class AbstractIoFuture implements IoFuture {
 	
 	private IoSession session;
 	
-	/**ÊÇ·ñÍê³É*/
+	/**æ˜¯å¦å®Œæˆ*/
 	private boolean isComplete;
 	
-	/**ÊÇ·ñ±»È¡Ïû*/
+	/**æ˜¯å¦è¢«å–æ¶ˆ*/
 	private boolean isCancel;
 	
-	/**Òì³£ÀàĞÍ*/
+	/**å¼‚å¸¸ç±»å‹*/
 	private Throwable throwable;
 	
 	
@@ -99,14 +99,14 @@ public abstract class AbstractIoFuture implements IoFuture {
 	}
 
 	
-	/**ÉèÖÃÍê³É*/
+	/**è®¾ç½®å®Œæˆ*/
 	public void setComplete(Throwable throwable) {
 		synchronized (this) {
-			if(isCancel) {  //Èç¹ûÈÎÎñ»¹Ã»ÓĞÔËĞĞ¾ÍÈ¡ÏûÁË
+			if(isCancel) {  //å¦‚æœä»»åŠ¡è¿˜æ²¡æœ‰è¿è¡Œå°±å–æ¶ˆäº†
 				return;
 			}
 			
-			this.isComplete = true;              //ÉèÖÃÍê³É
+			this.isComplete = true;              //è®¾ç½®å®Œæˆ
 			
 			if(throwable != null) {
 				this.throwable = throwable;

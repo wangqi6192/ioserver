@@ -1,20 +1,20 @@
-package com.yz.net;
+锘縫ackage com.yz.net;
 
 import java.nio.ByteBuffer;
 
 /**
  * <p>
- * 网络消息
+ * 缃戠粶娑堟伅
  * </p>
  * <br>
- * @author 胡玮@ritsky
+ * @author 鑳＄幃@ritsky
  *
  */
 public interface NetMessage {
 	
 	/**
 	 * <p>
-	 * 获得消息内容
+	 * 鑾峰緱娑堟伅鍐呭
 	 * </p>
 	 * <br>
 	 * @return

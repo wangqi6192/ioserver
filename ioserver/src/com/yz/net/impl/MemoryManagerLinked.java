@@ -1,4 +1,4 @@
-package com.yz.net.impl;
+ï»¿package com.yz.net.impl;
 
 
 
@@ -15,21 +15,21 @@ import java.util.concurrent.atomic.AtomicBoolean;
  */
 class MemoryManagerLinked implements MemoryManagerInface {
 	
-	/** Ã¿¸öbufferËù´æµÄ×Ö½Ú´óĞ¡ */
+	/** æ¯ä¸ªbufferæ‰€å­˜çš„å­—èŠ‚å¤§å° */
 	private int byteSize = 0;
 	
-	/** ¿ÉÒÔ´æ¶àÉÙ¸öbuffer */
+	/** å¯ä»¥å­˜å¤šå°‘ä¸ªbuffer */
 	private int num = 0;
 	
 	private boolean isDirect;
 	
-	/** bufferµÄ¶ÓÁĞ */
+	/** bufferçš„é˜Ÿåˆ— */
 	public LinkedList<BufferObj> bufferObjList = null;
 	
 	/**
-	 * ¹¹Ôì
-	 * @param byteSize		×Ö½Ú´óĞ¡
-	 * @param num			buffer¸öÊı
+	 * æ„é€ 
+	 * @param byteSize		å­—èŠ‚å¤§å°
+	 * @param num			bufferä¸ªæ•°
 	 */
 	public MemoryManagerLinked(int byteSize,int num, boolean isDirect){ 
 		this.byteSize = byteSize;
@@ -47,7 +47,7 @@ class MemoryManagerLinked implements MemoryManagerInface {
 	
 
 	/**
-	 * ´Ó¶ÓÁĞÖĞ»ñµÃÒ»¸öbuffer²¢±êÊ¾Îª ÔÚ¸Ã´Ë»ñÈ¡Î´¹é»¹Ê± ²»¿ÉÔÙ´Î»ñÈ¡
+	 * ä»é˜Ÿåˆ—ä¸­è·å¾—ä¸€ä¸ªbufferå¹¶æ ‡ç¤ºä¸º åœ¨è¯¥æ­¤è·å–æœªå½’è¿˜æ—¶ ä¸å¯å†æ¬¡è·å–
 	 * @return
 	 */
 	@Override
@@ -67,7 +67,7 @@ class MemoryManagerLinked implements MemoryManagerInface {
 	}
 
 	/**
-	 * ²úÉúÒ»¸öĞÂµÄbuffer ²¢°ÑËü¼Óµ½¶ÓÁĞµ±ÖĞÈ¥
+	 * äº§ç”Ÿä¸€ä¸ªæ–°çš„buffer å¹¶æŠŠå®ƒåŠ åˆ°é˜Ÿåˆ—å½“ä¸­å»
 	 * @return
 	 */
 	private ByteBuffer newBuffer(){
@@ -80,7 +80,7 @@ class MemoryManagerLinked implements MemoryManagerInface {
 	
 
 	/**
-	 * ¹é»¹buffer Èç¹û¸ÃbufÒÑ¾­¹é»¹ÔòÅ×³öÒì³£
+	 * å½’è¿˜buffer å¦‚æœè¯¥bufå·²ç»å½’è¿˜åˆ™æŠ›å‡ºå¼‚å¸¸
 	 * @param buf
 	 */
 	@Override
@@ -108,7 +108,7 @@ class MemoryManagerLinked implements MemoryManagerInface {
 	
 	@Override
 	public boolean neaten() {
-		// TODO ÄÚ´æËéÆ¬ÕûÀí
+		// TODO å†…å­˜ç¢ç‰‡æ•´ç†
 		return false;
 	}
 	
@@ -129,7 +129,7 @@ class MemoryManagerLinked implements MemoryManagerInface {
 	
 	class BufferObj {
 		
-		/** ±êÊ¾¸ÃbufferÒÑ¾­±»»ñÈ¡Ê¹ÓÃÁË£¬²»ÄÜÔÙ±»ÆäËüµØ·½»ñÈ¡Ê¹ÓÃ */
+		/** æ ‡ç¤ºè¯¥bufferå·²ç»è¢«è·å–ä½¿ç”¨äº†ï¼Œä¸èƒ½å†è¢«å…¶å®ƒåœ°æ–¹è·å–ä½¿ç”¨ */
 		public AtomicBoolean atomicBoolean = new AtomicBoolean(false);
 		
 		public ByteBuffer buf = null;

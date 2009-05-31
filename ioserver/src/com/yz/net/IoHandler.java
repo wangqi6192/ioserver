@@ -1,21 +1,21 @@
-package com.yz.net;
+﻿package com.yz.net;
 
 
 /**
  * <p>
- * IO�����ߣ�����Э�鴦����ľ�����Ϣ���д��������Կ���������������߼����һ���ط����߼������Ϣ�Ĵ���<br>
- * ���Լ̳д˽ӿڽ�����Ϣ�Ĵ�����IOServer�Ŀ��Ϊ�������ݣ�û��ΪIoHandler���̳߳ط���Ĵ����������<br>
- * �߼������б�Ҫ�õ��̳߳�֮��Ĵ���������������ʵ�ֵ�IoHandler�����ⷽ���ʵ��.
+ * IO处理者，对于协议处理后的具体消息进行处理，可以看作是网络层连接逻缉层的一个地方，逻缉层对消息的处理<br>
+ * 可以继承此接口进行消息的处理，IOServer的框架为了力求简捷，没有为IoHandler作线程池方面的处理，如果有<br>
+ * 逻缉处理有必要用到线程池之类的处理，可以在自已实现的IoHandler中作这方面的实现.
  * </p>
  * <br>
- * @author ����@ritsky
+ * @author 胡玮@ritsky
  *
  */
 public interface IoHandler {
 	/**
 	 * <p>
-	 * ������Ϣ����ʱ������������Ϣ�Ǿ���Э�鴦���߽��������Ϣ���ͣ�ע�⣬��û��������Ϣ������ʱ�˷���<br>
-	 * �ǲ��ᱻ������
+	 * 当有消息到达时被触发，此消息是经由协议处理者解析后的消息类型，注意，当没有设置消息处理器时此方法<br>
+	 * 是不会被触发的
 	 * </p>
 	 * <br>
 	 * @param session
@@ -25,8 +25,8 @@ public interface IoHandler {
 	
 	/**
 	 * <p>
-	 * ������Ϣ����ʱ���ⷢ������Ϣ��û�о���Э�崦���ߵ�ByteBuffer���ͣ������ݵĽ����Ҫʵ��������ʵ��<br>
-	 * ע�⣬��������Э�鴦�����󣬴˷����ǲ��ᱻ�����ġ�
+	 * 当有消息到达时被解发，此消息是没有经过协义处理者的ByteBuffer类型，对数据的解的需要实现者自已实现<br>
+	 * 注意，当设置了协议处理器后，此方法是不会被触发的。
 	 * </p>
 	 * <br>
 	 * @param session
@@ -44,8 +44,8 @@ public interface IoHandler {
 	
 	/**
 	 * <p>
-	 * IoSession����ʽ�ر�ʱ����ִ��(���ڹر����쳣�ģ�Ҳ���ǲ���IoSession�ǳɹ��ر�<br>
-	 * �����ڹر�ʱ�׳����쳣���ᱻ����
+	 * IoSession被正式关闭时触发执行(由于关闭是异常的，也就是不管IoSession是成功关闭<br>
+	 * 还是在关闭时抛出了异常都会被触发
 	 * </p>
 	 * <br>
 	 * @param session

@@ -1,4 +1,4 @@
-package com.yz.net.impl;
+ï»¿package com.yz.net.impl;
 
 
 
@@ -6,16 +6,16 @@ package com.yz.net.impl;
 
 /**
  * <p>
- * ·¢±¨»úÊÂ¼ş¼àÌıÕß
+ * å‘æŠ¥æœºäº‹ä»¶ç›‘å¬è€…
  * </p>
  * <br>
- * @author ºúçâ@ritsky
+ * @author èƒ¡ç®@ritsky
  *
  */
 interface DispatcherEventlListener {
 	/**
 	 * <p>
-	 * Ñ¡Ôñ¼ü±»CancelÊ±´¥·¢
+	 * é€‰æ‹©é”®è¢«Cancelæ—¶è§¦å‘
 	 * </p>
 	 * <br>
 	 * @param key
@@ -25,7 +25,7 @@ interface DispatcherEventlListener {
 	
 	/**
 	 * <p>
-	 * ×¢²áIO»á»°Ê±
+	 * æ³¨å†ŒIOä¼šè¯æ—¶
 	 * </p>
 	 * <br>
 	 * @param session

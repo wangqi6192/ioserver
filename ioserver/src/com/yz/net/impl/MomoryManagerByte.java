@@ -1,4 +1,4 @@
-package com.yz.net.impl;
+锘縫ackage com.yz.net.impl;
 
 
 
@@ -9,10 +9,10 @@ import java.util.TreeSet;
 
 /**
  * <p>
- * ByteBuffer子序列分配内存管理器
+ * ByteBuffer瀛愬簭鍒楀垎閰嶅唴瀛樼鐞嗗櫒
  * </p>
  * <br>
- * @author 皮佳@ritsky
+ * @author 鐨匠@ritsky
  *
  */
 public class MomoryManagerByte  implements MemoryManagerInface{
@@ -116,7 +116,7 @@ public class MomoryManagerByte  implements MemoryManagerInface{
 
 	@Override
 	public boolean neaten() {
-		//整理内存碎片
+		//鏁寸悊鍐呭瓨纰庣墖
 		return false;
 	}
 	
