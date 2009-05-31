@@ -6,7 +6,7 @@ import java.net.Socket;
 
 /**
  * <p>
- * 无任何意义，完全验证用的
+ * 无任何意义，完全验证用的 
  * </p>
  * <br>
  * @author 胡玮@ritsky
