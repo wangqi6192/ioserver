@@ -24,7 +24,7 @@ import com.yz.net.ProtocolHandler;
  * @author 胡玮@ritsky
  *
  */
-public abstract class AbstractIoServer implements IoService, DispatcherEventlListener{
+public abstract class AbstractIoService implements IoService, DispatcherEventlListener{
 	/**是否启动*/
 	protected volatile boolean isStart;
 
@@ -46,7 +46,7 @@ public abstract class AbstractIoServer implements IoService, DispatcherEventlLis
 	/**定时器*/
 	private Timer timer;
 	
-	//TODO:初始化时给一个能预测到的参数值，以便提高map的访问性能
+	//TODO:初始化时给一个能预测到的参数值，以便提高map的访问性能 //TODO:
 	private ConcurrentHashMap<Long, IoSession> ioSessionMap = new ConcurrentHashMap<Long, IoSession>();
 	
 	/**提供只读Map*/
@@ -76,7 +76,7 @@ public abstract class AbstractIoServer implements IoService, DispatcherEventlLis
 	/**
 	 * 启动IO处理线程
 	 */
-	protected void startIoDispatchers() {
+	protected void startIoReadWriteMachines() {
 		dispatcherManager.start();
 	}
 	
@@ -84,9 +84,20 @@ public abstract class AbstractIoServer implements IoService, DispatcherEventlLis
 	 * 停止IO处理线程
 	 * @throws IOException
 	 */
-	protected void stopIoDispatchers(){
+	protected void stopIoReadWriteMachines(){
 		dispatcherManager.stop();
 	}
+	
+	
+	/**
+	 * 初始经读写机
+	 * @param readwriteThreadNum
+	 * @throws Exception
+	 */
+	protected void initIoReadWriteMachines(int readwriteThreadNum) throws Exception{
+		this.dispatcherManager.init(readwriteThreadNum);
+	}
+	
 	
 	
 	/**
@@ -123,17 +134,17 @@ public abstract class AbstractIoServer implements IoService, DispatcherEventlLis
 		return nextId.incrementAndGet();
 	}
 	
-	public AbstractIoServer() throws Exception{
+	public AbstractIoService() {
 		dispatcherManager = new IoReadWriteMachineManager(this);
-		dispatcherManager.init();
+		//dispatcherManager.init(readwriteThreadNum);
 		
 	}
 
 	
-	public AbstractIoServer(int port) throws Exception {
-		this();
+	/*public AbstractIoService(int readwriteThreadNum, int port) throws Exception {		
+		this(readwriteThreadNum);
 		bind(port);
-	}
+	}*/
 	
 	@Override
 	public SocketAddress getBindAddress() {

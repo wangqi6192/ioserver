@@ -24,7 +24,7 @@ public class PoxyServerExample {
 			//准备代理的服务器地址
 			SocketAddress address = new InetSocketAddress("127.0.0.1", 80);
 			
-			IoService acceptor = new IoConnector();
+			IoService acceptor = new IoConnector(4);
 			acceptor.bind(address);
 			
 			//设置协议处理者，可以不设置
