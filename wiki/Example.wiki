@@ -1,10 +1,8 @@
 #labels Featured
 package example;
-
 import java.nio.ByteBuffer;
 import java.util.ArrayList;
 import java.util.List;
-
 import com.yz.net.IoFuture;
 import com.yz.net.IoHandler;
 import com.yz.net.IoSession;
@@ -15,9 +13,6 @@ import com.yz.net.impl.IoServerImpl;
 
 public class ServerExample {
 
-	/**
-	 * @param args
-	 */
 	public static void main(String[] args) {
 		try {
 			//绑定一个本机端口
@@ -37,10 +32,7 @@ public class ServerExample {
 				Thread.sleep(1000);
 			}
 			
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		} catch (Exception e) {}
 
 	}
 
