@@ -1,5 +1,4 @@
-#利用IoServer构建服务器例子
-
+#xxxxxxxxxxxxxxxxxxxxxxx
 = Server =
 {{{
 package example;
