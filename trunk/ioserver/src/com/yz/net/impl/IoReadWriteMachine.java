@@ -414,7 +414,8 @@ class IoReadWriteMachine implements Runnable {
 			
 			
 		} catch (IOException e) {
-			e.printStackTrace();
+			//e.printStackTrace();
+			//TODO:打印异常
 			session.close();
 		}
 	}

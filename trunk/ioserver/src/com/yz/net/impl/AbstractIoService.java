@@ -77,8 +77,17 @@ public abstract class AbstractIoService implements IoService, DispatcherEventlLi
 	 * 启动IO处理线程
 	 */
 	protected void startIoReadWriteMachines() {
+		
+	/*	//TODO:测试代码，加入用于测试IoSession关闭后是否从Map中移走
+		this.timer.schedule(new TimerTask() {
+			public void run() {
+				
+			}
+		}, 5000, period)*/
 		dispatcherManager.start();
 	}
+	
+	
 	
 	/**
 	 * 停止IO处理线程
@@ -230,6 +239,8 @@ public abstract class AbstractIoService implements IoService, DispatcherEventlLi
 
 	@Override  //IoSession在发报机中注册后触发
 	public void onRegisterSession(IoSessionImpl session) {
+		//TODO:测试打印
+		System.out.println("Session-"+session.getId() + "-Register");
 		if(session == null) {
 			return;
 		}
@@ -245,6 +256,8 @@ public abstract class AbstractIoService implements IoService, DispatcherEventlLi
 
 	@Override  //IoSession真正在发报机中关闭并移除时触发
 	public void onRemoveSession(IoSessionImpl session) {
+		//TODO:测试打印
+		System.out.println("Session-"+session.getId() + "-Remove");
 		if(session == null) {
 			return;
 		}
