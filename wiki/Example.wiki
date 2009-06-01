@@ -1,2 +1,0 @@
-#labels Featured
-IoService acceptor = new IoServerImpl(8899);
