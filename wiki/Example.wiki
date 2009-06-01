@@ -1,6 +1,6 @@
 #利用IoServer构建服务器例子
 
-= [Server] =
+= Server =
 {{{
 package example;
 
@@ -121,7 +121,7 @@ public class ServerExample {
 
 }}}
 
-= [Client] =
+= Client =
 {{{
 package example;
 
