@@ -1,4 +1,7 @@
 #summary 利用IoServer构建服务器例程1
+= 使用介绍 =
+客户端可以用下面的Client项来连，也可以用Example2列程的Client项
+
 = Server =
 {{{
 package example;
