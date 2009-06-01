@@ -171,6 +171,9 @@ public class IoSessionImpl implements IoSession{
 	
 	@Override //关闭会话，关闭会话是异步关闭，如果需要同步，调用IoFuture上的wait
 	public IoFuture close() {
+		//TODO:测度代码
+		System.out.println("IoSession-" + id + "-Close");
+		
 		if(this.isCloseing.compareAndSet(false, true)) {
 			if(this.closeFuture == null) {
 				closeFuture = new CloseFuture(this);
@@ -266,6 +269,9 @@ public class IoSessionImpl implements IoSession{
 	
 	
 	void closeNow0() throws IOException {
+		//TODO:测试代码
+		System.out.println("IoSession-" + id + "-CloseNow");
+		
 		if(this.selectionKey != null) {
 			this.selectionKey.cancel();
 		}
