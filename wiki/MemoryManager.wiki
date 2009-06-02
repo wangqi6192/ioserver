@@ -1,0 +1,7 @@
+#summary IoServer提供内存分配
+#labels Featured
+
+= Introduction =
+IoServer提供多种内存管理机制，这里我们提到的实际是一个ByteBuffer池的概念，每次向内存管理器释放ByteBuffer时，实际是把ByteBuffer归还给内存管理器，我们为什么需要内存管理器呢，说到这里有的人会说java本身不是提供有内存管理机制，而且有较好的GC回收吗？IoServer提供内存管理器是为了减少频繁分配内存所带来的GC回收的频繁启动。
+
+IoServer在每一个IO处理机(IoReadWriteMachine)身上都会有一个内存管理器，每一个生成的IoSession都会从内存管理器中得到一块ByteBuffer来作为IoSession的输入Buffer，当IoSession关闭时也会向内存管理器释放这块ByteBuffer
