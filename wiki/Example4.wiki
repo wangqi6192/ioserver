@@ -1,4 +1,4 @@
-#summary EchoClient例程
+#summary EchoClient例程适应于SVN的代码
 #labels Featured
 
 = Introduction =
