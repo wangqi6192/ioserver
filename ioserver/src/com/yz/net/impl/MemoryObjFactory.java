@@ -35,8 +35,8 @@ public class MemoryObjFactory {
 	 * @param dilatancySize		每次扩充的内存大小
 	 * @return
 	 */
-	public static MomoryManagerByte createMomoryManagerByte(int byteSize,int defaultSize,int dilatancySize){
-		MomoryManagerByte momoryManagerByte = new MomoryManagerByte(byteSize,defaultSize,dilatancySize);
+	public static MomoryManagerByte createMomoryManagerByte(int byteSize,int defaultSize,int dilatancySize,boolean isDirect){
+		MomoryManagerByte momoryManagerByte = new MomoryManagerByte(byteSize,defaultSize,dilatancySize,isDirect);
 		return momoryManagerByte;
 	}
 	

@@ -17,14 +17,24 @@ public class MomoryManagerByte{
 	/*public static void main(String[] args) {
 		try {
 			
-			MomoryManagerByte newMomoryManager = new MomoryManagerByte(100,10,100);
-
-			ByteBuffer buf_1 = newMomoryManager.allocat(90);
-			ByteBuffer buf_2 = newMomoryManager.allocat(90);
-			ByteBuffer buf_3 = newMomoryManager.allocat(90);
+//			ByteBuffer buf = ByteBuffer.allocate(3);
+//			System.out.println(buf.position());
+//			System.out.println(buf.limit());
+//			
+//			buf.put((byte) 1);
+//			buf.put((byte) 2);
+//			buf.put((byte) 3);
+//			buf.put((byte) 3);
 			
-			ByteBuffer buf_4 = newMomoryManager.allocat(90);
-			ByteBuffer buf_5 = newMomoryManager.allocat(90);
+			
+			MomoryManagerByte newMomoryManager = new MomoryManagerByte(9,3,9,true);
+
+			ByteBuffer buf_1 = newMomoryManager.allocat(3);
+			ByteBuffer buf_2 = newMomoryManager.allocat(3);
+			ByteBuffer buf_3 = newMomoryManager.allocat(3);
+			
+			ByteBuffer buf_4 = newMomoryManager.allocat(3);
+			ByteBuffer buf_5 = newMomoryManager.allocat(3);
 
 
 //			newMomoryManager.free(buf_2);
@@ -52,11 +62,19 @@ public class MomoryManagerByte{
 			buf_5.put((byte) 14);
 			buf_5.put((byte) 15);
 			
+			
 			buf_1.flip();
 			buf_2.flip();
 			buf_3.flip();
 			buf_4.flip();
 			buf_5.flip();
+			
+			newMomoryManager.free(buf_1);
+			buf_1 = newMomoryManager.allocat(3);
+			buf_1.put((byte) 1);
+			buf_1.put((byte) 2);
+			buf_1.put((byte) 3);
+			buf_1.flip();
 			
 			System.out.println( buf_1.get() + " - " + buf_1.get() + " - " + buf_1.get());
 			System.out.println( buf_2.get() + " - " + buf_2.get() + " - " + buf_2.get());
@@ -80,6 +98,8 @@ public class MomoryManagerByte{
 	/** 默认扩充的内存大小 */
 	private int dilatancy_size		= 1024 * 1024 * 1;
 	
+	private boolean isDirect;
+	
 	/** 内存byteBuffer */
 	private ByteBuffer byteBuffer = null;
 	
@@ -91,11 +111,18 @@ public class MomoryManagerByte{
 	
 	
 	
-	MomoryManagerByte(int byteSize,int defaultSize,int dilatancySize){
+	MomoryManagerByte(int byteSize,int defaultSize,int dilatancySize,boolean isDirect){
 		this.byte_size = byteSize;
 		this.defaultSize = defaultSize;
 		this.dilatancy_size = dilatancySize;
-		byteBuffer = ByteBuffer.allocate(this.byte_size);
+		this.isDirect = isDirect;
+		
+		if(this.isDirect) {
+			byteBuffer = ByteBuffer.allocateDirect(this.byte_size);
+		}
+		else {
+			byteBuffer = ByteBuffer.allocate(this.byte_size);
+		}
 	}
 	
 	/**
@@ -119,7 +146,7 @@ public class MomoryManagerByte{
 				byteBuffer = nextMomoryManagerByte.allocat(size);
 				return byteBuffer;
 			}
-			nextMomoryManagerByte = new MomoryManagerByte(this.byte_size,this.defaultSize,this.dilatancy_size);
+			nextMomoryManagerByte = new MomoryManagerByte(this.byte_size,this.defaultSize,this.dilatancy_size,this.isDirect);
 			this.setMomoryManagerByte(nextMomoryManagerByte);
 			byteBuffer = nextMomoryManagerByte.allocat(size);
 		}
@@ -141,7 +168,7 @@ public class MomoryManagerByte{
 				int position = 0;
 				while(iter.hasNext()){
 					MomoryBuffer momoryBuffer = iter.next();
-					if((momoryBuffer.getPosition() - position) > size){
+					if((momoryBuffer.getPosition() - position) >= size){
 						this.byteBuffer.position(position);
 						this.byteBuffer.limit(momoryBuffer.getPosition());
 						bor = true;
@@ -149,7 +176,7 @@ public class MomoryManagerByte{
 					}
 					position = momoryBuffer.getLimit();
 				}
-				if((this.byte_size - position) > size){
+				if((this.byte_size - position) >= size){
 					this.byteBuffer.position(position);
 					this.byteBuffer.limit(position + size);
 					bor = true;
@@ -159,7 +186,8 @@ public class MomoryManagerByte{
 		ByteBuffer slicebuf = null;
 		if(bor){
 			slicebuf = this.byteBuffer.slice();
-			this.getBufferSet().add(new MomoryBuffer(slicebuf,slicebuf.arrayOffset(),slicebuf.arrayOffset() + slicebuf.limit()));
+//			this.getBufferSet().add(new MomoryBuffer(slicebuf,slicebuf.arrayOffset(),slicebuf.arrayOffset() + slicebuf.limit()));
+			this.getBufferSet().add(new MomoryBuffer(slicebuf,this.byteBuffer.position(),this.byteBuffer.limit()));
 		}
 		this.byteBuffer.clear();
 		return slicebuf;
