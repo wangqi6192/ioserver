@@ -437,7 +437,7 @@ class IoReadWriteMachine implements Runnable {
 	 * <br>
 	 * @param session
 	 */
-	public void handleWrite(IoSessionImpl session) {
+	/*public void handleWrite(IoSessionImpl session) {
 		Queue<IoFuture> writeQueue = session.getWriteQueue();
 		
 		IoFuture ioFuture =  writeQueue.peek();
@@ -464,6 +464,7 @@ class IoReadWriteMachine implements Runnable {
 		
 		int writelen = 0;            //写入字节的长度
 		int count = 0;               //为了防止进入死循环的参数
+		
 		
 		while(true) {
 			count ++;
@@ -517,7 +518,102 @@ class IoReadWriteMachine implements Runnable {
 		
 		session.lastWriteTime = System.currentTimeMillis();
 		session.lastAccessTime = session.lastWriteTime;
+	}*/
+	
+	/**
+	 * 提供handleWrite调用的方法，主要是写数据到channel的操作
+	 */
+	private void handleWriteFuture(IoSessionImpl session, WriteFuture future) throws IOException {
+		
+		Queue<IoFuture> writeQueue = session.getWriteQueue();
+		
+		ByteBuffer outBuffer = future.getBuffer();
+		
+		int writelen = 0;
+		for(int i=0; i< 10; i++) {
+			writelen += session.getChannel().write(outBuffer);
+			if(outBuffer.hasRemaining()) {
+				if(writelen > MAX_OUT_SIZE) {
+					break;
+				}
+			}
+			else {
+				if(future.equals(writeQueue.poll())) {
+					future.setComplete(null);
+					break;
+				}
+				else{
+					throw new Error("发生严重错误");
+				}
+			}
+		}
 	}
+	
+	
+	/**
+	 * <p>
+	 * 写处理操作，//TODO:这里暂时考虑每次进行一条消息的写操作，如果消息的数据大于1k就放到下次
+	 * 循环处理，//TODO:正在考虑是否按写的字节数来做为判断是在一次循环中写入小于多少的数据进入
+	 * 下次循环，还是按消息条数来做判断
+	 * </p>
+	 * <br>
+	 * @param session
+	 */
+	public void handleWrite(IoSessionImpl session) {
+		Queue<IoFuture> writeQueue = session.getWriteQueue();
+		
+		while(true) {
+			IoFuture ioFuture =  writeQueue.peek();
+			if(ioFuture == null) {
+				session.setWriteControl(false);
+				return;
+			}
+			
+			if(ioFuture.isComplete()) {
+				writeQueue.poll();
+				return;
+			}
+			
+			if(ioFuture.getClass() == CloseFuture.class) {
+				if(ioFuture.equals(session.getCloseFuture())) {
+					//TODO:发生关闭事件
+					this.removeIoSessionNow(session.getCloseFuture());
+					writeQueue.poll();
+					return;
+				}
+			}
+		
+			//进行写数据的处理，如果写发生异常，就返回再次取队例中的写，直到不再发生异常
+			try {
+				handleWriteFuture(session, (WriteFuture) ioFuture);
+			} catch (IOException e) {
+				//TODO:记录异常信息
+				e.printStackTrace();
+				if(ioFuture.equals(writeQueue.peek())) {
+					writeQueue.poll();
+					((WriteFuture)ioFuture).setComplete(e);
+				}
+				else {
+					throw new Error("发生严重错误");
+				}
+				continue;
+			}
+			
+			
+			
+			//如果会话中已经没有要写的数据了，就关闭会话中的写
+			if(session.getWriteQueue().peek() == null) {
+				session.setWriteControl(false);
+				//this.scheduleControl(session);
+			}
+			
+			session.lastWriteTime = System.currentTimeMillis();
+			session.lastAccessTime = session.lastWriteTime;
+			return;
+		}
+	}
+	
+	
 	
 	
 	/**排程控制,方便会话中加入写的事件*/
