@@ -7,13 +7,11 @@ import java.util.LinkedList;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
- * <p>
- * </p>
- * <br>
- * @author 
+ * 链表式的内存管理(链表中存放的是预先分配的byteBuffer大小内存)
+ * @author 皮佳
  *
  */
-class MemoryManagerLinked implements MemoryManagerInface {
+class MemoryManagerLinked {
 	
 	/** 每个buffer所存的字节大小 */
 	private int byteSize = 0;
@@ -30,8 +28,9 @@ class MemoryManagerLinked implements MemoryManagerInface {
 	 * 构造
 	 * @param byteSize		字节大小
 	 * @param num			buffer个数
+	 * @param isDirect		是否在虚拟机所所管理的范围内创建内存
 	 */
-	public MemoryManagerLinked(int byteSize,int num, boolean isDirect){ 
+	MemoryManagerLinked(int byteSize,int num, boolean isDirect){ 
 		this.byteSize = byteSize;
 		this.num = num;
 		
@@ -50,7 +49,6 @@ class MemoryManagerLinked implements MemoryManagerInface {
 	 * 从队列中获得一个buffer并标示为 在该此获取未归还时 不可再次获取
 	 * @return
 	 */
-	@Override
 	public ByteBuffer allocat(){
 		for(int i=0;i<this.bufferObjList.size();i++){
 			BufferObj bufferObj = this.bufferObjList.get(i);
@@ -72,7 +70,7 @@ class MemoryManagerLinked implements MemoryManagerInface {
 	 */
 	private ByteBuffer newBuffer(){
 		BufferObj bufferObj = new BufferObj(this.byteSize);
-		
+		bufferObj.atomicBoolean.compareAndSet(false, true);
 		this.bufferObjList.add(bufferObj);
 		++ this.num;
 		return bufferObj.buf;
@@ -83,7 +81,6 @@ class MemoryManagerLinked implements MemoryManagerInface {
 	 * 归还buffer 如果该buf已经归还则抛出异常
 	 * @param buf
 	 */
-	@Override
 	public void free(ByteBuffer buf) throws Exception {
 
 		for(int i=0;i<this.bufferObjList.size();i++){
@@ -100,18 +97,10 @@ class MemoryManagerLinked implements MemoryManagerInface {
 	}
 
 	
-	@Override
 	public ByteBuffer allocat(int size) {
 		return null;
 	}
 
-	
-	@Override
-	public boolean neaten() {
-		// TODO 内存碎片整理
-		return false;
-	}
-	
 	
 	
 	public int getByteSize() {
