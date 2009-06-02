@@ -24,8 +24,14 @@ import com.yz.net.expand.ClientIoSession;
  */
 class IoReadWriteMachine implements Runnable {
 	
+	/**线程名字*/
+	String threadName;
+	
 	/**最大的输出块*/
 	private static final int MAX_OUT_SIZE = 1024;
+	
+	/**每个Session输Buffer的大小*/
+	private static final int INBUFFER_SIZE = 1024 * 10;
 	
 	private boolean isRunning;
 	
@@ -75,7 +81,7 @@ class IoReadWriteMachine implements Runnable {
 	public void init(int maxIoSessionNum) throws Exception {
 		
 		listenerSet = new HashSet<DispatcherEventlListener>();
-		memManager = MemoryObjFactory.createMemoryManagerLinked(1024 * 10, 0, true);
+		memManager = MemoryObjFactory.createMemoryManagerLinked(INBUFFER_SIZE, 0, true);
 		
 		waitRegQueue = new ConcurrentLinkedQueue<IoSessionImpl>();
 		
