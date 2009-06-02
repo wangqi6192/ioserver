@@ -15,10 +15,6 @@ import com.yz.net.expand.IoConnector;
 
 
 public class ClientExample {
-
-	/**
-	 * @param args
-	 */
 	public static void main(String[] args) {
 		try {
 			IoConnector connector = new IoConnector();
@@ -39,11 +35,6 @@ public class ClientExample {
 				int num = rand.nextInt(5000);
 				session.write(new ExampleMessage(num));
 				Thread.sleep(1000);
-				/*count ++;
-				if(count > 10) {
-					session.close();
-					break;
-				}*/
 			}
 			
 			//connector.stop();
@@ -61,23 +52,20 @@ public class ClientExample {
 
 		@Override
 		public void ioSessionClosed(IoFuture future) {
-			//TODO:当一个会话关闭后被触发的方法
-			
+			//TODO:当一个会话关闭后被触发的方法	
 		}
 
 		@Override
 		public void messageReceived(IoSession session, NetMessage msg) {
 			//TODO:当存在协议解析类时，请按具体项目要求完成此方法
 			ExampleMessage message = (ExampleMessage) msg;
-			
 			System.out.println("Num = " + message.getNumber());
 		}
 
 		
 		@Override
 		public void messageReceived(IoSession session, byte[] msgdata) {
-			//TODO:当没有协议解析类时，请按具体项目要求完成此方法
-			
+			//TODO:当没有协议解析类时，请按具体项目要求完成此方	
 		}	
 	}
 	

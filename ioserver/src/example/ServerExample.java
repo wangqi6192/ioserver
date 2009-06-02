@@ -14,9 +14,6 @@ import com.yz.net.impl.IoServerImpl;
 
 public class ServerExample {
 
-	/**
-	 * @param args
-	 */
 	public static void main(String[] args) {
 		try {
 			//绑定一个本机端口
@@ -31,13 +28,11 @@ public class ServerExample {
 			//启动
 			acceptor.start();
 			
-			
 			while(true) {
 				Thread.sleep(1000);
 			}
 			
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 
@@ -56,12 +51,9 @@ public class ServerExample {
 		public void messageReceived(IoSession session, NetMessage msg) {
 			//TODO:当存在协议解析类时，请按具体项目要求完成此方法
 			ExampleMessage message = (ExampleMessage) msg;
-			
 			int returnvalue = message.getNumber() + 1;
 			
-			
 			ExampleMessage sendMsg = new ExampleMessage(returnvalue);
-			
 			session.write(sendMsg);
 		}
 
@@ -75,7 +67,6 @@ public class ServerExample {
 	
 	public static class Protocol implements ProtocolHandler {
 
-	
 		@Override
 		public List<NetMessage> onData(ByteBuffer data, IoSession session) {
 			//TODO:这里负责茶房地数据进行解析，并形成一个具体的消息类
