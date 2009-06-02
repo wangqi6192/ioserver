@@ -1,0 +1,5 @@
+#summary IoServer的IoSession
+
+= Introduction =
+
+IoSession是一个抽象的概念，每一个IoSession代表一个客户端会话，每一个连接上服务器的客户端都会生成一个IoSession，IoSession提供异常的读写关闭能力。当一个使用者调用IoSession的write方法时，其实并没有把数据写入到通道，而是产生一个写的请求，交给IoService，然后通知IoService有数据要发送，如果使用者想进行同步的操作，可以利用调用方法所返回IoFuture的await方法来等待操作完成.
