@@ -249,6 +249,9 @@ public class IoSessionImpl implements IoSession{
 
 				List<NetMessage> list = ownerAcceptor.getProtocolHandler().onData(readBuf, this);
 
+				//TODO:如果得到错误消息，应该立即终止读取，并关闭Session
+				
+				
 				int size = list.size();
 				if(list != null && size > 0) {
 					inBuffer.position(readBuf.position());
@@ -259,7 +262,14 @@ public class IoSessionImpl implements IoSession{
 
 					//处理消息
 					for(int i=0; i<size; i++) {
-						this.ownerAcceptor.getIoHandler().messageReceived(this, list.get(i));
+						NetMessage msg = list.get(i);
+						if(msg.equals(NetMessage.ERROR_MSG)) {  //协议解析发生不可恢复错误
+							this.close();     //发出关闭请求
+							return;      //发生错误后，不能下文处理了.
+						}
+						else {
+							this.ownerAcceptor.getIoHandler().messageReceived(this, msg);
+						}
 					}
 				}
 			}
@@ -327,10 +337,10 @@ public class IoSessionImpl implements IoSession{
 		if(!this.isCloseing.get()) {
 			this.writeQueue.offer(future);
 			
-			//判断协议处理者的要求是否为写完后关闭
+			/*//判断协议处理者的要求是否为写完后关闭
 			if(this.ownerAcceptor.getProtocolHandler().isClose()) {
 				this.close();
-			}
+			}*/
 		
 			//IO会话加入排程控制
 			ownerDispatcher.scheduleControl(this);

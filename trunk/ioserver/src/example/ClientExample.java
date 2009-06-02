@@ -84,12 +84,6 @@ public class ClientExample {
 	public static class Protocol implements ProtocolHandler {
 
 		@Override
-		public boolean isClose() {
-			//TODO:如果需要长连接，请反回false，如果需要短连接请返回true
-			return false;
-		}
-
-		@Override
 		public List<NetMessage> onData(ByteBuffer data, IoSession session) {
 			//TODO:这里负责茶房地数据进行解析，并形成一个具体的消息类
 			
