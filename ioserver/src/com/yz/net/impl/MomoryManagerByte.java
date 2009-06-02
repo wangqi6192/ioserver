@@ -97,8 +97,8 @@ public class MomoryManagerByte{
 	private int byte_size 			= 1024 * 1024 * 1;
 	/** 默认扩充的内存大小 */
 	private int dilatancy_size		= 1024 * 1024 * 1;
-	
-	private boolean isDirect;
+	/** 是否在虚拟机所所管理的范围内创建内存 */
+	private boolean isDirect		= false;
 	
 	/** 内存byteBuffer */
 	private ByteBuffer byteBuffer = null;
@@ -110,7 +110,13 @@ public class MomoryManagerByte{
 	private MomoryManagerByte momoryManagerByte = null;
 	
 	
-	
+	/**
+	 * 构造
+	 * @param byteSize			预先分配的总内存大小
+	 * @param defaultSize		默认获取的内存大小
+	 * @param dilatancySize		默认扩充的内存大小
+	 * @param isDirect			是否在虚拟机所所管理的范围内创建内存
+	 */
 	MomoryManagerByte(int byteSize,int defaultSize,int dilatancySize,boolean isDirect){
 		this.byte_size = byteSize;
 		this.defaultSize = defaultSize;
@@ -139,13 +145,17 @@ public class MomoryManagerByte{
 	 * @return
 	 */
 	public ByteBuffer allocat(int size) {
+		//先从总内存中获取
 		ByteBuffer byteBuffer = gain(size);
 		if(byteBuffer == null){
+			//如果未获取到在到子内存管理对象里面获取
 			MomoryManagerByte nextMomoryManagerByte = this.getMomoryManagerByte();
 			if(nextMomoryManagerByte != null){
+				//如果有子内存管理对象就直接获取
 				byteBuffer = nextMomoryManagerByte.allocat(size);
 				return byteBuffer;
 			}
+			//如果没有子内存管理对象就创建一个并获取
 			nextMomoryManagerByte = new MomoryManagerByte(this.byte_size,this.defaultSize,this.dilatancy_size,this.isDirect);
 			this.setMomoryManagerByte(nextMomoryManagerByte);
 			byteBuffer = nextMomoryManagerByte.allocat(size);
@@ -157,13 +167,16 @@ public class MomoryManagerByte{
 	
 	private ByteBuffer gain(int size) {
 		boolean bor = false;
+		//如果还没有获取过内存就直接从第一个位置开始获取
 		if(bufferSet == null || bufferSet.size()<=0){
 			this.byteBuffer.position(0);
 			this.byteBuffer.limit(size);
 			bor = true;
 		}
 		else{
+			//如果之前获取过 
 			synchronized (this.bufferSet) {
+				//遍历之前获取的内存对象 拿到它的索引值 根据索引值来接着后面的位置获取
 				Iterator<MomoryBuffer> iter =  bufferSet.iterator();
 				int position = 0;
 				while(iter.hasNext()){
