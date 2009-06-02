@@ -19,6 +19,7 @@ class MemoryManagerLinked {
 	/** 可以存多少个buffer */
 	private int num = 0;
 	
+	/** 是否在虚拟机所所管理的范围内创建内存 */
 	private boolean isDirect;
 	
 	/** buffer的队列 */

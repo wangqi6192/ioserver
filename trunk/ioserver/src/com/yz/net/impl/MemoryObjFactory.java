@@ -33,6 +33,7 @@ public class MemoryObjFactory {
 	 * @param byteSize			总的内存大小
 	 * @param defaultSize		每次获取内存时的默认大小
 	 * @param dilatancySize		每次扩充的内存大小
+	 * @param isDirect 			是否在虚拟机所所管理的范围内创建内存
 	 * @return
 	 */
 	public static MomoryManagerByte createMomoryManagerByte(int byteSize,int defaultSize,int dilatancySize,boolean isDirect){
