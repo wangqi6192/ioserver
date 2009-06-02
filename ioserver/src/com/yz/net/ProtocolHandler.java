@@ -33,6 +33,6 @@ public interface ProtocolHandler {
 	 * </p>
 	 * <br>
 	 * @return
-	 */
-	boolean isClose();
+	 *//*
+	boolean isClose();*/
 }

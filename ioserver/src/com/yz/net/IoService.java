@@ -2,6 +2,7 @@
 
 import java.io.IOException;
 import java.net.SocketAddress;
+import java.util.Map;
 
 /**
  * <p>
@@ -115,6 +116,15 @@ public interface IoService {
 	public void setOverTimeHandler(OverTimeHandler handler);
 	
 
+	/**
+	 * <p>
+	 * 构建协议组,协议组是包装不同协议处理的一种协议结构
+	 * </p>
+	 * <br>
+	 * @param handlers
+	 * @return
+	 */
+	public ProtocolHandler buildProtocolGroup(ProtocolHandler... handlers);
 	
 	
 	/**

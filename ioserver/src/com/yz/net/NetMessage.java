@@ -10,6 +10,13 @@
  *
  */
 public interface NetMessage {
+	/**错误消息*/
+	public static final NetMessage ERROR_MSG = new NetMessage() {
+		public byte[] getContent() {
+			return null;
+		}
+	};
+	
 	
 	/**
 	 * <p>

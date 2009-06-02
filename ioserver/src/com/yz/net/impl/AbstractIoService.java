@@ -213,7 +213,10 @@ public abstract class AbstractIoService implements IoService, DispatcherEventlLi
 	}
 
 	
-	
+	/**
+	 * 排程IoSession到指定的Io处理器中
+	 * @param session
+	 */
 	public void scheduleToDispatcher(IoSessionImpl session) {
 		if(session == null) {
 			return;
@@ -228,6 +231,52 @@ public abstract class AbstractIoService implements IoService, DispatcherEventlLi
 		dispatcher.scheduleRegister(session);     //排程注册
 	}
 
+	
+	/*@Override //构建协议组
+	public ProtocolHandler buildProtocolGroup(int prefixByteNum,
+			Map<String, ProtocolHandler> handlerMap) {
+		if(prefixByteNum <= 0) {
+			prefixByteNum = 1;
+		}
+		
+		ProtocolGroup group = new ProtocolGroup(prefixByteNum);
+		
+		Iterator<String> keyIter = handlerMap.keySet().iterator();
+		while(keyIter.hasNext()) {
+			String flagstr = keyIter.next();
+			ProtocolHandler handler = handlerMap.get(flagstr);
+			
+			if(flagstr == null || handler == null) {
+				continue;
+			}
+			group.addHandler(flagstr, handler);
+		}
+		
+		return group;
+	}*/
+	
+	
+	@Override
+	public ProtocolHandler buildProtocolGroup(ProtocolHandler... handlers) {
+		if(handlers == null || handlers.length == 0) {
+			return null;
+		}
+		
+		ProtocolGroup group = new ProtocolGroup();
+		int len = handlers.length;
+		for(int i=0; i<len; i++) {
+			ProtocolHandler handler = handlers[i];
+			if(handler == null) {
+				continue;
+			}
+			
+			group.addHandler(handler);
+		}
+		
+		return group;
+	}
+	
+	
 	
 	@Override
 	public IoSession getIoSession(long ioSessionId) {
