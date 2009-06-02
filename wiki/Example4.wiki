@@ -1,4 +1,5 @@
 #summary EchoClient例程
+#labels Featured
 
 = Introduction =
 
