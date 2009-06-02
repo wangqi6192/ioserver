@@ -3,7 +3,7 @@
 
 = Introduction =
 
-可以配合EchoClient例程运行
+可以配合EchoClient例程运行(通过SVN可以下载最新的例程)
 
 
 = Details =
