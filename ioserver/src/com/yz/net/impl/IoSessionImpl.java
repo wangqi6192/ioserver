@@ -144,10 +144,17 @@ public class IoSessionImpl implements IoSession{
 	 * 分配输入buffer
 	 */
 	void allocatInBuffer() {
+		//TODO:
 		//TODO:完善内存管理后，输入buffer从内存管理中获得
-		//ByteBuffer buffer = this.ownerDispatcher.getMemoryManager().allocat(10240);
-		//this.inBuffer = this.ownerDispatcher.getMemoryManager().allocat(10240);
-		this.inBuffer = ByteBuffer.allocateDirect(1024 * 5);
+		//ByteBuffer buffer = this.ownerDispatcher.getMemoryManager().allocat();
+		this.inBuffer = this.ownerDispatcher.getMemoryManager().allocat();
+		
+		//TODO:测试打印
+		System.out.println("AllocatThreadName = " + this.ownerDispatcher.threadName);
+		System.out.println("AllocatNum = " + this.ownerDispatcher.getMemoryManager().getBufferNum());
+		
+		//this.inBuffer = ByteBuffer.allocateDirect(1024 * 5);
+		
 	}
 	
 	

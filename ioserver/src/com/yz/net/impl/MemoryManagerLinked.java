@@ -64,6 +64,11 @@ class MemoryManagerLinked {
 		}
 		return newBuffer();
 	}
+	
+	
+	public int getBufferNum() {
+		return bufferObjList.size();
+	}
 
 	/**
 	 * 产生一个新的buffer 并把它加到队列当中去

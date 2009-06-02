@@ -55,7 +55,9 @@ class IoReadWriteMachineManager {
 	public void start() {
 
 		for(int i=0; i<ioDispatchers.length; i++) {
-			Thread t = new Thread(ioDispatchers[i], "IoProcess-"+i);
+			String threadName = "IoProcess-" + i;
+			ioDispatchers[i].threadName = threadName;
+			Thread t = new Thread(ioDispatchers[i], threadName);
 			t.start();
 		}
 	}
