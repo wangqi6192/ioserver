@@ -151,7 +151,7 @@ public class IoSessionImpl implements IoSession{
 		
 		//TODO:测试打印
 		System.out.println("AllocatThreadName = " + this.ownerDispatcher.threadName);
-		System.out.println("AllocatNum = " + this.ownerDispatcher.getMemoryManager().getBufferNum());
+//		System.out.println("AllocatNum = " + this.ownerDispatcher.getMemoryManager().getBufferNum());
 		
 		//this.inBuffer = ByteBuffer.allocateDirect(1024 * 5);
 		
