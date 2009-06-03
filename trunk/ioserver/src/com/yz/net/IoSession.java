@@ -1,6 +1,5 @@
 ﻿package com.yz.net;
 
-import java.io.IOException;
 
 
 
@@ -13,6 +12,9 @@ import java.io.IOException;
  *
  */
 public interface IoSession {
+	
+	/**每个Session输Buffer的大小*/
+	public static final int INBUFFER_SIZE = 1024 * 10;
 	
 	/**
 	 * <p>
