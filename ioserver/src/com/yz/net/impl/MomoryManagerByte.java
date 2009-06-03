@@ -101,13 +101,15 @@ public class MomoryManagerByte implements MemoryObjInface{
 	
 	
 	/** 默认获取的内存大小 */
-	private int defaultSize 		= 1024;				
+	private static int defaultSize 		= 1024;				
 	/** 默认创建的内存大小 */
-	private int byte_size 			= 1024 * 1024 * 1;
+	private static int byte_size 			= 1024 * 1024 * 1;
 	/** 默认扩充的内存大小 */
-	private int dilatancy_size		= 1024 * 1024 * 1;
+	private static int dilatancy_size		= 1024 * 1024 * 1;
 	/** 是否在虚拟机所所管理的范围内创建内存 */
-	private boolean isDirect		= false;
+	private static boolean isDirect		= false;
+	
+	
 	
 	/** 内存byteBuffer */
 	private ByteBuffer byteBuffer = null;
@@ -118,6 +120,23 @@ public class MomoryManagerByte implements MemoryObjInface{
 	/** 当该管理器管理的内存不够用时将生成另一个同样的管理内存放到本身对象中，让其组成一个链表结构 */
 	private MomoryManagerByte momoryManagerByte = null;
 	
+	
+	public MomoryManagerByte(){
+		this(byte_size, defaultSize, dilatancy_size, isDirect);
+	}
+	
+	public MomoryManagerByte(boolean isDirect){
+		this(byte_size, defaultSize, dilatancy_size, isDirect);
+	}
+	
+	public MomoryManagerByte(int byteSize){
+		this(byteSize, defaultSize, dilatancy_size, isDirect);
+	}
+	
+	public MomoryManagerByte(int byteSize,boolean isDirect){
+		this(byteSize, defaultSize, dilatancy_size, isDirect);
+	}
+
 	
 	/**
 	 * 构造
