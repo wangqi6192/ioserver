@@ -11,6 +11,7 @@ import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
 import com.yz.net.IoFuture;
+import com.yz.net.IoSession;
 import com.yz.net.expand.ConnectFuture;
 import com.yz.net.expand.ClientIoSession;
 
@@ -29,9 +30,6 @@ class IoReadWriteMachine implements Runnable {
 	
 	/**最大的输出块*/
 	private static final int MAX_OUT_SIZE = 1024;
-	
-	/**每个Session输Buffer的大小*/
-	private static final int INBUFFER_SIZE = 1024 * 10;
 	
 	private boolean isRunning;
 	
@@ -81,7 +79,7 @@ class IoReadWriteMachine implements Runnable {
 	public void init(int maxIoSessionNum) throws Exception {
 		
 		listenerSet = new HashSet<DispatcherEventlListener>();
-		memManager = new MomoryManagerByte(INBUFFER_SIZE * 100,INBUFFER_SIZE ,INBUFFER_SIZE * 100, true);
+		memManager = new MomoryManagerByte(IoSession.INBUFFER_SIZE * 100,IoSession.INBUFFER_SIZE ,IoSession.INBUFFER_SIZE * 100, true);
 		
 		waitRegQueue = new ConcurrentLinkedQueue<IoSessionImpl>();
 		
