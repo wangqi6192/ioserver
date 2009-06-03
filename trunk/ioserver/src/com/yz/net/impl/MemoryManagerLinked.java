@@ -19,39 +19,51 @@ import java.util.concurrent.atomic.AtomicBoolean;
  */
 public class MemoryManagerLinked implements MemoryObjInface{
 	
-	public static void main(String[] args) {
-		try{
-			MemoryManagerLinked memoryManagerLinked = new MemoryManagerLinked(1024,false);
-
-			ByteBuffer buf_1 = memoryManagerLinked.allocat(1);
-
-			ByteBuffer buf_2_1 = memoryManagerLinked.allocat(2);
-			ByteBuffer buf_2_2 = memoryManagerLinked.allocat(2);
-
-			ByteBuffer buf_3_1 = memoryManagerLinked.allocat(3);
-			ByteBuffer buf_3_2 = memoryManagerLinked.allocat(3);
-			ByteBuffer buf_3_3 = memoryManagerLinked.allocat(3);
-			ByteBuffer buf_3_4 = memoryManagerLinked.allocat(3);
-
-			memoryManagerLinked.free(buf_2_2);
-			memoryManagerLinked.free(buf_3_1);
-			memoryManagerLinked.free(buf_3_3);
-			
-			memoryManagerLinked.free(buf_3_3);
-
-		}catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
+//	public static void main(String[] args) {
+//		try{
+//			MemoryManagerLinked memoryManagerLinked = new MemoryManagerLinked(1024,false);
+//
+//			ByteBuffer buf_1 = memoryManagerLinked.allocat(1);
+//
+//			ByteBuffer buf_2_1 = memoryManagerLinked.allocat(2);
+//			ByteBuffer buf_2_2 = memoryManagerLinked.allocat(2);
+//
+//			ByteBuffer buf_3_1 = memoryManagerLinked.allocat(3);
+//			ByteBuffer buf_3_2 = memoryManagerLinked.allocat(3);
+//			ByteBuffer buf_3_3 = memoryManagerLinked.allocat(3);
+//			ByteBuffer buf_3_4 = memoryManagerLinked.allocat(3);
+//
+//			memoryManagerLinked.free(buf_2_2);
+//			memoryManagerLinked.free(buf_3_1);
+//			memoryManagerLinked.free(buf_3_3);
+//			
+//			memoryManagerLinked.free(buf_3_3);
+//
+//		}catch (Exception e) {
+//			e.printStackTrace();
+//		}
+//	}
 	
 	/** 是否在虚拟机所所管理的范围内创建内存 */
-	private boolean isDirect;
+	private static  boolean isDirect;
+	/** 默认货物的内存大小 */
+	private static int defaultSize 		= 1024;	
+	
 	
 	/** 总内存容器 key:字节大小 value:ByteBuffer队列 */
 	public HashMap<Integer,LinkedList<BufferObj>> bufferObjMap = null;
 	
-	/** 默认货物的内存大小 */
-	private int defaultSize 		= 1024;	
+
+	
+	
+	
+	public MemoryManagerLinked(){
+		this(defaultSize, isDirect);
+	}
+	
+	public MemoryManagerLinked(int defaultSize){
+		this(defaultSize, isDirect);
+	}
 	
 	/**
 	 * 构造
