@@ -7,11 +7,20 @@ import java.util.Iterator;
 import java.util.TreeSet;
 
 /**
- * 
+ * <p>该内存管理对象主要是在当你需要长时间的new一快内存的时候使用，
+ * <p><b>（主要作用是为了不让GC对这些内存不停的释放分配而消耗性能，而且每次获取的内存大小可以是自己指定的大小）</b>
+ * <p>本内存管理对象主要通过预先分配一个大的ByteBuffer然后每次从这个ByteBuffer中获取一小块内存出来进行使用，
+ * <p>具体获取内存的规则是在打的内存中获取一段连续的内存出来使用，如果中间有一小段内存(例如三个字节)未可以使用，
+ * <p>但如果你获取的内存都币这三内存大的话，则永远获取不到该内存（这里就会产生一小块的内存碎片），
+ * <p>当然只要该小段内存的前后被释放后将又可以获取使用
+ * <p>主要是通过ByteBuffer的子序列来做到的，如果当预先分配的内存不足的时候，将重新分配另快大的内存
+ * <p>(该该重新分配的内存也是有初始化的时候用使用者设置，重新分配的内存将由本内存管理对象中的子内存管理对象所拥有,
+ * <p>主要算法是通过链表的形式来实现，理论上当总内存不可用的时候可以无限分配新的内存)
+ * <br/>
  * @author 皮佳
  *
  */
-public class MomoryManagerByte{
+public class MomoryManagerByte implements MemoryObjInface{
 	
 	
 	/*public static void main(String[] args) {
@@ -91,7 +100,7 @@ public class MomoryManagerByte{
 	}*/
 	
 	
-	/** 默认货物的内存大小 */
+	/** 默认获取的内存大小 */
 	private int defaultSize 		= 1024;				
 	/** 默认创建的内存大小 */
 	private int byte_size 			= 1024 * 1024 * 1;
@@ -117,7 +126,7 @@ public class MomoryManagerByte{
 	 * @param dilatancySize		默认扩充的内存大小
 	 * @param isDirect			是否在虚拟机所所管理的范围内创建内存
 	 */
-	MomoryManagerByte(int byteSize,int defaultSize,int dilatancySize,boolean isDirect){
+	public MomoryManagerByte(int byteSize,int defaultSize,int dilatancySize,boolean isDirect){
 		this.byte_size = byteSize;
 		this.defaultSize = defaultSize;
 		this.dilatancy_size = dilatancySize;
@@ -132,7 +141,7 @@ public class MomoryManagerByte{
 	}
 	
 	/**
-	 * 获取默认的内存出来使用 在为调用free()方法时该内存区间将不可以再此被分配
+	 * <p>获取默认的内存出来使用 在为调用free()方法时该内存区间将不可以再此被分配
 	 * @return
 	 */
 	public ByteBuffer allocat() {
@@ -140,7 +149,8 @@ public class MomoryManagerByte{
 	}
 	
 	/**
-	 * 获取指定的内存出来使用 在为调用free()方法时该内存区间将不可以再此被分配
+	 * <p>获取指定的内存出来使用  在为调用free()方法时该内存区间将不可以再此被分配
+	 * <br/>
 	 * @param size
 	 * @return
 	 */
@@ -164,7 +174,11 @@ public class MomoryManagerByte{
 		return byteBuffer;
 	}
 	
-	
+	/**
+	 * 从byteBuffer中获取一块内存出来使用
+	 * @param size
+	 * @return
+	 */
 	private ByteBuffer gain(int size) {
 		boolean bor = false;
 		//如果还没有获取过内存就直接从第一个位置开始获取
@@ -233,20 +247,35 @@ public class MomoryManagerByte{
 		}
 	}
 
+	/**
+	 * 返回总内存ByteBuffer
+	 * @return
+	 */
 	private ByteBuffer getByteBuffer() {
 		return byteBuffer;
 	}
 
+	/**
+	 * 返回正在使用的ByteBuffer队列，用来标示有哪些区间已经在使用了
+	 * @return
+	 */
 	private TreeSet<MomoryBuffer> getBufferSet() {
 		return bufferSet;
 	}
 
 
+	/**
+	 * 设置子内存管理对象
+	 * @param momoryManagerByte
+	 */
 	private void setMomoryManagerByte(MomoryManagerByte momoryManagerByte) {
 		this.momoryManagerByte = momoryManagerByte;
 	}
 
-
+	/**
+	 * 返回子内存管理对象
+	 * @return
+	 */
 	private MomoryManagerByte getMomoryManagerByte() {
 		return momoryManagerByte;
 	}
@@ -255,6 +284,11 @@ public class MomoryManagerByte{
 	
 }
 
+/**
+ * 用来封装获取出来的内存，主要是为了标示该内存用到了总内存中的哪些区间
+ * @author Administrator
+ *
+ */
 class MomoryBuffer{
 	private ByteBuffer buf = null;
 	
@@ -280,6 +314,11 @@ class MomoryBuffer{
 	}
 }
 
+/**
+ * 一个排序器。用来将MomoryBuffer进行排序
+ * @author Administrator
+ *
+ */
 class MomoryBufferCommpositor implements Comparator<MomoryBuffer>{
 
 	@Override

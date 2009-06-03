@@ -39,7 +39,7 @@ class IoReadWriteMachine implements Runnable {
 	private HashSet<DispatcherEventlListener> listenerSet;
 	
 	/**内存管理器*/
-	private MemoryManagerLinked memManager;
+	private MemoryObjInface memManager;
 	
 	/**等待注册队列*/
 	private ConcurrentLinkedQueue<IoSessionImpl> waitRegQueue;
@@ -81,7 +81,7 @@ class IoReadWriteMachine implements Runnable {
 	public void init(int maxIoSessionNum) throws Exception {
 		
 		listenerSet = new HashSet<DispatcherEventlListener>();
-		memManager = MemoryObjFactory.createMemoryManagerLinked(INBUFFER_SIZE, 0, true);
+		memManager = new MomoryManagerByte(INBUFFER_SIZE * 100,INBUFFER_SIZE ,INBUFFER_SIZE * 100, true);
 		
 		waitRegQueue = new ConcurrentLinkedQueue<IoSessionImpl>();
 		
@@ -156,7 +156,7 @@ class IoReadWriteMachine implements Runnable {
 	 * <br>
 	 * @return
 	 */
-	public MemoryManagerLinked getMemoryManager() {
+	public MemoryObjInface getMemoryManager() {
 		return memManager;
 	}
 
