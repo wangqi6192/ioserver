@@ -2,7 +2,7 @@
 
 = 概念 (IO读写线程，工作线程) =
 
-IO读写线程是IoServer负责收发数据的工作线程，IoServer会根据CPU的个数来生成
+IO读写线程是IoServer负责收发数据的工作线程，IoServer会根据CPU的个数来生成<br>
 工作线程则是处理逻缉运算的线程，很多的做法是利用线程池
 
 = Introduction =
