@@ -257,12 +257,16 @@ public abstract class AbstractIoService implements IoService, DispatcherEventlLi
 	
 	
 	@Override
-	public ProtocolHandler buildProtocolGroup(ProtocolHandler... handlers) {
+	public ProtocolHandler buildProtocolGroup(int prefixByteNum, ProtocolHandler... handlers) {
 		if(handlers == null || handlers.length == 0) {
 			return null;
 		}
 		
-		ProtocolGroup group = new ProtocolGroup();
+		if(prefixByteNum <= 0) {
+			prefixByteNum = 1;
+		}
+		
+		ProtocolGroup group = new ProtocolGroup(prefixByteNum);
 		int len = handlers.length;
 		for(int i=0; i<len; i++) {
 			ProtocolHandler handler = handlers[i];

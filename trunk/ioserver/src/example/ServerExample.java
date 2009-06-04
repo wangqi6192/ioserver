@@ -3,9 +3,7 @@
 import java.nio.ByteBuffer;
 import java.util.ArrayList;
 import java.util.List;
-
-import com.yz.net.IoFuture;
-import com.yz.net.IoHandler;
+import com.yz.net.IoHandlerAdapter;
 import com.yz.net.IoSession;
 import com.yz.net.NetMessage;
 import com.yz.net.ProtocolHandler;
@@ -39,14 +37,7 @@ public class ServerExample {
 	}
 
 	
-	public static class DataHandler implements IoHandler {
-
-		@Override
-		public void ioSessionClosed(IoFuture future) {
-			//TODO:当一个会话关闭后被触发的方法
-			
-		}
-
+	public static class DataHandler extends IoHandlerAdapter {
 		@Override
 		public void messageReceived(IoSession session, NetMessage msg) {
 			//TODO:当存在协议解析类时，请按具体项目要求完成此方法
@@ -56,13 +47,7 @@ public class ServerExample {
 			ExampleMessage sendMsg = new ExampleMessage(returnvalue);
 			session.write(sendMsg);
 		}
-
-		
-		@Override
-		public void messageReceived(IoSession session, byte[] msgdata) {
-			//TODO:当没有协议解析类时，请按具体项目要求完成此方法
-			
-		}	
+	
 	}
 	
 	public static class Protocol implements ProtocolHandler {

@@ -11,22 +11,46 @@ public class ChatMessage implements NetMessage {
 	
 	private long playerId;
 	
-	private byte protocolType;
+	private int validateCode; 
+	
+	private ProtocolType type ;
 	
 	private byte[] body;  
 
+	private DataInputStream dis;
 
-	public ChatMessage(byte cmdtype, long playerId, byte protocolType, byte[] body) {
+	public ChatMessage(byte cmdtype, long playerId, int validateCode , ProtocolType protocolType, byte[] body) {
 		this.cmdtype = cmdtype;
 		this.playerId = playerId;
-		this.protocolType = protocolType;
+		this.validateCode = validateCode;
+		this.type = protocolType;
 		this.body = body;
 	}
 	
+	
+	public byte getCmdType() {
+		return cmdtype;
+	}
+	
+	public long getPlayerId() {
+		return playerId;
+	}
+	
+	public int getValidateCode() {
+		return validateCode;
+	}
+	
 	public DataInputStream getStream() {
-		ByteArrayInputStream bis = new ByteArrayInputStream(body);
-		DataInputStream dis = new DataInputStream(bis);
+		if(dis == null) {
+			ByteArrayInputStream bis = new ByteArrayInputStream(body);
+			DataInputStream dis = new DataInputStream(bis);
+		}
 		return dis;
+	}
+	
+	
+	public ProtocolType getProtocolType() {
+		return type;
 	}
 	
 	@Override
