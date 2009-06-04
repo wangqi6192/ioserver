@@ -1,5 +1,7 @@
 package example.chat;
 
+import java.util.Random;
+import java.util.Timer;
 import java.util.Vector;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -25,26 +27,86 @@ public class PlayerManager {
 	
 	private PlayerManager() {}
 	
+	
+	private Random rand = new Random();
+	
+	private Timer timer = new Timer(true);
+	
 	private ConcurrentHashMap<Long, Player> playerMap = new ConcurrentHashMap<Long, Player>();
 
-	private ConcurrentHashMap<Long, Vector<NetMessage>> playerDatas = 
-		new ConcurrentHashMap<Long, Vector<NetMessage>>();
+	private ConcurrentHashMap<Long, Vector<ChatMessage>> playerDatas = 
+		new ConcurrentHashMap<Long, Vector<ChatMessage>>();
 	
 	
+	public Timer getTimer() {
+		return timer;
+	}
+	
+	
+	/**
+	 * <p>
+	 * 获取玩家
+	 * </p>
+	 * <br>
+	 * @param playerId
+	 * @return
+	 */
 	public Player getPlayer(long playerId) {
 		return playerMap.get(playerId);
 	}
 	
+	public Vector<ChatMessage> getPlayerDatas(long playerId) {
+		Vector<ChatMessage> vector = playerDatas.get(playerId);
+		if(vector == null) {
+			playerDatas.putIfAbsent(playerId, new Vector());
+		}
+		
+		vector = playerDatas.get(playerId);
+		
+		return vector;
+	}
 	
+	
+	/**
+	 * <p>
+	 * 生成新玩家
+	 * </p>
+	 * <br>
+	 * @param playerId
+	 * @param nickName
+	 * @return
+	 */
 	public Player newPlayer(long playerId, String nickName) {
 		Player player = new Player(playerId, nickName);
 		
+		return player;
+	}
+	
+	
+	/**
+	 * <p>
+	 * 添加玩家 0:成功  1:id重复
+	 * </p>
+	 * <br>
+	 * @param player
+	 * @return
+	 */
+	public int addPlayer(Player player) {
+		if(player == null) {
+			throw new NullPointerException("player is null");
+		}
+		
 		Player returnPlayer = playerMap.putIfAbsent(player.getPlayerId(), player);
+		
 		if(returnPlayer == null) {
-			return player;
+			return 0;
 		}
-		else {
-			return returnPlayer;
+		else{
+			return 1;
 		}
+	}
+	
+	public Random getRandom() {
+		return rand;
 	}
 }

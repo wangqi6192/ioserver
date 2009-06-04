@@ -28,6 +28,23 @@ public class ChatCommandId {
 	
 	
 	/**服务器心跳响应*/
-	public static final byte S_HEARTBEAT_REQ = 8;
+	public static final byte S_HEARTBEAT_RSP = 8;
 	
+	
+	/**好友列表刷新请求*/
+	public static final byte C_FRIENDLIST_REFURBISH_REQ = 9;
+	
+	
+	/**好友列表刷新响应*/
+	public static final byte S_FRIENDLIST_REFURBISH_RSP = 10;
+	
+	
+	/**验证错误*/
+	public static final byte S_VALIDATE_ERR = 11;
+	
+	/**发生错误*/
+	public static final byte S_ERROR = 12;
+	
+	/**cmwap绑定*/
+	public static final byte S_CMWAPBIND = 13;
 }

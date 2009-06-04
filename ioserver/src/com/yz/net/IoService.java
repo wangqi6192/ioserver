@@ -124,7 +124,7 @@ public interface IoService {
 	 * @param handlers
 	 * @return
 	 */
-	public ProtocolHandler buildProtocolGroup(ProtocolHandler... handlers);
+	public ProtocolHandler buildProtocolGroup(int prefixByteNum, ProtocolHandler... handlers);
 	
 	
 	/**
