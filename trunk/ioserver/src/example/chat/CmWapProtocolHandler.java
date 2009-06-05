@@ -12,6 +12,7 @@ public class CmWapProtocolHandler implements ProtocolHandler {
 
 	@Override
 	public List<NetMessage> onData(ByteBuffer data, IoSession session) {
+		session.addAttribute("TYPE", ProtocolType.CMWAP);
 		ArrayList<NetMessage> list = null;
 		while(true) {
 			byte[] headdata = new byte[data.remaining()];
@@ -71,9 +72,8 @@ public class CmWapProtocolHandler implements ProtocolHandler {
 			byte[] body = new byte[contentbuf.remaining()];
 			contentbuf.get(body);
 			
+			InputMessage msg = new InputMessage(cmdtype, playerId, validateCode, body);
 			
-			
-			ChatMessage msg = new ChatMessage(cmdtype, playerId, validateCode, ProtocolType.CMWAP, body);
 			if(list == null) {
 				list = new ArrayList<NetMessage>();
 			}

@@ -4,7 +4,7 @@ import java.io.IOException;
 
 import com.yz.net.IoSession;
 
-import example.chat.ChatMessage;
+import example.chat.InputMessage;
 import example.chat.MessageFactory;
 import example.chat.MessageProcessTask;
 import example.chat.Player;
@@ -13,13 +13,13 @@ public class AddFriend extends MessageProcessTask {
 	
 	private long friendId;
 
-	public AddFriend(IoSession session, ChatMessage message) {
+	public AddFriend(IoSession session, InputMessage message) {
 		super(session, message);
 	}
 
 	@Override
 	public void execute() {
-		Player player = manager.getPlayer(message.getPlayerId());
+		/*Player player = manager.getPlayer(message.getPlayerId());
 		if(player.getValidateCode() != message.getValidateCode()) {
 			player.putMessage(MessageFactory.createValidateErr(message.getProtocolType()));
 		}
@@ -32,12 +32,12 @@ public class AddFriend extends MessageProcessTask {
 			player.putMessage(MessageFactory.createAddFriendRsp(message.getProtocolType(), friend));
 		}
 
-		player.flush();
+		player.flush();*/
 	}
 
 	@Override
 	public void parse() throws IOException {
-		friendId = message.getStream().readLong();
+		//friendId = message.getStream().readLong();
 
 	}
 

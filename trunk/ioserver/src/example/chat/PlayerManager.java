@@ -34,8 +34,8 @@ public class PlayerManager {
 	
 	private ConcurrentHashMap<Long, Player> playerMap = new ConcurrentHashMap<Long, Player>();
 
-	private ConcurrentHashMap<Long, Vector<ChatMessage>> playerDatas = 
-		new ConcurrentHashMap<Long, Vector<ChatMessage>>();
+	private ConcurrentHashMap<Long, Vector<OutputMessage>> playerDatas = 
+		new ConcurrentHashMap<Long, Vector<OutputMessage>>();
 	
 	
 	public Timer getTimer() {
@@ -55,10 +55,10 @@ public class PlayerManager {
 		return playerMap.get(playerId);
 	}
 	
-	public Vector<ChatMessage> getPlayerDatas(long playerId) {
-		Vector<ChatMessage> vector = playerDatas.get(playerId);
+	public Vector<OutputMessage> getPlayerDatas(long playerId) {
+		Vector<OutputMessage> vector = playerDatas.get(playerId);
 		if(vector == null) {
-			playerDatas.putIfAbsent(playerId, new Vector());
+			playerDatas.putIfAbsent(playerId, new Vector<OutputMessage>());
 		}
 		
 		vector = playerDatas.get(playerId);

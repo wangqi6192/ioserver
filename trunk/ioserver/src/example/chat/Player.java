@@ -26,19 +26,24 @@ public class Player {
 	/**玩家昵称*/
 	private String nickName;
 	
+	/**IoSessionId*/
 	private long sessionId;
 	
-	private ProtocolType type;
-	
+	/**验证码*/
 	private int validateCode;
 	
+	/**好友ID列表*/
 	private HashSet<Long> friendIdSet;
 	
+	/**最近访问时间*/
 	public long lastAccessTime = System.currentTimeMillis(); 
 	
+	/**Player检查任务*/
 	private CheckPlayerTask checktask;
 	
+	/**是否在线*/
 	private boolean isOnline;
+	
 	
 	public Player(long playerId, String nickName) {
 		this.playerId = playerId;
@@ -81,13 +86,7 @@ public class Player {
 		this.sessionId = sessionId;
 	}
 	
-	public ProtocolType getProtocolType() {
-		return type;
-	}
 	
-	public ProtocolType setProtocolType(ProtocolType type) {
-		return this.type = type;
-	}
 	
 	public long getPlayerId() {
 		return playerId;
@@ -121,15 +120,15 @@ public class Player {
 	}
 	
 	
-	public void putMessage(ChatMessage message) {
+	public void putMessage(OutputMessage message) {
 		PlayerManager manager = PlayerManager.getInstance();
-		Vector<ChatMessage> vector = manager.getPlayerDatas(playerId);
+		Vector<OutputMessage> vector = manager.getPlayerDatas(playerId);
 		vector.add(message);
 	}
 	
 	
 	public void flush() {
-		ChatMessage[] msgs = null;
+		/*ChatMessage[] msgs = null;
 		PlayerManager manager = PlayerManager.getInstance();
 		Vector<ChatMessage> vector = manager.getPlayerDatas(playerId);
 		synchronized (vector) {
@@ -156,6 +155,6 @@ public class Player {
 				session.addAttribute("CLOSETAG", "");
 				session.close();
 			}
-		}
+		}*/
 	}
 }

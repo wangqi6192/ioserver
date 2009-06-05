@@ -23,20 +23,18 @@ public class MessageFactory {
 	 * @param status 状态
 	 * @return
 	 */
-	public static ChatMessage createSLoginRsp(ProtocolType type, int validateCode) {
-		byte[] rspdata  = new byte[4];
+	public static OutputMessage createSLoginRsp(int validateCode) {
+		OutputMessage outMsg = new OutputMessage(ChatCommandId.S_LOGIN_RSP);
 		
-		rspdata[0] = (byte) ((validateCode >>> 24) & 0xFF); 
-		rspdata[1] = (byte) ((validateCode >>> 16) & 0xFF);
-		rspdata[2] = (byte) ((validateCode >>>  8) & 0xFF);
-		rspdata[3] = (byte) ((validateCode >>>  0) & 0xFF);
+		try {
+			outMsg.getOutputStream().writeInt(validateCode);
+		} catch (IOException e) {}
 		
-		
-		ChatMessage msg = new ChatMessage(ChatCommandId.S_LOGIN_RSP,0, 0,type, rspdata);
-		
-		return msg;
-	
+		return outMsg;
 	}
+	
+	
+	
 	
 	/**
 	 * <p>
@@ -47,29 +45,22 @@ public class MessageFactory {
 	 * @param players
 	 * @return
 	 */
-	public static ChatMessage createSFriendListRsp(ProtocolType type, Player[] players) {
-		ByteArrayOutputStream bos = new ByteArrayOutputStream(512);
-		DataOutputStream dos = new DataOutputStream(bos);
+	public static OutputMessage createSFriendListRsp(Player[] players) {
 		
-		ChatMessage msg = null;
+		OutputMessage outMsg = new OutputMessage(ChatCommandId.S_FRIENDLIST_REFURBISH_RSP);
 		try {
-			dos.writeShort(players.length);
+			outMsg.getOutputStream().writeShort(players.length);
 			for(int i=0; i<players.length; i++) {
-				dos.writeLong(players[i].getPlayerId());
-				dos.writeUTF(players[i].getNickName());
-				dos.writeByte(players[i].isOnline() ? 1 : 0);
+				outMsg.getOutputStream().writeLong(players[i].getPlayerId());
+				outMsg.getOutputStream().writeUTF(players[i].getNickName());
+				outMsg.getOutputStream().writeByte(players[i].isOnline() ? 1 : 0);
 			}
-			
-			msg = new ChatMessage(ChatCommandId.S_FRIENDLIST_REFURBISH_RSP, 0, 0, type, bos.toByteArray());
-			
-			
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}       //好友个数
+		}
+		catch(IOException e) {}
 		
-		return msg;
+		return outMsg;
 	}
+	
 	
 	
 	/**
@@ -80,10 +71,9 @@ public class MessageFactory {
 	 * @param type
 	 * @return
 	 */
-	public static ChatMessage createValidateErr(ProtocolType type) {
-		ChatMessage msg = new ChatMessage(ChatCommandId.S_VALIDATE_ERR, 0, 0, type, new byte[]{});
-		
-		return msg;
+	public static OutputMessage createValidateErr() {
+		OutputMessage outMsg = new OutputMessage(ChatCommandId.S_VALIDATE_ERR);
+		return outMsg;
 	}
 	
 	
@@ -95,14 +85,20 @@ public class MessageFactory {
 	 * @param type
 	 * @return
 	 */
-	public static ChatMessage createHearTbeatRsp(ProtocolType type) {
-		ChatMessage msg = new ChatMessage(ChatCommandId.S_HEARTBEAT_RSP, 0, 0, type, new byte[]{});
-		return msg;
+	public static OutputMessage createHearTbeatRsp() {
+		OutputMessage outMsg = new OutputMessage(ChatCommandId.S_HEARTBEAT_RSP);
+		return outMsg;
 	}
 	
-	public static ChatMessage createError(ProtocolType type, byte errorcode) {
-		ChatMessage msg = new ChatMessage(ChatCommandId.S_HEARTBEAT_RSP, 0, 0, type, new byte[]{errorcode});
-		return msg;
+	
+	public static OutputMessage createError(byte errorcode) {
+		OutputMessage outMsg = new OutputMessage(ChatCommandId.S_HEARTBEAT_RSP);
+		try {
+			outMsg.getOutputStream().writeByte(errorcode);
+		}
+		catch(IOException e) {}
+		
+		return outMsg;
 	}
 	
 	
@@ -115,34 +111,26 @@ public class MessageFactory {
 	 * @param friend
 	 * @return
 	 */
-	public static ChatMessage createAddFriendRsp(ProtocolType type, Player friend) {
+	public static OutputMessage createAddFriendRsp(Player friend) {
+		OutputMessage outMsg = new OutputMessage(ChatCommandId.S_ADDFRIEND_RSP);
+		
 		byte status = 0;
 		if(friend == null) {
 			status = 1;      //好友不存在
 		}
 		
-		byte[] rspdata = null;
-		if(status == 1) {
-			rspdata = new byte[1];
-			rspdata[0] = status;
-		}
-		else {
-			ByteArrayOutputStream bos = new ByteArrayOutputStream(512);
-			DataOutputStream dos = new DataOutputStream(bos);
-			try {
-				dos.writeByte(status);
-				dos.writeUTF(friend.getNickName());
-				dos.writeByte(friend.isOnline()? 1 : 0);
+		try {
+			outMsg.getOutputStream().writeByte(status);
+			if(status == 0) {
+				outMsg.getOutputStream().writeUTF(friend.getNickName());
+				outMsg.getOutputStream().writeByte(friend.isOnline()? 1 : 0);
 			}
-			catch(IOException e) {
-				e.printStackTrace();
-			}
-			rspdata = bos.toByteArray();
 		}
-		
-		ChatMessage msg = new ChatMessage(ChatCommandId.S_ADDFRIEND_RSP, 0, 0, type, rspdata);
-		return msg;
+		catch(IOException e) {}
+
+		return outMsg;		
 	}
+	
 	
 	
 	/**
@@ -154,20 +142,16 @@ public class MessageFactory {
 	 * @param message
 	 * @return
 	 */
-	public static ChatMessage createSendMessage(ProtocolType type, String message) {
-		ByteArrayOutputStream bos = new ByteArrayOutputStream(512);
-		DataOutputStream dos = new DataOutputStream(bos);
-		
+	public static OutputMessage createSendMessage(String message) {
+		OutputMessage outMsg = new OutputMessage(ChatCommandId.S_SEND_MSG);
 		
 		try {
-			dos.writeUTF(message);
+			outMsg.getOutputStream().writeUTF(message);
 		}
-		catch(IOException e) {
-			e.printStackTrace();
-		}
+		catch(IOException e) {}
 		
-		ChatMessage msg = new ChatMessage(ChatCommandId.S_SEND_MSG, 0, 0, type, bos.toByteArray());
-		return msg;
+		
+		return outMsg;
 	}
 
 	
@@ -179,7 +163,7 @@ public class MessageFactory {
 	 * @param msgs
 	 * @return
 	 */
-	public static CmWapBindMessage createCmWapBindMessage(ChatMessage[] msgs) {
+	public static CmWapBindMessage createCmWapBindMessage(OutputMessage[] msgs) {
 		CmWapBindMessage msg = new CmWapBindMessage(ChatCommandId.S_CMWAPBIND, msgs);
 		return msg;
 	}

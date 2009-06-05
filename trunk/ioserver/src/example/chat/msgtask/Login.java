@@ -2,9 +2,8 @@ package example.chat.msgtask;
 
 import java.io.IOException;
 import com.yz.net.IoSession;
-
-import example.chat.ChatMessage;
 import example.chat.CheckPlayerTask;
+import example.chat.InputMessage;
 import example.chat.MessageFactory;
 import example.chat.MessageProcessTask;
 import example.chat.Player;
@@ -14,14 +13,14 @@ public class Login extends MessageProcessTask {
 	/**玩家昵称*/
 	private String nickname;
 
-	public Login(IoSession session, ChatMessage message) {
+	public Login(IoSession session, InputMessage message) {
 		super(session, message);
 	}
 
 	@Override
 	public void execute() {
 		
-		int validateCode = manager.getRandom().nextInt(5000);
+		/*int validateCode = manager.getRandom().nextInt(5000);
 		
 		Player player = manager.getPlayer(message.getPlayerId());
 		if(player != null) {
@@ -63,13 +62,13 @@ public class Login extends MessageProcessTask {
 		Player[] players = player.getFriends();
 		player.putMessage(MessageFactory.createSFriendListRsp(message.getProtocolType(), players));
 		
-		player.flush();
+		player.flush();*/
 	}
 
 	
 	@Override
 	public void parse() throws IOException {
-		nickname = this.message.getStream().readUTF();
+		//nickname = this.message.getStream().readUTF();
 	}
 
 	@Override
