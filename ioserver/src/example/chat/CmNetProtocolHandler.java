@@ -12,6 +12,9 @@ public class CmNetProtocolHandler implements ProtocolHandler {
 
 	@Override
 	public List<NetMessage> onData(ByteBuffer data, IoSession session) {
+		
+		session.addAttribute("TYPE", ProtocolType.CMNET);
+		
 		ArrayList<NetMessage> list = null;
 		while(true) {
 			if(data.remaining() < 2) {
@@ -48,12 +51,13 @@ public class CmNetProtocolHandler implements ProtocolHandler {
 			
 			contentBuffer.get(msgbody);
 			
-			ChatMessage chatMsg = new ChatMessage(cmdtype, playerId, validateCode, ProtocolType.CMNET, msgbody);
+			InputMessage msg = new InputMessage(cmdtype,playerId, validateCode, msgbody); 
+			
 			if(list == null) {
 				list = new ArrayList<NetMessage>();
 			}
 	
-			list.add(chatMsg);
+			list.add(msg);
 			
 		}
 		

@@ -7,12 +7,12 @@ public abstract class MessageProcessTask implements Runnable{
 	
 	protected IoSession session;
 	
-	protected ChatMessage message;
+	protected InputMessage message;
 	
 	protected PlayerManager manager = PlayerManager.getInstance();
 	
 	
-	public MessageProcessTask(IoSession session, ChatMessage message) {
+	public MessageProcessTask(IoSession session, InputMessage message) {
 		this.session = session;
 		this.message = message;
 	}
