@@ -111,6 +111,16 @@ public interface IoSession {
 	
 	/**
 	 * <p>
+	 * 是否正在关闭
+	 * </p>
+	 * <br>
+	 * @return
+	 */
+	public boolean isCloseing();
+	
+	
+	/**
+	 * <p>
 	 * 关闭IO会话，方法为异步的，如果要想同步，可以调用返回结果的IoFuture.await()
 	 * </p>
 	 * <br>

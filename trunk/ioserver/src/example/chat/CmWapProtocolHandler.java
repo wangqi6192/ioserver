@@ -8,6 +8,13 @@ import com.yz.net.IoSession;
 import com.yz.net.NetMessage;
 import com.yz.net.ProtocolHandler;
 
+/**
+ * <p>
+ * CMWAP协议解析
+ * </p>
+ * @author 胡玮@ritsky
+ *
+ */
 public class CmWapProtocolHandler implements ProtocolHandler {
 
 	@Override

@@ -8,8 +8,17 @@ import com.yz.net.IoSession;
 import example.chat.InputMessage;
 import example.chat.MessageFactory;
 import example.chat.MessageProcessTask;
+import example.chat.OutputMessage;
 import example.chat.Player;
 
+/**
+ * <p>
+ * 发送消息任务
+ * </p>
+ * <br>
+ * @author 胡玮@ritsky
+ *
+ */
 public class SendMessage extends MessageProcessTask {
 	private long friendId;
 	
@@ -22,25 +31,24 @@ public class SendMessage extends MessageProcessTask {
 
 	@Override
 	public void execute() {
-		/*Player player = manager.getPlayer(message.getPlayerId());
-		if(player.getValidateCode() != message.getValidateCode()) {
-			player.putMessage(MessageFactory.createValidateErr(message.getProtocolType()));
+		Player player = manager.getPlayer(message.getPlayerId());
+		
+		Player friend = manager.getPlayer(friendId);
+		
+		if(friend != null) {
+			OutputMessage outMsg = MessageFactory.createSendMessage(msgstr);
+			friend.putMessage(outMsg);
+			friend.flush();
 		}
-		else {
-			Player friend = manager.getPlayer(friendId);
-			if(friend != null) {
-				friend.putMessage(MessageFactory.createSendMessage(message.getProtocolType(), msgstr));
-				friend.flush();
-			}
-		}
-		player.flush();*/
+		
+		player.flush();
 	}
 
 	
 	@Override
 	public void parse() throws IOException {
-		//friendId = message.getStream().readLong();
-		//msgstr = message.getStream().readUTF();
+		friendId = message.getInputStream().readLong();
+		msgstr = message.getInputStream().readUTF();
 	}
 
 	@Override

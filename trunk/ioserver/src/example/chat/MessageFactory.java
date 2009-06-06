@@ -1,7 +1,5 @@
 package example.chat;
 
-import java.io.ByteArrayOutputStream;
-import java.io.DataOutputStream;
 import java.io.IOException;
 
 /**
@@ -166,6 +164,25 @@ public class MessageFactory {
 	public static CmWapBindMessage createCmWapBindMessage(OutputMessage[] msgs) {
 		CmWapBindMessage msg = new CmWapBindMessage(ChatCommandId.S_CMWAPBIND, msgs);
 		return msg;
+	}
+	
+	/**
+	 * <p>
+	 * 创建在线状态通知
+	 * </p>
+	 * <br>
+	 * @param playerId
+	 * @param isOnline
+	 * @return
+	 */
+	public static OutputMessage createOnlineStatusNotify(long playerId, boolean isOnline) {
+		OutputMessage outMsg = new OutputMessage(ChatCommandId.S_ONLINESTATUS_NOTIFY);
+		try {
+			outMsg.getOutputStream().writeLong(playerId);
+			outMsg.getOutputStream().writeByte(isOnline ? 1 : 0);
+		} catch (IOException e) {}
+		
+		return outMsg;
 	}
 }
 

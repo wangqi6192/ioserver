@@ -7,8 +7,17 @@ import com.yz.net.IoSession;
 import example.chat.InputMessage;
 import example.chat.MessageFactory;
 import example.chat.MessageProcessTask;
+import example.chat.OutputMessage;
 import example.chat.Player;
 
+/**
+ * <p>
+ * 好友例表消息任务
+ * </p>
+ * <br>
+ * @author 胡玮@ritsky
+ *
+ */
 public class FriendList extends MessageProcessTask {
 
 	public FriendList(IoSession session, InputMessage message) {
@@ -17,16 +26,14 @@ public class FriendList extends MessageProcessTask {
 
 	@Override
 	public void execute() {
-		/*Player player = manager.getPlayer(message.getPlayerId());
-		if(player.getValidateCode() != message.getValidateCode()) {
-			player.putMessage(MessageFactory.createValidateErr(message.getProtocolType()));
-		}
-		else {
-			Player[] players = player.getFriends();
-			player.putMessage(MessageFactory.createSFriendListRsp(message.getProtocolType(), players));
-		}
+		Player player = manager.getPlayer(message.getPlayerId());
+		Player[] friends = player.getFriends();
+		OutputMessage outMsg = MessageFactory.createSFriendListRsp(friends);
 		
-		player.flush();*/
+		player.putMessage(outMsg);
+		
+		player.flush();
+		
 	}
 
 	@Override
@@ -34,17 +41,4 @@ public class FriendList extends MessageProcessTask {
 		// TODO Auto-generated method stub
 
 	}
-
-	@Override
-	public StringBuilder toInputString() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public StringBuilder toOutputString() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
 }

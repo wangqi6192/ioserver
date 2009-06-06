@@ -1,9 +1,53 @@
 package example.chat;
 
 import java.io.IOException;
+import java.util.HashSet;
+
 import com.yz.net.IoSession;
 
+/**
+ * <p>
+ * 消息处理任务
+ * </p>
+ * <br>
+ * @author 胡玮@ritsky
+ *
+ */
 public abstract class MessageProcessTask implements Runnable{
+	
+	/**过滤器视图*/
+	public static final HashSet<MsgTaskFilter> filterSet = new HashSet<MsgTaskFilter>();
+	
+	/**
+	 * <p>
+	 * 添加过滤器
+	 * </p>
+	 * <br>
+	 * @param filter
+	 */
+	public static void addFilter(MsgTaskFilter filter) {
+		if(filter == null) {
+			filterSet.add(filter);
+		}
+	}
+	
+	/**
+	 * <p>
+	 * 过滤
+	 * </p>
+	 * <br>
+	 * @param task
+	 * @return
+	 */
+	public static boolean filtrate(MessageProcessTask task) {
+		for(MsgTaskFilter filter : filterSet) {
+			if(!filter.filtrate(task.session, task.message)) {
+				return false;
+			}
+		}
+		
+		return true;
+	}
 	
 	protected IoSession session;
 	
@@ -42,7 +86,9 @@ public abstract class MessageProcessTask implements Runnable{
 	 * <br>
 	 * @return
 	 */
-	public abstract StringBuilder toInputString();
+	public StringBuilder toInputString(){
+		return null;
+	}
 	
 	/**
 	 * <p>
@@ -51,23 +97,26 @@ public abstract class MessageProcessTask implements Runnable{
 	 * <br>
 	 * @return
 	 */
-	public abstract StringBuilder toOutputString();
+	public StringBuilder toOutputString() {
+		return null;
+	}
 	 
 
 	
 	@Override
 	public void run() {
 		try {
+			if(!MessageProcessTask.filtrate(this)){
+				//消息任务被过滤掉了
+				return;
+			}
+			
 			//先解析
 			parse();
+			
 			StringBuilder inputStrBuffer = toInputString();
 			if(inputStrBuffer != null) {
 				printLog(inputStrBuffer.toString());
-			}
-			
-			Player player = manager.getPlayer(message.getPlayerId());
-			if(player != null) {
-				player.lastAccessTime = System.currentTimeMillis();
 			}
 			
 			execute();

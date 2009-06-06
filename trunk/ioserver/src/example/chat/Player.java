@@ -3,9 +3,7 @@ package example.chat;
 
 import java.util.HashSet;
 import java.util.Iterator;
-import java.util.TimerTask;
 import java.util.Vector;
-
 import com.yz.net.IoSession;
 
 
@@ -96,12 +94,25 @@ public class Player {
 		return nickName;
 	}
 	
-	
+	/**
+	 * <p>
+	 * 添加好友
+	 * </p>
+	 * <br>
+	 * @param player
+	 */
 	public void addFriend(Player player) {
 		this.friendIdSet.add(player.getPlayerId());
 	}
 	
 	
+	/**
+	 * <p>
+	 * 获取好友列表
+	 * </p>
+	 * <br>
+	 * @return
+	 */
 	public Player[] getFriends() {
 		Player[] players = null;
 		synchronized (friendIdSet) {
@@ -119,7 +130,13 @@ public class Player {
 		return players;
 	}
 	
-	
+	/**
+	 * <p>
+	 * 放入消息，由于要支持CMWAP与CMNET，与网络交互的是数据管理层，我们这里把消息放入到数据管理层
+	 * </p>
+	 * <br>
+	 * @param message
+	 */
 	public void putMessage(OutputMessage message) {
 		PlayerManager manager = PlayerManager.getInstance();
 		Vector<OutputMessage> vector = manager.getPlayerDatas(playerId);
@@ -127,34 +144,47 @@ public class Player {
 	}
 	
 	
+	/**
+	 * <p>
+	 * 刷新消息，会根据session的类型来具体组织消息
+	 * </p>
+	 * <br>
+	 */
 	public void flush() {
-		/*ChatMessage[] msgs = null;
-		PlayerManager manager = PlayerManager.getInstance();
-		Vector<ChatMessage> vector = manager.getPlayerDatas(playerId);
-		synchronized (vector) {
-			msgs = new ChatMessage[vector.size()];
-			int index = 0;
-			for(ChatMessage msg : vector) {
-				msgs[index ++] = msg;
-			}
-			vector.clear();
+		IoSession session = BootChat.service.getIoSession(sessionId);
+		if(session == null || session.isCloseing()){
+			return;
 		}
 		
-		IoSession session = BootChat.service.getIoSession(this.sessionId);
+		ProtocolType type = (ProtocolType) session.getAttribute("TYPE");
 		
-		if(session != null) {
-			if(type == ProtocolType.CMNET) {
-				for(int i=0; i<msgs.length; i++) {
-					session.write(msgs[i]);
+		PlayerManager manager = PlayerManager.getInstance();
+		Vector<OutputMessage> vector = manager.getPlayerDatas(playerId);
+		
+		switch(type) {
+		case CMWAP:
+			OutputMessage[] outMsgList = null;
+			synchronized (vector) {
+				outMsgList = new OutputMessage[vector.size()];
+				for(int i=0; i<vector.size(); i++) {
+					outMsgList[i] = vector.get(i);
 				}
-			}
-			else {
-				CmWapBindMessage msg = MessageFactory.createCmWapBindMessage(msgs);
-				session.write(msg);
 				
-				session.addAttribute("CLOSETAG", "");
-				session.close();
+				vector.clear();
 			}
-		}*/
+			
+			CmWapBindMessage wapMessage = MessageFactory.createCmWapBindMessage(outMsgList);
+			session.write(wapMessage);
+			
+			break;
+		case CMNET:
+			synchronized (vector) {
+				for(OutputMessage outMsg : vector) {
+					session.write(outMsg);
+				}
+				vector.clear();
+			}
+			break;
+		}
 	}
 }

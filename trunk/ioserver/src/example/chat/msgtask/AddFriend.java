@@ -7,8 +7,17 @@ import com.yz.net.IoSession;
 import example.chat.InputMessage;
 import example.chat.MessageFactory;
 import example.chat.MessageProcessTask;
+import example.chat.OutputMessage;
 import example.chat.Player;
 
+/**
+ * <p>
+ * 添加好友消息任务
+ * </p>
+ * <br>
+ * @author 胡玮@ritsky
+ *
+ */
 public class AddFriend extends MessageProcessTask {
 	
 	private long friendId;
@@ -19,38 +28,24 @@ public class AddFriend extends MessageProcessTask {
 
 	@Override
 	public void execute() {
-		/*Player player = manager.getPlayer(message.getPlayerId());
-		if(player.getValidateCode() != message.getValidateCode()) {
-			player.putMessage(MessageFactory.createValidateErr(message.getProtocolType()));
+		Player player = manager.getPlayer(message.getPlayerId());
+		
+		Player friend = manager.getPlayer(friendId);
+		if(friend != null) {
+			player.addFriend(friend);
 		}
-		else {
-			Player friend = manager.getPlayer(friendId);
-			if(friend != null) {
-				player.addFriend(friend);
-			}
-			
-			player.putMessage(MessageFactory.createAddFriendRsp(message.getProtocolType(), friend));
-		}
-
-		player.flush();*/
+		
+		OutputMessage outMsg = MessageFactory.createAddFriendRsp(friend);
+		
+		player.putMessage(outMsg);
+		
+		player.flush();
 	}
 
 	@Override
 	public void parse() throws IOException {
+		friendId = message.getInputStream().readLong();
 		//friendId = message.getStream().readLong();
 
 	}
-
-	@Override
-	public StringBuilder toInputString() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public StringBuilder toOutputString() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
 }

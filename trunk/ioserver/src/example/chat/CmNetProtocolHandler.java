@@ -8,6 +8,14 @@ import com.yz.net.IoSession;
 import com.yz.net.NetMessage;
 import com.yz.net.ProtocolHandler;
 
+/**
+ * <p>
+ * CMNET协议解析
+ * </p>
+ * <br>
+ * @author 胡玮@ritsky
+ *
+ */
 public class CmNetProtocolHandler implements ProtocolHandler {
 
 	@Override
