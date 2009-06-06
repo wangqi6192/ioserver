@@ -2,7 +2,17 @@ package example.chat;
 
 import java.util.TimerTask;
 
+/**
+ * <p>
+ * 检查玩家任务
+ * </p>
+ * <br>
+ * @author 胡玮@ritsky
+ *
+ */
 public class CheckPlayerTask extends TimerTask {
+	
+	public static final long OVERTIME = 1 * 60 * 1000;
 	
 	private Player player;
 	
@@ -12,9 +22,21 @@ public class CheckPlayerTask extends TimerTask {
 
 	@Override
 	public void run() {
-		if(System.currentTimeMillis() - player.lastAccessTime > 1 * 60 * 1000) {
-			player.isOnline(false);
-			this.cancel();
+		synchronized (player) {
+			if(System.currentTimeMillis() - player.lastAccessTime > OVERTIME) {
+				player.isOnline(false);
+				this.cancel();
+				
+				Player[] friends = player.getFriends();
+				
+				OutputMessage outMsg = MessageFactory.createOnlineStatusNotify(player.getPlayerId(), false);
+				
+				//通知所有朋友不在线了
+				for(int i=0; i<friends.length; i++) {
+					friends[i].putMessage(outMsg);
+					friends[i].flush();
+				}
+			}
 		}
 	}
 

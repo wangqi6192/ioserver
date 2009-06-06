@@ -5,11 +5,10 @@ import java.util.Timer;
 import java.util.Vector;
 import java.util.concurrent.ConcurrentHashMap;
 
-import com.yz.net.NetMessage;
 
 
 /**
- * 玩家管理
+ * 玩家管理(数据管理层)
  * @author 胡玮@ritsky
  *
  */

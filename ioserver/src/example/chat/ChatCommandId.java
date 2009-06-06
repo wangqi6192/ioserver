@@ -1,5 +1,13 @@
 package example.chat;
 
+/**
+ * <p>
+ * 命令ID
+ * </p>
+ * <br>
+ * @author 胡玮@ritsky
+ *
+ */
 public class ChatCommandId {
 	/**客户端登录请求**/
 	public static final byte C_LOGIN_REQ = 1;
@@ -47,4 +55,7 @@ public class ChatCommandId {
 	
 	/**cmwap绑定*/
 	public static final byte S_CMWAPBIND = 13;
+	
+	/**在线状态通知*/
+	public static final byte S_ONLINESTATUS_NOTIFY = 14;
 }
