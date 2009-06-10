@@ -14,9 +14,12 @@ public class Client extends Thread {
 	 */
 	public static void main(String[] args) {
 		try {
-			Client client = new Client("127.0.0.1", 8899);
-			client.start();
-			
+			for(int i=0; i<10; i++) {
+				Client client = new Client("127.0.0.1", 8899);
+				client.flag = i+1;
+				client.start();
+				Thread.sleep(500);
+			}
 			
 			while(true) {
 				Thread.sleep(10100);
@@ -42,6 +45,8 @@ public class Client extends Thread {
 	boolean isRuning = false;
 	
 	int count = 0;
+	
+	int flag = 0;
 	
 	public Client(String host, int port) throws IOException {
 		//socket = new Socket(host, port);
@@ -69,15 +74,21 @@ public class Client extends Thread {
 			int temp = rand.nextInt(5000);
 			
 			try {
+				
+				long startTime = System.currentTimeMillis();
 				dos.writeInt(temp);
 				
 				int checkInt = dis.readInt();
+				
+				long endTime = System.currentTimeMillis();
+				
+				System.out.println("TIME("+flag+") = " + (endTime - startTime));
 				
 				if(checkInt != (temp + 1)) {
 					System.out.println("存在问题，存在问题");
 				}
 				else {
-					System.out.println(checkInt);
+					//System.out.println(checkInt);
 				}
 				
 			} catch (IOException e) {

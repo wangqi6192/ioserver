@@ -45,41 +45,5 @@ public interface OverTimeHandler {
 	public void onBothOverTime(IoSession session);
 	
 	
-	/**
-	 * <p>
-	 * 间隔时间，每次检查超时后的间隔多长再检查一次，返回的时间以豪秒为计算单位
-	 * </p>
-	 * <br>
-	 * @return
-	 */
-	public long interval();
 	
-	/**
-	 * <p>
-	 * 读操作的超时时间值
-	 * </p>
-	 * <br>
-	 * @return
-	 */
-	public long readOverTime();
-	
-	
-	/**
-	 * <p>
-	 * 写操作的超时时间值
-	 * </p>
-	 * <br>
-	 * @return
-	 */
-	public long writerOverTime();
-	
-	
-	/**
-	 * <p>
-	 * 读写操作的超时时间值
-	 * </p>
-	 * <br>
-	 * @return
-	 */
-	public long bothOverTime();
 }

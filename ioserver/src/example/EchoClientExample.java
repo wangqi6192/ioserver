@@ -14,9 +14,8 @@ import com.yz.net.IoHandlerAdapter;
 import com.yz.net.IoSession;
 import com.yz.net.NetMessage;
 import com.yz.net.ProtocolHandler;
-import com.yz.net.expand.ClientIoSession;
 import com.yz.net.expand.IoConnector;
-
+import com.yz.net.Configure;
 
 /**
  * <p>
@@ -35,22 +34,16 @@ public class EchoClientExample {
 		try {
 			//新建一个连接器
 			connector = new IoConnector();
-			SocketAddress address = new InetSocketAddress("127.0.0.1", 8899);
 			
-			//绑定一个需要连接的服务器地址
-			connector.bind(address);
+			Configure config = new Configure();
+			config.setAddress(new InetSocketAddress("127.0.0.1", 8899));
+			config.setProtocolHandler(new EchoProtocol());
+			config.setIoHandler(new EchoHandler());
+			config.start(connector);
 			
-			//设置协议处理器
-			connector.setProtocolHandler(new EchoProtocol());
-			
-			//设置数据处理器
-			connector.setIoHandler(new EchoHandler());
-			
-			//开始连接器
-			connector.start();
 			
 			//生成一个客户端会话
-			ClientIoSession session = IoConnector.newSession(connector);
+			IoSession session = IoConnector.newSession(connector);
 			
 			//发出连接请求
 			IoFuture future = session.connect();

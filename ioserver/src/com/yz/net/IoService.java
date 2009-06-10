@@ -22,100 +22,13 @@ import java.util.Map;
  *
  */
 public interface IoService {
-	/**
-	 * <p>
-	 * 绑定IP地址
-	 * </p>
-	 * <br>
-	 * @param address
-	 * @throws IOException
-	 */
-	public void bind(SocketAddress address) throws IOException;
+	
+	public Configure getConfigure();
 	
 	
-	/**
-	 * <p>
-	 * 绑定在给定端口上绑定本机地址
-	 * </p>
-	 * <br>
-	 * @param port
-	 * @throws IOException
-	 */
-	public void bind(int port) throws IOException;
+	public void setConfigure(Configure config);
 	
 	
-	/**
-	 * <p>
-	 * 获取绑地址
-	 * </p>
-	 * <br>
-	 * @return
-	 */
-	public SocketAddress getBindAddress();
-	
-	
-	/**
-	 * <p>
-	 * 获取一个协议处理者
-	 * </p>
-	 * <br>
-	 * @return
-	 */
-	public ProtocolHandler getProtocolHandler();
-	
-	
-	/**
-	 * <p>
-	 * 设置一个协义处理者
-	 * </p>
-	 * <br>
-	 * @param handler
-	 * @return
-	 */
-	public void setProtocolHandler(ProtocolHandler handler);
-	
-	
-	/**
-	 * <p>
-	 * 获取一个io处理者
-	 * </p>
-	 * <br>
-	 * @return
-	 */
-	public IoHandler getIoHandler();
-	
-	
-	/**
-	 * <p>
-	 * 设置一个io处理者
-	 * </p>
-	 * <br>
-	 * @param handler
-	 */
-	public void setIoHandler(IoHandler handler);
-	
-	
-	
-	
-	/**
-	 * <p>
-	 * 获得超时处理者
-	 * </p>
-	 * <br>
-	 * @return
-	 */
-	public OverTimeHandler getOverTimeHandler();
-	
-	/**
-	 * <p>
-	 * 设置超时处理者
-	 * </p>
-	 * <br>
-	 * @param handler
-	 */
-	public void setOverTimeHandler(OverTimeHandler handler);
-	
-
 	/**
 	 * <p>
 	 * 构建协议组,协议组是包装不同协议处理的一种协议结构
@@ -126,6 +39,8 @@ public interface IoService {
 	 */
 	public ProtocolHandler buildProtocolGroup(int prefixByteNum, ProtocolHandler... handlers);
 	
+	
+	public IoSession getIoSession(long sessionId);
 	
 	/**
 	 * <p>
@@ -145,15 +60,4 @@ public interface IoService {
 	 * @throws Exception
 	 */
 	public void stop() throws Exception;
-	
-	
-	/**
-	 * <p>
-	 * 获取一个IO会话
-	 * </p>
-	 * <br>
-	 * @param ioSessionId
-	 * @return
-	 */
-	public IoSession getIoSession(long ioSessionId);
 }

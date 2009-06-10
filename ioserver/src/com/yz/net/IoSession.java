@@ -68,6 +68,15 @@ public interface IoSession {
 	public IoFuture write(NetMessage msg);
 	
 
+	/**
+	 * <p>
+	 * 异步连接
+	 * </p>
+	 * <br>
+	 * @return
+	 */
+	public IoFuture connect();
+	
 	
 	/**
 	 * <p>

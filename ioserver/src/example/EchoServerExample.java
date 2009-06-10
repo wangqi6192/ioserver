@@ -1,10 +1,12 @@
 package example;
 
 import java.io.UnsupportedEncodingException;
+import java.net.InetSocketAddress;
 import java.nio.ByteBuffer;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.yz.net.Configure;
 import com.yz.net.IoHandlerAdapter;
 import com.yz.net.IoService;
 import com.yz.net.IoSession;
@@ -29,16 +31,14 @@ public class EchoServerExample {
 	public static void main(String[] args) {
 		try {
 			//构建一个服务器端的服务
-			IoService service = new IoServerImpl(8899);
+			Configure config = new Configure();
+			config.setAddress(new InetSocketAddress("127.0.0.1", 8899));
+			config.setProtocolHandler(new EchoProtocol());
+			config.setIoHandler(new EchoHandler());
 			
-			//设置协议处理器
-			service.setProtocolHandler(new EchoProtocol());
+			IoService service = new IoServerImpl();
 			
-			//设置数据处理器
-			service.setIoHandler(new EchoHandler());
-			
-			//开始服务
-			service.start();
+			config.start(service);
 			
 			while(true) {
 				Thread.sleep(1000);
