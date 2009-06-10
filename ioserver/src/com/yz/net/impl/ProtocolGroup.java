@@ -80,10 +80,10 @@ class ProtocolGroup implements ProtocolHandler {
 			}
 		}
 		
-		ArrayList<NetMessage> list = new ArrayList<NetMessage>();
-		list.add(NetMessage.ERROR_MSG);
+	/*	ArrayList<NetMessage> list = new ArrayList<NetMessage>();
+		list.add(NetMessage.ERROR_MSG);*/
 		
-		return list;
+		return null;
 		
 	}
 }
