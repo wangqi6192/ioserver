@@ -9,6 +9,7 @@ import java.util.Timer;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicLong;
 
+import com.yz.net.Configure;
 import com.yz.net.IoFuture;
 import com.yz.net.IoService;
 import com.yz.net.IoHandler;
@@ -28,20 +29,10 @@ public abstract class AbstractIoService implements IoService, DispatcherEventlLi
 	/**是否启动*/
 	protected volatile boolean isStart;
 
-	/**监听地址*/
-	private SocketAddress address;
 	
 	/**IO处理线程管理器*/
 	private IoReadWriteMachineManager dispatcherManager;
 	
-	/**io处理者*/
-	private IoHandler iohandler;
-	
-	/**超时处理者，提供默认的超时处理者*/
-	private OverTimeHandler overtimeHandler = new DefaultOverTimeHandler();
-	
-	/**协议处理者*/
-	private ProtocolHandler protocolHandler;
 	
 	/**定时器*/
 	private Timer timer;
@@ -54,6 +45,8 @@ public abstract class AbstractIoService implements IoService, DispatcherEventlLi
 	
 	/**ID提供器*/
 	private AtomicLong nextId = new AtomicLong(0);
+	
+	private Configure configure;
 	
 	protected Object stopLock = new Object();
 	
@@ -155,62 +148,13 @@ public abstract class AbstractIoService implements IoService, DispatcherEventlLi
 		bind(port);
 	}*/
 	
-	@Override
-	public SocketAddress getBindAddress() {
-		return this.address;
-	}
 	
-	@Override
-	public void bind(SocketAddress address) throws IOException {
-		if(address == null) {
-			throw new IllegalArgumentException("地址不能为空");
-		}
-		this.address = address;
-	}
-
-	
-	@Override
-	public void bind(int port) throws IOException {
-		SocketAddress _address = new InetSocketAddress(port);
-		bind(_address);
-	}
-
 	
 	protected IoReadWriteMachineManager getIoDispatcherManager() {
 		return this.dispatcherManager;
 	}
 
-	@Override
-	public IoHandler getIoHandler() {
-		return this.iohandler;
-	}
-
 	
-	@Override
-	public OverTimeHandler getOverTimeHandler() {
-		return this.overtimeHandler;
-	}
-
-	@Override
-	public ProtocolHandler getProtocolHandler() {
-		return this.protocolHandler;
-	}
-
-	
-	@Override
-	public void setIoHandler(IoHandler handler) {
-		this.iohandler = handler;
-	}
-
-	@Override
-	public void setOverTimeHandler(OverTimeHandler handler) {
-		this.overtimeHandler = handler;
-	}
-
-	@Override
-	public void setProtocolHandler(ProtocolHandler handler) {
-		this.protocolHandler = handler;
-	}
 
 	
 	/**
@@ -320,48 +264,29 @@ public abstract class AbstractIoService implements IoService, DispatcherEventlLi
 		//TODO:触发相应事件
 	}
 
+	
+	
+	
 
-	/**
-	 * 提供认的超时处理者
-	 * @author 胡玮@ritsky
-	 *
-	 */
-	class DefaultOverTimeHandler implements OverTimeHandler {
-
-		@Override
-		public long bothOverTime() {
-			return 5 * 60 * 1000;
-		}
-
-		@Override
-		public long interval() {
-			return 5 * 1000;
-		}
-
-		@Override
-		public void onBothOverTime(IoSession session) {
-			session.close();     //超时后关闭会话
-		}
-
-		@Override
-		public void onReadOverTime(IoSession session) {
-			
-		}
-
-		@Override
-		public void onWriterOverTime(IoSession session) {
-			
-		}
-
-		@Override
-		public long readOverTime() {
-			return -1;
-		}
-
-		@Override
-		public long writerOverTime() {
-			return -1;
-		}
-		
+	@Override
+	public Configure getConfigure() {
+		return this.configure;
 	}
+
+	@Override
+	public void setConfigure(Configure config) {
+		this.configure = config;
+	}
+
+
+	
+
+
+	@Override
+	public void start() throws Exception {
+		if(this.configure == null) {
+			throw new Exception("服务不存在配置，不能启动....");
+		}
+	}
+
 }

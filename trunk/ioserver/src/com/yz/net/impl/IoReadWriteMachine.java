@@ -196,10 +196,11 @@ class IoReadWriteMachine implements Runnable {
 
 			this.onRegisterSession(session);
 		}
+		
 		else if(session.getClass() == ClientIoSession.class) {  //注册连接操作
-			ClientIoSession poxyIoSession = (ClientIoSession) session;
+			ClientIoSession clientIoSession = (ClientIoSession) session;
 			SelectionKey selectKey = channel.register(selector, SelectionKey.OP_CONNECT, session);
-			channel.connect(poxyIoSession.getOwnerAcceptor().getBindAddress());
+			channel.connect(clientIoSession.getConnectAddress());
 			session.setSelectionKey(selectKey);
 		}
 		
@@ -209,8 +210,8 @@ class IoReadWriteMachine implements Runnable {
 		session.lastWriteTime = System.currentTimeMillis();
 
 		session.getOwnerAcceptor().getTimer().schedule(session.getCheckOverTime(), 
-				session.getOwnerAcceptor().getOverTimeHandler().interval(), 
-				session.getOwnerAcceptor().getOverTimeHandler().interval());
+				session.getOwnerAcceptor().getConfigure().getOverTimeIntervalCheckTime(), 
+				session.getOwnerAcceptor().getConfigure().getOverTimeIntervalCheckTime());
 
 	}
 	
@@ -287,7 +288,7 @@ class IoReadWriteMachine implements Runnable {
 			}
 			finally {
 				this.onRemoveSession((IoSessionImpl) future.getSession());
-				session.getOwnerAcceptor().getIoHandler().ioSessionClosed(future);
+				session.getOwnerAcceptor().getConfigure().getIoHandler().ioSessionClosed(future);
 			}
 		}
 	}

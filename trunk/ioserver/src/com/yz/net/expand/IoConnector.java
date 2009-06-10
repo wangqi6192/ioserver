@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.net.SocketAddress;
 import java.nio.channels.SocketChannel;
 import com.yz.net.impl.AbstractIoService;
+import com.yz.net.IoSession;
 
 
 
@@ -30,7 +31,7 @@ public class IoConnector extends AbstractIoService {
 	 * @return PoxyIoSession 代理会话<br>
 	 * @throws IOException
 	 */
-	public static ClientIoSession newSession(IoConnector acceptor) throws IOException{
+	public static IoSession newSession(IoConnector acceptor) throws IOException{
 		
 		if(acceptor == null) {
 			return null;
@@ -45,7 +46,7 @@ public class IoConnector extends AbstractIoService {
 		SocketChannel sc = SocketChannel.open();
 		sc.configureBlocking(false);
 
-		SocketAddress bindAddress = acceptor.getBindAddress();
+		SocketAddress bindAddress = acceptor.getConfigure().getAddress();
 
 		ClientIoSession session = new ClientIoSession(sessionId, sc, acceptor, bindAddress);
 
@@ -63,14 +64,10 @@ public class IoConnector extends AbstractIoService {
 		this.initIoReadWriteMachines(readwriteThreadNum);
 	}
 	
-	public IoConnector(int readwriteThreadNum, int port) throws Exception {
-		this(readwriteThreadNum);
-		this.bind(port);
-	}
-	
 	
 	@Override
 	public void start() throws Exception {
+		super.start();
 		this.startTimer();                //启动定时器
 		this.startIoReadWriteMachines();
 		this.isStart = true;

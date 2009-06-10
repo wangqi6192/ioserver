@@ -3,6 +3,8 @@
 import java.nio.ByteBuffer;
 import java.util.ArrayList;
 import java.util.List;
+
+import com.yz.net.Configure;
 import com.yz.net.IoHandlerAdapter;
 import com.yz.net.IoSession;
 import com.yz.net.NetMessage;
@@ -14,17 +16,15 @@ public class ServerExample {
 
 	public static void main(String[] args) {
 		try {
-			//绑定一个本机端口
-			IoService acceptor = new IoServerImpl(8899);
+			Configure config = new Configure();
+			config.setAddress(new java.net.InetSocketAddress("127.0.0.1", 8899));
+			config.setProtocolHandler(new Protocol());
+			config.setIoHandler(new DataHandler());
 			
-			//设置协议处理者，可以不设置
-			acceptor.setProtocolHandler(new Protocol());
+			IoService server = new IoServerImpl();
+			config.start(server);
 			
-			//设置消息处理者，一定要设置
-			acceptor.setIoHandler(new DataHandler());
-			
-			//启动
-			acceptor.start();
+		
 			
 			while(true) {
 				Thread.sleep(1000);

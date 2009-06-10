@@ -27,7 +27,7 @@ import com.yz.net.impl.IoSessionImpl;
 public class ClientIoSession extends IoSessionImpl {
 	
 	/**被接受器绑定的地址*/
-	private SocketAddress bindAddress;
+	private SocketAddress connectAddress;
 	
 	private ConnectFuture connectFuture = new ConnectFuture(this);
 	
@@ -36,7 +36,7 @@ public class ClientIoSession extends IoSessionImpl {
 	
 	ClientIoSession(long id, SocketChannel channel, AbstractIoService acceptor, SocketAddress address) {
 		super(id, channel, acceptor);
-		this.bindAddress = address;
+		this.connectAddress = address;
 	}
 	
 	/**
@@ -72,5 +72,9 @@ public class ClientIoSession extends IoSessionImpl {
 			return connectFuture;
 		}
 		return null;
+	}
+	
+	public SocketAddress getConnectAddress() {
+		return connectAddress;
 	}
 }

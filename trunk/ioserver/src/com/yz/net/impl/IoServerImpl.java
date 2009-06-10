@@ -49,19 +49,15 @@ public class IoServerImpl extends AbstractIoService implements Runnable{
 	}
 
 	
-	public IoServerImpl(int port) throws Exception {
-		this();
-		bind(port);
-	}
-	
-	
 	@Override
-	public void start() throws IOException {
+	public void start() throws Exception {
+		super.start();
 		startTimer();              //启动定时器
 		
-		if(getBindAddress() == null) {
-			throw new IOException("没有绑定地址");
+		if(this.getConfigure().getAddress() == null) {
+			throw new Exception("没有绑定地址");
 		}
+		
 		
 	
 		selector = Selector.open();         //打开选择器
@@ -69,7 +65,7 @@ public class IoServerImpl extends AbstractIoService implements Runnable{
 		ssChannel = ServerSocketChannel.open();
 		ssChannel.configureBlocking(false);       //设定为非阻塞
 		ServerSocket ss = ssChannel.socket();
-		ss.bind(getBindAddress());
+		ss.bind(this.getConfigure().getAddress());
 		
 				
 		ssChannel.register(selector, SelectionKey.OP_ACCEPT);

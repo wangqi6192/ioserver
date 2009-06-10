@@ -31,7 +31,7 @@ public class IoSessionImpl implements IoSession{
 	private long id;
 	
 	/**属性映射表*/
-	private HashMap<String, Object> attributeMap;
+	private HashMap<String, Object> attributeMap = new HashMap<String, Object>();
 	
 	/**是否正式被关闭*/
 	private volatile boolean isClose;
@@ -243,18 +243,18 @@ public class IoSessionImpl implements IoSession{
 		if(readlen > 0) {
 			
 			//当没有设置协议处者时
-			if(ownerAcceptor.getProtocolHandler() == null) {   
+			if(ownerAcceptor.getConfigure().getProtocolHandler() == null) {   
 				inBuffer.flip();
 				byte[] msgdata = new byte[inBuffer.remaining()];
 				inBuffer.get(msgdata);
 				inBuffer.clear();
-				ownerAcceptor.getIoHandler().messageReceived(this, msgdata);
+				ownerAcceptor.getConfigure().getIoHandler().messageReceived(this, msgdata);
 			}
 			else {  //当设置了协议处理者时
 				ByteBuffer readBuf = inBuffer.asReadOnlyBuffer();
 				readBuf.flip();
 
-				List<NetMessage> list = ownerAcceptor.getProtocolHandler().onData(readBuf, this);
+				List<NetMessage> list = ownerAcceptor.getConfigure().getProtocolHandler().onData(readBuf, this);
 
 				//TODO:如果得到错误消息，应该立即终止读取，并关闭Session
 				
@@ -275,7 +275,7 @@ public class IoSessionImpl implements IoSession{
 							return;      //发生错误后，不能下文处理了.
 						}
 						else {
-							this.ownerAcceptor.getIoHandler().messageReceived(this, msg);
+							this.ownerAcceptor.getConfigure().getIoHandler().messageReceived(this, msg);
 						}
 					}
 				}
@@ -435,37 +435,37 @@ public class IoSessionImpl implements IoSession{
 	void notifyOverTime() {
 		long currTime = System.currentTimeMillis();
 		
-		long bathOverTime = ownerAcceptor.getOverTimeHandler().bothOverTime();
+		long bathOverTime = ownerAcceptor.getConfigure().getBothOverTime();
 		
 		if(bathOverTime > 0) {
 			if((currTime - lastAccessTime) > bathOverTime) {
 				if(isOverTimeHandleing.get()) {
 					//都超时了
-					this.ownerAcceptor.getOverTimeHandler().onBothOverTime(this);
+					this.ownerAcceptor.getConfigure().getOverTimeHandler().onBothOverTime(this);
 				}
 				isOverTimeHandleing.set(false);
 				return;
 			}
 		}
 		
-		long readOverTime = ownerAcceptor.getOverTimeHandler().readOverTime();
+		long readOverTime = ownerAcceptor.getConfigure().getReadOverTime();
 		
 		if(readOverTime > 0) {
 			if((currTime - this.lastReadTime) > readOverTime) {
 				if(isOverTimeHandleing.get()) {
 				//都超时了
-					this.ownerAcceptor.getOverTimeHandler().onReadOverTime(this);
+					this.ownerAcceptor.getConfigure().getOverTimeHandler().onReadOverTime(this);
 				}
 			}
 		}
 		
-		long writeOverTime = ownerAcceptor.getOverTimeHandler().writerOverTime();
+		long writeOverTime = ownerAcceptor.getConfigure().getWriteOverTime();
 		
 		if(writeOverTime > 0) {
 			if((currTime - this.lastWriteTime) > writeOverTime) {
 				if(isOverTimeHandleing.get()) {
 					//都超时了
-					this.ownerAcceptor.getOverTimeHandler().onWriterOverTime(this);
+					this.ownerAcceptor.getConfigure().getOverTimeHandler().onWriterOverTime(this);
 
 				}
 			}
@@ -481,10 +481,12 @@ public class IoSessionImpl implements IoSession{
 		@Override
 		public void run() {
 			
+			
+			
 			long currTime = System.currentTimeMillis();
-			long bothOverTime = ownerAcceptor.getOverTimeHandler().bothOverTime();
-			long readOverTime = ownerAcceptor.getOverTimeHandler().readOverTime();
-			long writeOverTime = ownerAcceptor.getOverTimeHandler().writerOverTime();
+			long bothOverTime = ownerAcceptor.getConfigure().getBothOverTime();
+			long readOverTime = ownerAcceptor.getConfigure().getReadOverTime();
+			long writeOverTime = ownerAcceptor.getConfigure().getWriteOverTime();
 			
 			if(bothOverTime <=0 || readOverTime <= 0 || writeOverTime <=0 ) {
 				//TODO:不存在超时处理
@@ -493,9 +495,9 @@ public class IoSessionImpl implements IoSession{
 			
 			
 			//检查是否有超时产生，有的话就排序到IO处理线程中去
-			if((currTime - lastAccessTime) > ownerAcceptor.getOverTimeHandler().bothOverTime() ||
-					(currTime - lastReadTime) > ownerAcceptor.getOverTimeHandler().readOverTime() ||
-					(currTime - lastWriteTime) > ownerAcceptor.getOverTimeHandler().writerOverTime()) {
+			if((currTime - lastAccessTime) > bothOverTime ||
+					(currTime - lastReadTime) > readOverTime ||
+					(currTime - lastWriteTime) > writeOverTime) {
 				if(!IoSessionImpl.this.isCloseing() || !IoSessionImpl.this.isClose()) {
 					if(isOverTimeHandleing.compareAndSet(false, true)) {
 						ownerDispatcher.scheduleOverTime(IoSessionImpl.this); //排程	
@@ -504,5 +506,12 @@ public class IoSessionImpl implements IoSession{
 			}
 		}
 		
+	}
+
+
+
+	@Override
+	public IoFuture connect() {
+		throw new java.lang.UnsupportedOperationException("不能进行操作....");
 	}
 }

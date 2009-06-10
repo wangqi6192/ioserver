@@ -1,39 +1,65 @@
 package example;
 
+import java.net.InetSocketAddress;
 import java.nio.ByteBuffer;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+import java.util.concurrent.ConcurrentLinkedQueue;
 
+import com.yz.net.Configure;
 import com.yz.net.IoFuture;
 import com.yz.net.IoHandler;
 import com.yz.net.IoSession;
 import com.yz.net.NetMessage;
 import com.yz.net.ProtocolHandler;
-import com.yz.net.expand.ClientIoSession;
 import com.yz.net.expand.IoConnector;
 
 
 public class ClientExample {
+	
+	static Random rand = new Random();
+	
+	static PrintRspTime printRspTime = new PrintRspTime();
+	
 	public static void main(String[] args) {
 		try {
+			Configure config = new Configure();
+			config.setAddress(new InetSocketAddress("127.0.0.1",8899));
+			config.setProtocolHandler(new Protocol());
+			config.setIoHandler(new DataHandler());
+			
 			IoConnector connector = new IoConnector();
-			connector.bind(8899);
-			connector.setProtocolHandler(new Protocol());
-			connector.setIoHandler(new DataHandler());
 			
-			connector.start();
+			config.start(connector);
 			
-			ClientIoSession session = IoConnector.newSession(connector);
+			Thread t = new Thread(printRspTime);
+			t.start();
+			
+			
+			for(int i=0; i<10; i++) {
+				IoSession session = IoConnector.newSession(connector);
+				IoFuture future = session.connect();
+				future.await();
+				int num = rand.nextInt(5000);
+				
+				session.addAttribute("START", System.currentTimeMillis());
+				session.write(new ExampleMessage(num));
+			}
+			
+			/*IoSession session = IoConnector.newSession(connector);
 			IoFuture future = session.connect();
 			
 			future.await();
+			*/
 			
-			Random rand = new Random();
+			
 			//int count = 0;
 			while(true) {
-				int num = rand.nextInt(5000);
-				session.write(new ExampleMessage(num));
+				
+				/*int num = rand.nextInt(5000);
+				startTime = System.currentTimeMillis();
+				session.write(new ExampleMessage(num));*/
 				Thread.sleep(1000);
 			}
 			
@@ -57,9 +83,23 @@ public class ClientExample {
 
 		@Override
 		public void messageReceived(IoSession session, NetMessage msg) {
-			//TODO:当存在协议解析类时，请按具体项目要求完成此方法
+			Long starttime = (Long) session.getAttribute("START");
+			long endtime = System.currentTimeMillis();
+			
+			printRspTime.queue.offer(new long[]{starttime, endtime});
+			
 			ExampleMessage message = (ExampleMessage) msg;
-			System.out.println("Num = " + message.getNumber());
+			//System.out.println("Num = " + message.getNumber());
+			
+			/*try {
+				Thread.sleep(1000);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}*/
+			
+			session.addAttribute("START", System.currentTimeMillis());
+			session.write(new ExampleMessage(rand.nextInt(5000)));
 		}
 
 		
@@ -108,6 +148,30 @@ public class ClientExample {
 			content[3] = (byte) ((number >>>  0) & 0xFF);
 			
 			return content;
+		}
+		
+	}
+	
+	
+	public static class PrintRspTime implements Runnable {
+		ConcurrentLinkedQueue<long[]> queue = new ConcurrentLinkedQueue();
+
+		@Override
+		public void run() {
+			while(true) {
+				long[] times = queue.poll();
+				if(times != null) {
+					System.out.println("RSPTIME = " + (times[1] - times[0]));
+				}
+				
+				try {
+					Thread.sleep(100);
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+			
 		}
 		
 	}
