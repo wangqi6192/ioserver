@@ -451,7 +451,7 @@ public class IoSessionImpl implements IoSession{
 		long readOverTime = ownerAcceptor.getOverTimeHandler().readOverTime();
 		
 		if(readOverTime > 0) {
-			if((currTime - lastAccessTime) > readOverTime) {
+			if((currTime - this.lastReadTime) > readOverTime) {
 				if(isOverTimeHandleing.get()) {
 				//都超时了
 					this.ownerAcceptor.getOverTimeHandler().onReadOverTime(this);
@@ -462,7 +462,7 @@ public class IoSessionImpl implements IoSession{
 		long writeOverTime = ownerAcceptor.getOverTimeHandler().writerOverTime();
 		
 		if(writeOverTime > 0) {
-			if((currTime - lastAccessTime) > writeOverTime) {
+			if((currTime - this.lastWriteTime) > writeOverTime) {
 				if(isOverTimeHandleing.get()) {
 					//都超时了
 					this.ownerAcceptor.getOverTimeHandler().onWriterOverTime(this);
