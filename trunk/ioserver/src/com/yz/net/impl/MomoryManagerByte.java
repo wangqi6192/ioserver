@@ -173,7 +173,7 @@ public class MomoryManagerByte implements MemoryObjInface{
 	 * @param size
 	 * @return
 	 */
-	public ByteBuffer allocat(int size) {
+	public synchronized ByteBuffer allocat(int size) {
 		//先从总内存中获取
 		ByteBuffer byteBuffer = gain(size);
 		if(byteBuffer == null){
@@ -208,7 +208,6 @@ public class MomoryManagerByte implements MemoryObjInface{
 		}
 		else{
 			//如果之前获取过 
-			synchronized (this.bufferSet) {
 				//遍历之前获取的内存对象 拿到它的索引值 根据索引值来接着后面的位置获取
 				Iterator<MomoryBuffer> iter =  bufferSet.iterator();
 				int position = 0;
@@ -227,7 +226,6 @@ public class MomoryManagerByte implements MemoryObjInface{
 					this.byteBuffer.limit(position + size);
 					bor = true;
 				}
-			}
 		}
 		ByteBuffer slicebuf = null;
 		if(bor){
@@ -244,9 +242,8 @@ public class MomoryManagerByte implements MemoryObjInface{
 	 * @param buf
 	 * @throws Exception
 	 */
-	public void free(ByteBuffer buf) throws Exception {
+	public synchronized void free(ByteBuffer buf) throws Exception {
 		boolean bor = false;
-		synchronized (this.bufferSet) {
 			Iterator<MomoryBuffer> iter =  bufferSet.iterator();
 			while(iter.hasNext()){
 				MomoryBuffer momoryBuffer = iter.next();
@@ -263,7 +260,6 @@ public class MomoryManagerByte implements MemoryObjInface{
 					nextMomoryManagerByte.free(buf);
 				}
 			}
-		}
 	}
 
 	/**
