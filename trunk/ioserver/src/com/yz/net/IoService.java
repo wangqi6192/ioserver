@@ -16,6 +16,10 @@ import java.util.Map;
  * 3.如果OverTimeHandler未被设置，框架会默认提供一个，默认的处理者以5分钟作为超时的判断条件，默认处理<br>
  *   者只对读写均无操作发生的超时作出了处理<br>
  * 4.默认的OverTimeHandler只是当发生超时时关闭IoSession<br>
+ * 
+ * 
+ * 2009-06-10
+ * 修改了原有的接口，把所有处理者都放入到配置中设置
  * </p>
  * <br>
  * @author 胡玮@ritsky
@@ -23,9 +27,23 @@ import java.util.Map;
  */
 public interface IoService {
 	
+	/**
+	 * <p>
+	 * 获取配置
+	 * </p>
+	 * <br>
+	 * @return
+	 */
 	public Configure getConfigure();
 	
 	
+	/**
+	 * </p>
+	 * 设置配置
+	 * </p>
+	 * <br>
+	 * @param config
+	 */
 	public void setConfigure(Configure config);
 	
 	
