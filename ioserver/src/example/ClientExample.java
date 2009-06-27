@@ -20,7 +20,7 @@ public class ClientExample {
 	
 	static Random rand = new Random();
 	
-	static PrintRspTime printRspTime = new PrintRspTime();
+	//static PrintRspTime printRspTime = new PrintRspTime();
 	
 	public static void main(String[] args) {
 		try {
@@ -33,10 +33,10 @@ public class ClientExample {
 			
 			config.start(connector);
 			
-			Thread t = new Thread(printRspTime);
-			t.start();
+			/*Thread t = new Thread(printRspTime);
+			t.start();*/
 			
-			
+			/*
 			for(int i=0; i<10; i++) {
 				IoSession session = IoConnector.newSession(connector);
 				IoFuture future = session.connect();
@@ -46,20 +46,20 @@ public class ClientExample {
 				session.addAttribute("START", System.currentTimeMillis());
 				session.write(new ExampleMessage(num));
 			}
-			
-			/*IoSession session = IoConnector.newSession(connector);
+			*/
+			IoSession session = IoConnector.newSession(connector);
 			IoFuture future = session.connect();
 			
 			future.await();
-			*/
+			
 			
 			
 			//int count = 0;
 			while(true) {
 				
-				/*int num = rand.nextInt(5000);
-				startTime = System.currentTimeMillis();
-				session.write(new ExampleMessage(num));*/
+				int num = rand.nextInt(5000);
+				//startTime = System.currentTimeMillis();
+				session.write(new ExampleMessage(num));
 				Thread.sleep(1000);
 			}
 			
@@ -83,13 +83,13 @@ public class ClientExample {
 
 		@Override
 		public void messageReceived(IoSession session, NetMessage msg) {
-			Long starttime = (Long) session.getAttribute("START");
-			long endtime = System.currentTimeMillis();
+			//Long starttime = (Long) session.getAttribute("START");
+			//long endtime = System.currentTimeMillis();
 			
-			printRspTime.queue.offer(new long[]{starttime, endtime});
+			//printRspTime.queue.offer(new long[]{starttime, endtime});
 			
 			ExampleMessage message = (ExampleMessage) msg;
-			//System.out.println("Num = " + message.getNumber());
+			System.out.println("Num = " + message.getNumber());
 			
 			/*try {
 				Thread.sleep(1000);
@@ -98,8 +98,8 @@ public class ClientExample {
 				e.printStackTrace();
 			}*/
 			
-			session.addAttribute("START", System.currentTimeMillis());
-			session.write(new ExampleMessage(rand.nextInt(5000)));
+			//session.addAttribute("START", System.currentTimeMillis());
+			//session.write(new ExampleMessage(rand.nextInt(5000)));
 		}
 
 		
